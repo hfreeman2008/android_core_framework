@@ -1,12 +1,11 @@
 # android_core_framework
 android framework core and key info
-此工程主要是针对android framework的一些核心和关键信息做一些笔记。
+此工程主要是针对android framework的一些核心和关键信息做一些笔记，特别是对于一些综合性要求比较高的技术，分享一些自己的心得。
 
-这也可以理解为一个android 系统工程师的一些必备技术技能。
+当然，这也可以理解为一个android 系统工程师的一些必备技术技能。
 
 # 介绍自己
 2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层。
-
 
 [csdn博客](https://blog.csdn.net/hfreeman2008)
 

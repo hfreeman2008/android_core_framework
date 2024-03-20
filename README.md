@@ -12,6 +12,15 @@ android framework core and key info
 
 [github博客](https://github.com/hfreeman2008)
 
+大学时的我：
+<img src=".\Images\2008年大学.JPG">
+
+工作十三年后的我：
+<img src=".\Images\2024年工作时的照片.jpg">
+
+android开发是个杀人猪刀，入行要考虑清楚。
+
+
 # 前序:如何客制化自己的项目，并上传到github
 [如何客制化自己的项目，并上传到github](./上传项目至github.md)
 

@@ -32,7 +32,7 @@ android开发是个杀猪刀，入行要考虑清楚。
 [开机速度优化.md](./专题二_开机速度优化/开机速度优化.md)
 
 # 计划添加内容：
-ams，wms,pms,tranceview,......
+ams，wms,pms,traceview,log,dumpsys,......
 
 
 

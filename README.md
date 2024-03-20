@@ -5,7 +5,7 @@ android framework core and key info
 当然，这也可以理解为一个android 系统工程师的一些必备技术技能。
 
 # 介绍自己
-2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层。
+2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
 
 [csdn博客](https://blog.csdn.net/hfreeman2008)
 

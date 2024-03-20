@@ -23,5 +23,7 @@
 
 ## push代码：
 Repository--push
+或者直接点击push origin：
+<img src=".\Images\push_code.png">  
 
 

@@ -1,0 +1,177 @@
+----------------------------------------
+0	    BOOT PROF (unit:msec)
+----------------------------------------
+       988        : preloader
+      4377        : lk (Start->Show logo: 1246)
+----------------------------------------
+         8.687691 : ON (Threshold:   15ms)
+       180.592307 :    1-swapper/0       : probe: probe=platform_drv_probe drv=clk-mt6761(0xffffffa377e72568)    61.338693ms
+       205.121307 :    1-swapper/0       : initcall: of_platform_default_populate_init   133.669231ms
+       279.320384 :    1-swapper/0       : initcall: ccci_util_init    58.852000ms
+       360.528308 :    1-swapper/0       : initcall: tracer_init_tracefs    63.116615ms
+       815.526155 :    1-swapper/0       : initcall: populate_rootfs   448.659309ms
+      1555.100080 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt6577-uart(0xffffffa377e7ed28)   702.261540ms
+      1578.557311 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt6577-uart(0xffffffa377e7ed28)    21.795923ms
+      1580.631387 :    1-swapper/0       : initcall: mtk8250_platform_driver_init   728.025232ms
+      1605.521003 :    1-swapper/0       : initcall: mtk_spi_driver_init    15.875385ms
+      1709.221926 :    1-swapper/0       : initcall: BTIF_init    28.491308ms
+      1750.124696 :    1-swapper/0       : initcall: mt6761_dcm_init    39.807000ms
+      1878.336081 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mtk_mmdvfs_pmqos(0xffffffa377ecc140)   119.396693ms
+      1881.044311 :    1-swapper/0       : initcall: mmdvfs_pmqos_init   122.724308ms
+      1911.916311 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mtk-thermal-legacy(0xffffffa377eceb90)    17.400924ms
+      1914.074158 :    1-swapper/0       : initcall: tscpu_init    20.564384ms
+      2056.318542 :    1-swapper/0       : probe: probe=platform_drv_probe drv=musb-hdrc(0xffffffa377edef90)    98.579693ms
+      2060.883696 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt_usb(0xffffffa377edf340)   108.513000ms
+      2062.952619 :    1-swapper/0       : initcall: mt_usb_driver_init   110.992077ms
+      2108.683696 :    1-swapper/0       : initcall: pt480d_printer_init    19.806077ms
+      2162.742850 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt6397(0xffffffa377ee1780)    39.941154ms
+      2164.404389 :    1-swapper/0       : initcall: mt6397_driver_init    42.607693ms
+      2193.261004 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt63xx-oc-debug(0xffffffa377ee2b50)    26.677923ms
+      2194.979697 :    1-swapper/0       : initcall: mt63xx_oc_debug_driver_init    29.374846ms
+      2394.091082 :    1-swapper/0       : probe: probe=platform_drv_probe drv=rt-flash-led(0xffffffa377eded28)    55.216231ms
+      2399.650774 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt6370_pmu_fled(0xffffffa377eddb70)    66.956616ms
+      2463.639082 :    1-swapper/0       : probe: probe=platform_drv_probe drv=rt-flash-led(0xffffffa377eded28)    55.142846ms
+      2466.465928 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt6370_pmu_fled(0xffffffa377eddb70)    63.952923ms
+      2526.889236 :    1-swapper/0       : probe: probe=platform_drv_probe drv=rt-flash-led(0xffffffa377eded28)    53.782769ms
+      2530.187082 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt6370_pmu_bled(0xffffffa377eddfb0)    60.492693ms
+      2542.537313 :    1-swapper/0       : probe: probe=i2c_device_probe drv=mt6370_pmu(0xffffffa377edb850)   241.787001ms
+      2544.182774 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt-i2c(0xffffffa377f2f040)   251.493154ms
+      2601.538775 :    1-swapper/0       : initcall: mt_i2c_init   312.842693ms
+      2719.690236 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt-soc-dl1-pcm(0xffffffa377f57658)    35.775693ms
+      2721.863775 :    1-swapper/0       : initcall: mtk_soc_platform_init    38.954769ms
+      2841.444929 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mtk-audio(0xffffffa377f60410)    98.387692ms
+      2843.660391 :    1-swapper/0       : initcall: mt_soc_snd_init   100.884385ms
+      2913.443775 :    1-swapper/0       : probe: probe=platform_drv_probe drv=scp(0xffffffa377ea4f38)    34.888385ms
+      2919.253237 :    1-swapper/0       : initcall: scp_init    45.955077ms
+      3051.602160 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=mtk-smi-larb(0xffffffa377e8c100)    56.739462ms
+      3106.368699 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=m4u(0xffffffa377edb4b0)    51.805462ms
+      3148.935391 :  156-kworker/1:1     : probe: probe=mmc_bus_probe drv=mmcblk(0xffffffa377f47e70)   162.539692ms
+      3231.983699 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=gpufreq(0xffffffa377e831e0)   122.429308ms
+      3395.026238 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=driver_modem(0xffffffa377ea7cb8)   151.856000ms
+      3432.870546 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=mtkfb(0xffffffa377ebfa20)    26.980923ms
+      3450.749007 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=camera-isp(0xffffffa377ed3530)    15.975153ms
+      3495.377238 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=mtk_ts_pmic(0xffffffa377ecf058)    30.400923ms
+      3541.343084 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=mt6357_ts_buck1(0xffffffa377ed19a0)    43.421231ms
+      3586.648315 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=mt6357_ts_buck2(0xffffffa377ed1c00)    43.414538ms
+      3833.849931 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=mt6357_gauge(0xffffffa377f3ed10)   245.224924ms
+      3865.983085 :   84-kworker/2:1     : probe: probe=platform_drv_probe drv=pvrsrvkm(0xffffffa377e8a2c0)    19.359923ms
+      3866.752701 :    1-swapper/0       : initcall: deferred_probe_initcall   906.596080ms
+      3955.373855 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mt-cpufreq(0xffffffa377e9c268)    61.383462ms
+      3957.455701 :    1-swapper/0       : initcall: _mt_cpufreq_pdrv_init    64.686539ms
+      4020.759470 :    1-swapper/0       : initcall: ppm_power_data_init    50.807385ms
+      4061.913547 :    1-swapper/0       : probe: probe=i2c_device_probe drv=ltr308(0xffffffa377ea6228)    28.045539ms
+      4063.877932 :    1-swapper/0       : initcall: alsps_init    31.490154ms
+      4110.503394 :    1-swapper/0       : probe: probe=platform_drv_probe drv=leds-mt65xx(0xffffffa377ed1f90)    18.471461ms
+      4112.591394 :    1-swapper/0       : initcall: mt65xx_leds_init    21.040385ms
+      4132.851394 :    1-swapper/0       : probe: probe=platform_drv_probe drv=image_sensor(0xffffffa377ed3838)    17.078385ms
+      4134.928394 :    1-swapper/0       : initcall: imgsensor_init    21.160923ms
+      4171.985855 :    1-swapper/0       : probe: probe=platform_drv_probe drv=mtk-extcon-usb(0xffffffa377edf6e0)    25.105923ms
+      4174.094471 :    1-swapper/0       : initcall: mtk_usb_extcon_init    28.578539ms
+      4236.647394 :   91-kworker/u8:1    : probe: probe=i2c_device_probe drv=fts_ts(0xffffffa377efc938)    38.277538ms
+      4248.572702 :   91-kworker/u8:1    : probe: probe=platform_drv_probe drv=mtk-tpd(0xffffffa377efc160)    63.291693ms
+      4349.084009 :    1-swapper/0       : Kernel_init_done
+      7899.500403 :  316-init            : INIT:early-init
+      9211.324636 :  316-init            : INIT:init
+      9320.339714 :  316-init            : INIT:late-init
+      9364.871098 :  316-init            : INIT:early-fs
+      9368.622868 :  316-init            : INIT:fs
+      9380.233252 :  316-init            : INIT:Mount_START
+      9747.608407 :  316-init            : INIT:Mount_END
+      9840.438484 :  316-init            : INIT:post-fs
+     10181.469023 :  316-init            : INIT:late-fs
+     10185.337562 :  316-init            : INIT:Mount_START --late
+     10505.496409 :  316-init            : INIT:Mount_END --late
+     10584.622255 :  357-binder:357_2    : vold:fbeEnable:START
+     10585.960332 :  357-binder:357_2    : vold:retrieveOrGenerateKey:START
+     10594.377871 :  357-binder:357_2    : vold:retrieveOrGenerateKey:END, rtn =1
+     10595.609871 :  357-binder:357_2    : vold:install_storage_key(device_key):START
+     10597.818255 :  357-binder:357_2    : vold:install_storage_key:END, rtn =1
+     10605.986255 :  357-binder:357_2    : vold:generateStorageKey(per_boot_key):START
+     10607.491794 :  357-binder:357_2    : vold:generateStorageKey:END, rtn =1
+     10608.668947 :  357-binder:357_2    : vold:install_storage_key(per_boot_key):START
+     10610.449024 :  357-binder:357_2    : vold:install_storage_key:END, rtn =1
+     10614.177563 :  357-binder:357_2    : vold:fbeEnable:END, rtn =1
+     11284.266564 :  357-binder:357_2    : vold:initUser0:START
+     11392.962257 :  357-binder:357_2    : vold:initUser0:END, rtn =1
+     11641.300335 :  316-init            : INIT:post-fs-data
+     11644.860719 :  316-init            : modprobe: Load_Module_DONE
+     11870.478489 :  316-init            : post-fs-data: on modem start
+     12751.215183 :  316-init            : INIT:zygote-start
+     12757.127722 :  316-init            : INIT:early-boot
+     13524.070878 :  316-init            : INIT:boot
+     13577.531185 :  523-ccci_mdinit     : ccci_md1: md_init srv start
+     13594.136416 :  523-ccci_mdinit     : ccci_md1: init
+     13596.379493 :  523-ccci_mdinit     : ccci_md1: decpyt ready
+     13597.495801 :  523-ccci_mdinit     : ccci_md1: decpyt ready
+     13598.442493 :  523-ccci_mdinit     : ccci_md1: reset
+     13601.331185 :  524-ccci_mdinit     : ccci_md3: md_init srv start
+     14393.935110 :  523-ccci_mdinit     : ccci_md1: bootup
+     14420.982187 :  390-wmt_loader      : probe: probe=platform_drv_probe drv=mtk_wmt(alarm_timer_handler [wmt_drv])   101.258538ms
+     14741.908034 :  316-init            : initcall: init_module [bt_drv_connac1x]    30.458538ms
+     14982.218496 :  458-zygote64        : boot_progress_start
+     16442.513961 :  523-ccci_mdinit     : ccci_md1: ready
+     16822.722193 :  316-init            : initcall: init_module [gps_drv]    57.809847ms
+     16908.198578 :  316-init            : initcall: init_module [wmt_chrdev_wifi]    57.549615ms
+     17561.572964 :  316-init            : probe: probe=platform_drv_probe drv=wlan(mtk_axi_driver [wlan_drv_gen4m])    15.838769ms
+     17581.655733 :  316-init            : initcall: init_module [wlan_drv_gen4m]    47.301846ms
+     17705.596657 :  316-init            : USB ready
+     18676.122274 :  462-main            : Zygote:Preload End
+     18978.681660 :  458-main            : Zygote:Preload Start
+     23917.089902 :  458-main            : Zygote:Preload 0 classes in 4184ms
+     24059.081287 :  458-main            : Zygote:Preload 64 obtain resources in 97ms
+     24080.115441 :  458-main            : Zygote:Preload 41 resources in 18ms
+     24734.124443 :  458-main            : Zygote:Preload End
+     26261.760139 : 1134-system_server   : Android:SysServerInit_START
+     28013.758220 : 1134-system_server   : Android:PackageManagerService_Start
+     28355.017990 : 1134-system_server   : Android:PMS_scan_START
+     28371.126913 : 1134-system_server   : Android:PMS_scan_data:/system/system_ext/overlay
+     28390.382221 : 1134-system_server   : Android:PMS_scan_data:/vendor/overlay
+     28414.802528 : 1134-system_server   : Android:PMS_scan_data:/system/framework
+     28455.437990 : 1134-system_server   : Android:PMS_scan_data:/system/priv-app
+     28637.438914 : 1134-system_server   : Android:PMS_scan_data:/system/app
+     28799.966222 : 1134-system_server   : Android:PMS_scan_data:/vendor/app
+     28838.342837 : 1134-system_server   : Android:PMS_scan_data:/product/app
+     28849.311453 : 1134-system_server   : Android:PMS_scan_data:/system/system_ext/priv-app
+     28911.915530 : 1134-system_server   : Android:PMS_scan_data:/system/system_ext/app
+     28926.795222 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.wifi/priv-app
+     28936.709991 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.wifi/app
+     28950.030299 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.uwb/priv-app
+     28960.537991 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.tethering/priv-app
+     28974.027760 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.tethering/app
+     28984.213376 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.permission/priv-app
+     29000.011222 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.ondevicepersonalization/app
+     29010.027453 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.mediaprovider/priv-app
+     29023.742222 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.extservices/priv-app
+     29036.644761 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.btservices/app
+     29049.695453 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.adservices/priv-app
+     29059.798222 : 1134-system_server   : Android:PMS_scan_data:/apex/com.android.adservices/app
+     29092.194915 : 1134-system_server   : Android:PMS_scan_END
+     29142.405915 : 1134-system_server   : PMS:reconcileAppsDataLI
+     29353.920146 : 1134-system_server   : Android:PMS_READY
+     32640.162000 :  462-main            : Zygote:Preload 0 classes in 2913ms
+     32824.626308 :  462-main            : Zygote:Preload 64 obtain resources in 121ms
+     32840.390847 :  462-main            : Zygote:Preload 41 resources in 13ms
+     34237.211158 : 1134-system_server   : AMS:systemReady
+     34297.912466 : 1134-system_server   : AMS:AMS_READY
+     34629.447543 : 1164-ActivityManager : AP_Init:[service]:[com.android.systemui]:[{com.android.systemui/com.android.systemui.ImageWallpaper}]:pid:1315:(PersistAP)
+     34806.732082 : 1134-system_server   : SystemServer:NetworkStatsService systemReady
+     34874.344775 : 1134-system_server   : SystemServer:ConnectivityService systemReady
+     34970.775236 : 1134-system_server   : SystemServer:NetworkPolicyManagerServ systemReady
+     35715.276700 : 1134-system_server   : SystemServer:PhaseThirdPartyAppsCanStart
+     36291.769086 : 1134-system_server   : Android:SysServerInit_END
+     36303.017701 : 1199-system-server-i : Keyguard bindService
+     36331.566624 : 1199-system-server-i : Keyguard started
+     36410.558624 : 1164-ActivityManager : AP_Init:[]:[WebViewLoader-armeabi-v7a]:pid:1420
+     36474.886855 : 1164-ActivityManager : AP_Init:[]:[WebViewLoader-arm64-v8a]:pid:1438
+     36500.691240 : 1164-ActivityManager : AP_Init:[service]:[com.android.networkstack.process]:[{com.android.networkstack/com.android.server.NetworkStackService}]:pid:1441:(PersistAP)
+     36585.565702 : 1164-ActivityManager : AP_Init:[added application]:[com.android.se]:[com.android.se]:pid:1472:(PersistAP)
+     36699.491164 : 1164-ActivityManager : AP_Init:[added application]:[com.topwise.bluetooh.virtualbluetoohprint]:[com.topwise.bluetooh.virtualbluetoohprint]:pid:1502:(PersistAP)
+     36773.199471 : 1164-ActivityManager : AP_Init:[added application]:[com.android.phone]:[com.android.phone]:pid:1508:(PersistAP)
+     36810.973318 : 1164-ActivityManager : AP_Init:[top-activity]:[com.android.launcher3]:[{com.android.launcher3/com.android.launcher3.uioverrides.QuickstepLauncher}]:pid:1515
+     36893.198626 : 1164-ActivityManager : AP_Init:[service]:[android.ext.services]:[{android.ext.services/android.ext.services.autofill.InlineSuggestionRenderServiceImpl}]:pid:1523
+     39494.666863 : 1154-android.display : AMS:ENABLE_SCREEN
+     41071.718559 : 1152-android.ui      : Keyguard connected
+     41887.617022 : 1164-ActivityManager : AP_Init:[service]:[com.mediatek.ims]:[{com.mediatek.ims/com.mediatek.ims.MtkDynamicImsService}]:pid:1785
+     42861.521947 : 1198-binder:1134_4   : Keyguard onDrawn
+     43562.795795 : OFF
+----------------------------------------

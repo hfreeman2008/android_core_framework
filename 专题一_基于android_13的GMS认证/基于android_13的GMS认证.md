@@ -1,4 +1,4 @@
-# 专题二: 基于android 13的GMS认证
+# 专题一: 基于android 13的GMS认证
 
 # 整体介绍android 13的GMS认证
 https://blog.csdn.net/hfreeman2008/article/details/134425087

@@ -7,8 +7,10 @@ android framework core and key info
 
 
 # 专题一: 开机速度优化
+[开机速度优化.md](./专题一_开机速度优化/开机速度优化.md)
 
 # 专题二：基于android 13的GMS认证
+[开机速度优化.md](./专题二_基于android 13的GMS认证/基于android 13的GMS认证.md)
 
 # 计划添加内容：
 ams，wms,pms,tranceview,......

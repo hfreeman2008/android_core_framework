@@ -18,7 +18,7 @@ android framework core and key info
 工作十三年后的我：
 <img src=".\Images\2024年工作时的照片.jpg">
 
-android开发是个杀人猪刀，入行要考虑清楚。
+android开发是个杀猪刀，入行要考虑清楚。
 
 
 # 前序:如何客制化自己的项目，并上传到github

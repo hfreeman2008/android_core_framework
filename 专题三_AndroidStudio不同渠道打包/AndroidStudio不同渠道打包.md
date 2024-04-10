@@ -114,6 +114,7 @@ productFlavors{
     >
 ```
 logo_qcom.png和logo_mtk.png二张对应应用图标的图片：
+
 <img src=".\Image\logo_mtk_qcom.png">
 
 其不同的应用名对应：
@@ -188,6 +189,7 @@ qcom/res/values/strings.xml
 
 <img src=".\Image\overlay_res_ui.png">
 
+
 图四：资源文件overlay动态替换的代码结构
 
 
@@ -211,6 +213,7 @@ productFlavors{
 ```
 
 这个主要是实现主界面的第一个TextView的动态替换：
+
 <img src=".\Image\resvalue_tv.png">
 
 

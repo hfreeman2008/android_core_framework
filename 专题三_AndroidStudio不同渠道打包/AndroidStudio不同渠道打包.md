@@ -21,6 +21,9 @@
 # Demo源码
 这个demo源码，非常的简单，主要是显示一个activity界面，此界面包括二个TextView和一个ImageView。如上面的图二。
 
+DemoDiffPkg2.zip
+这个就是Demo的源码
+
 # 实现方案
 
 ## app\build.gradle
@@ -301,3 +304,6 @@ Android实现多渠道打包，动态替换包名、Icon、图片等资源，解
 
 # 附文档：
 Android实现多渠道打包，动态替换包名、Icon、图片等资源的方案.pdf
+
+# 附Demo的源码
+DemoDiffPkg2.zip

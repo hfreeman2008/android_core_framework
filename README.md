@@ -34,8 +34,8 @@ android开发是个杀猪刀，入行要考虑清楚。
 # 专题三: AndroidStudio不同渠道打包
 [AndroidStudio不同渠道打包.md](./专题三_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
-# 专题四: 系统的log日志分析
-[系统的log日志分析.md](./专题四_系统的log日志分析/系统的log日志分析.md)
+# 专题四: 系统分析的屠龙刀之log日志
+[系统分析的屠龙刀之log日志.md](./专题四_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
 
 
 # 计划添加内容：

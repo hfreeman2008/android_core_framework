@@ -2,7 +2,21 @@
 android问题的分析，大家使用最多的，也可以说是最重要的就是日志，日志是系统问题分析的屠龙刀，是一点都不夸张。
 
 
+# system
+--------- beginning of system
 
+# events
+--------- beginning of events
 
+# main
+--------- beginning of main
+
+# radio
+--------- beginning of radio
+
+# crash
+--------- beginning of crash
+
+# kernel
 
 

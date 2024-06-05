@@ -1,6 +1,6 @@
 # 专题四: 系统分析的屠龙刀之log日志
 android问题的分析，大家使用最多的，也可以说是最重要的就是日志，日志是系统问题分析的屠龙刀，是一点都不夸张。
-
+<img src=".\Images\log_sword.png">
 
 # system
 --------- beginning of system

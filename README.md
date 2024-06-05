@@ -34,8 +34,12 @@ android开发是个杀猪刀，入行要考虑清楚。
 # 专题三: AndroidStudio不同渠道打包
 [AndroidStudio不同渠道打包.md](./专题三_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
+# 专题四: 系统的log日志分析
+[系统的log日志分析.md](./专题四_系统的log日志分析/系统的log日志分析.md)
+
+
 # 计划添加内容：
-ams，wms,pms,traceview,log,dumpsys,内存，cpu,......
+ams，wms,pms,traceview,log,dumpsys,内存，cpu,自定义系统服务......
 
 
 

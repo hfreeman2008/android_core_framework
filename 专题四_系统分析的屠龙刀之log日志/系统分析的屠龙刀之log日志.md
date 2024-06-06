@@ -23,6 +23,15 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 ## system
 --------- beginning of system
 
+### ams相关
+启动应用:
+ActivityTaskManager: START u0 {cmp=com.dream.dreamlogger/.DreagActivity} from uid 1000
+ActivityManager: Start proc 6499:com.dream.dreamlogger/1000 for pre-top-activity {com.dream.dreamlogger/com.dream.dreamlogger.DreagActivity}
+
+### wms相关
+
+
+
 
 ## events
 --------- beginning of events

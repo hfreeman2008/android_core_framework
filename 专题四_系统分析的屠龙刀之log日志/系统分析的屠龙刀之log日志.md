@@ -106,8 +106,17 @@ I wm_finish_activity: [0,193515979,34,com.dream.dreamlogger/.DreamOfflineLogActi
 
 ```
 
+### wm 和task,stack相关
 
+```java
+I wm_stack_created: 34
+I wm_stack_removed: 2
 
+I wm_task_created: [34,-1]
+I wm_task_removed: [2,removeTask]
+I wm_task_removed: [2,removeChild: last r=ActivityRecord{52a7243 u0 com.android.settings/.FallbackHome t-1 f}} in t=Task{2c22984 #2 visible=false type=home mode=fullscreen translucent=true A=1000:com.android.settings.FallbackHome U=0 StackId=2 sz=0}]
+
+```
 
 
 ## main

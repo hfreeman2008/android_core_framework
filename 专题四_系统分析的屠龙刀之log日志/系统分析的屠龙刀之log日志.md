@@ -208,6 +208,10 @@ E AndroidRuntime:         at android.hardware.camera2.CameraManager.getCameraCha
 
 ## radio
 --------- beginning of radio
+```java
+Rlog.w(LOG_TAG, "------------");
+```
+
 此部分日志主要为和网络相关，留白，因为本人没有什么有效的经验分享。
 
 ## kernel
@@ -220,6 +224,17 @@ adb shell dmesg > kernel_001.log
 ```
 
 此部分留白，因为本人没有做过驱动，没有什么有效的经验分享。
+
+
+## anr日志
+anr日志文件：
+```java
+/data/anr/traces.txt
+adb pull /data/anr/ ./anr
+```
+
+
+
 
 
 # 如何合理的添加日志

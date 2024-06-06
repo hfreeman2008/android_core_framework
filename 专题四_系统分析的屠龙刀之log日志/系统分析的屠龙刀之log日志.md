@@ -211,8 +211,8 @@ E AndroidRuntime:         at android.hardware.camera2.CameraManager.getCameraCha
 ```java
 Rlog.w(LOG_TAG, "------------");
 ```
-
-此部分日志主要为和网络相关，留白，因为本人没有什么有效的经验分享。
+此部分日志,也就是通信模块相关的日志，譬如RIL
+留白，因为本人没有什么有效的经验分享。
 
 ## kernel
 
@@ -246,6 +246,11 @@ adb pull /data/tombstones ./tombstones
 /data/system/dropbox/
 adb pull /data/system/dropbox/ ./dropbox
 ```
+
+
+## 日志缓存位置：
+dev/log
+
 
 # logcat相关的命令
 

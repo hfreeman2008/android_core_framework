@@ -118,6 +118,14 @@ I wm_task_removed: [2,removeChild: last r=ActivityRecord{52a7243 u0 com.android.
 
 ```
 
+### selinux权限相关
+```java
+I auditd  : type=1400 audit(0.0:630): avc: denied { read } for comm="Binder:588_2" name="wakeup24" dev="sysfs" ino=36313 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+```
+
+
+
+
 
 ## main
 --------- beginning of main

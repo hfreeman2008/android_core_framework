@@ -234,6 +234,13 @@ adb pull /data/anr/ ./anr
 ```
 
 
+## tombstones日志
+tombstones日志文件：
+```java
+/data/tombstones/tombstone_X
+adb pull /data/tombstones ./tombstones
+```
+
 
 
 

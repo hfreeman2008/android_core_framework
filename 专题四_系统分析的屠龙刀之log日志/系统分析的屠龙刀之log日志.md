@@ -252,6 +252,13 @@ adb pull /data/system/dropbox/ ./dropbox
 dev/log
 
 
+## bugreport日志
+```java
+adb bugreport > bugreport.txt
+adb shell bugreport > bugreport.txt
+```
+
+
 # logcat相关的命令
 
 ```java

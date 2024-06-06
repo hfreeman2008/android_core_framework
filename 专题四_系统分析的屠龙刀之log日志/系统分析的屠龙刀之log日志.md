@@ -68,7 +68,19 @@ EventLog.writeEvent(......);
 ```java
 am_proc_start: [0,3487,1000,com.qualcomm.qti.services.secureui:sui_service,added application,com.qualcomm.qti.services.secureui:sui_service]
 am_proc_died: [0,4391,com.qti.ltebc,0,11]
+am_proc_bound: [0,6499,com.dream.dreamlogger]
 ```
+
+### am 和service相关
+```java
+am_stop_idle_service: [10049,com.qti.ltebc/com.qualcomm.ltebc.LTERootService]
+```
+
+### am 和broadcast相关
+```java
+am_broadcast_discard_app: [0,4020578,android.intent.action.MEDIA_MOUNTED,2,ResolveInfo{6fe2974 com.qti.ltebc/com.qualcomm.ltebc.LTEBroadcastReceiver m=0x208000}]
+```
+
 
 ### wm 和activity相关
 ```java
@@ -93,6 +105,8 @@ I wm_destroy_activity: [0,193515979,34,com.dream.dreamlogger/.DreamOfflineLogAct
 I wm_finish_activity: [0,193515979,34,com.dream.dreamlogger/.DreamOfflineLogActivity,app-request]
 
 ```
+
+
 
 
 

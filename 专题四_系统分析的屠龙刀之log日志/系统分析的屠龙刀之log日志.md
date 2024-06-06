@@ -23,12 +23,32 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 ## system
 --------- beginning of system
 
+打印system日志的接口：
+
+```java
+import android.util.Slog;
+ Slog.v(TAG, "system log ");
+```
+
 ### ams相关
 启动应用:
+```java
 ActivityTaskManager: START u0 {cmp=com.dream.dreamlogger/.DreagActivity} from uid 1000
 ActivityManager: Start proc 6499:com.dream.dreamlogger/1000 for pre-top-activity {com.dream.dreamlogger/com.dream.dreamlogger.DreagActivity}
+```
+
+
+启动服务：
+```java
+ActivityManager: Start proc 6619:.connect.ConnectorService/1000 for service {com.android.usbaccessory/com.android.usbaccessory.connect.ConnectorService}
+```
+
 
 ### wms相关
+
+```java
+V WindowManager: Orientation start waiting for draw, mDrawState=DRAW_PENDING in Window{1e537fa u0 com.android.settings/com.android.settings.FallbackHome}, surfaceController Surface(name=com.android.settings/com.android.settings.FallbackHome)/@0x9822dab
+```
 
 
 

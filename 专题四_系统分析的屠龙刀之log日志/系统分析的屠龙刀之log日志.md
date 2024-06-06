@@ -32,6 +32,13 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 ## main
 --------- beginning of main
 
+打印main日志的接口：
+
+```java
+ android.util.Log.i(TAG, "log info is ===========");
+```
+
+通过这个，我们就知道main日志大部分是app应用自已打印输出的，没有什么规律。
 
 
 ## crash

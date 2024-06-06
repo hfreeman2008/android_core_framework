@@ -247,6 +247,26 @@ adb pull /data/tombstones ./tombstones
 adb pull /data/system/dropbox/ ./dropbox
 ```
 
+# logcat相关的命令
+
+```java
+//清除日志
+adb logcat -c
+//打印所有类型的日志
+adb logcat -b all
+//打印main类型的日志
+adb logcat -b main
+//打印system类型的日志
+adb logcat -b system
+//打印events类型的日志
+adb logcat -b events
+//打印radio类型的日志
+adb logcat -b radio
+
+```
+
+
+
 
 
 # 如何合理的添加日志

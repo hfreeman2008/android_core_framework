@@ -64,17 +64,34 @@ EventLog.writeEvent(......);
 ```
 
 
-### pro相关
+### am 和进程相关
 ```java
 am_proc_start: [0,3487,1000,com.qualcomm.qti.services.secureui:sui_service,added application,com.qualcomm.qti.services.secureui:sui_service]
+am_proc_died: [0,4391,com.qti.ltebc,0,11]
 ```
 
-### wm相关
+### wm 和activity相关
 ```java
+I wm_activity_launch_time: [0,160827187,com.android.launcher/.MainActivity,1130]
+I wm_create_activity: [0,60813961,34,com.qualcomm.qti.qmmi/.framework.MainActivity,NULL,NULL,NULL,0]
 I wm_on_create_called: [160827187,com.android.launcher.MainActivity,performCreate]
 I wm_on_start_called: [160827187,com.android.launcher.MainActivity,handleStartActivity]
+I wm_restart_activity: [0,60813961,34,com.qualcomm.qti.qmmi/.framework.MainActivity]
+I wm_on_restart_called: [153721854,com.android.settings.scmenu.DeveloperModeActivity,performRestartActivity]
 I wm_on_resume_called: [160827187,com.android.launcher.MainActivity,RESUME_ACTIVITY]
+I wm_resume_activity: [0,153721854,34,com.android.settings/.scmenu.DeveloperModeActivity]
 I wm_on_top_resumed_gained_called: [160827187,com.android.launcher.MainActivity,topStateChangedWhenResumed]
+I wm_on_top_resumed_lost_called: [160827187,com.android.launcher.MainActivity,topStateChangedWhenResumed]
+I wm_set_resumed_activity: [0,com.qualcomm.qti.qmmi/.framework.MainActivity,minimalResumeActivityLocked]
+I wm_on_paused_called: [160827187,com.android.launcher.MainActivity,performPause]
+I wm_pause_activity: [0,153721854,com.android.settings/.scmenu.DeveloperModeActivity,userLeaving=true]
+I wm_stop_activity: [0,160827187,com.android.launcher/.MainActivity]
+I wm_add_to_stopping: [0,153721854,com.android.settings/.scmenu.DeveloperModeActivity,makeInvisible]
+I wm_on_stop_called: [160827187,com.android.launcher.MainActivity,STOP_ACTIVITY_ITEM]
+I wm_on_destroy_called: [86667843,com.android.settings.FallbackHome,performDestroy]
+I wm_destroy_activity: [0,193515979,34,com.dream.dreamlogger/.DreamOfflineLogActivity,finish-imm:idle]
+I wm_finish_activity: [0,193515979,34,com.dream.dreamlogger/.DreamOfflineLogActivity,app-request]
+
 ```
 
 

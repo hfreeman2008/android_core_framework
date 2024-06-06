@@ -59,11 +59,29 @@ F DEBUG   :       #09 pc 000000000012da14  /apex/com.android.art/lib64/libart.so
 F DEBUG   :       #10 pc 000000000017c858  /system/app/NfcNci/NfcNci.apk (offset 0x1000) (com.android.nfc.NfcService$NfcServiceHandler.handleMessage+1092)
 ```
 
-第二种：
+第二种：app 应用crash
 ```java
-F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0 in tid 3374 (com.android.nfc), pid 3374 (com.android.nfc)
-F DEBUG   : Build fingerprint: 
-F DEBUG   : Revision: '0'
+E AndroidRuntime: Process: com.dream.recorder, PID: 3691
+E AndroidRuntime: java.lang.IllegalArgumentException: supportsCameraApi:2365: Unknown camera ID 0
+E AndroidRuntime:  at android.hardware.camera2.CameraManager.throwAsPublicException(CameraManager.java:1013)
+E AndroidRuntime:  at android.hardware.camera2.CameraManager.getCameraCharacteristics(CameraManager.java:461)
+E AndroidRuntime:  at android.hardware.camera2.CameraManager.openCameraDeviceUserAsync(CameraManager.java:497)
+E AndroidRuntime:  at android.hardware.camera2.CameraManager.openCameraForUid(CameraManager.java:737)
+E AndroidRuntime:  at android.hardware.camera2.CameraManager.openCamera(CameraManager.java:665)
+E AndroidRuntime:         at com.dream.recorder.media.camera.impl.LnlyjCameraImpl.openInner(LnlyjCameraImpl.java:252)
+E AndroidRuntime:         at com.dream.recorder.media.camera.impl.LnlyjCameraImpl.access$800(LnlyjCameraImpl.java:32)
+E AndroidRuntime:         at com.dream.recorder.media.camera.impl.LnlyjCameraImpl$WorkHandler.open(LnlyjCameraImpl.java:573)
+E AndroidRuntime:         at com.dream.recorder.media.camera.impl.LnlyjCameraImpl$WorkHandler.handleMessage(LnlyjCameraImpl.java:538)
+E AndroidRuntime:         at android.os.Handler.dispatchMessage(Handler.java:106)
+E AndroidRuntime:         at android.os.Looper.loop(Looper.java:223)
+E AndroidRuntime:         at android.os.HandlerThread.run(HandlerThread.java:67)
+E AndroidRuntime: Caused by: android.os.ServiceSpecificException: supportsCameraApi:2365: Unknown camera ID 0 (code 3)
+E AndroidRuntime:         at android.os.Parcel.createExceptionOrNull(Parcel.java:2387)
+E AndroidRuntime:         at android.os.Parcel.createException(Parcel.java:2357)
+E AndroidRuntime:         at android.hardware.ICameraService$Stub$Proxy.supportsCameraApi(ICameraService.java:906)
+E AndroidRuntime:         at android.hardware.camera2.CameraManager.supportsCameraApiLocked(CameraManager.java:1066)
+E AndroidRuntime:         at android.hardware.camera2.CameraManager.supportsCamera2ApiLocked(CameraManager.java:1042)
+E AndroidRuntime:         at android.hardware.camera2.CameraManager.getCameraCharacteristics(CameraManager.java:434)
 ```
 
 

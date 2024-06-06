@@ -37,9 +37,12 @@ android开发是个杀猪刀，入行要考虑清楚。
 # 专题四: 系统分析的屠龙刀之log日志
 [系统分析的屠龙刀之log日志.md](./专题四_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
 
+# 专题五: 系统分析的屠龙刀之dumpsys信息
+[系统分析的屠龙刀之dumpsys信息.md](./专题五_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
+
 
 # 计划添加内容：
-ams，wms,pms,traceview,log,dumpsys,内存，cpu,自定义系统服务......
+ams，wms,pms,traceview,,dumpsys,内存，cpu,自定义系统服务......
 
 
 

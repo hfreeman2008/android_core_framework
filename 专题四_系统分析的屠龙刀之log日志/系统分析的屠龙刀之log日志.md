@@ -23,7 +23,7 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 ## system
 --------- beginning of system
 
-打印system日志的接口：
+### 打印system日志的接口：
 
 ```java
 import android.util.Slog;
@@ -56,12 +56,33 @@ V WindowManager: Orientation start waiting for draw, mDrawState=DRAW_PENDING in 
 ## events
 --------- beginning of events
 
+### 打印system日志的接口：
+
+```java
+import android.util.EventLog;
+EventLog.writeEvent(......);
+```
+
+
+### pro相关
+```java
+am_proc_start: [0,3487,1000,com.qualcomm.qti.services.secureui:sui_service,added application,com.qualcomm.qti.services.secureui:sui_service]
+```
+
+### wm相关
+```java
+I wm_on_create_called: [160827187,com.android.launcher.MainActivity,performCreate]
+I wm_on_start_called: [160827187,com.android.launcher.MainActivity,handleStartActivity]
+I wm_on_resume_called: [160827187,com.android.launcher.MainActivity,RESUME_ACTIVITY]
+I wm_on_top_resumed_gained_called: [160827187,com.android.launcher.MainActivity,topStateChangedWhenResumed]
+```
+
 
 
 ## main
 --------- beginning of main
 
-打印main日志的接口：
+### 打印main日志的接口：
 
 ```java
  android.util.Log.i(TAG, "log info is ===========");
@@ -128,7 +149,7 @@ E AndroidRuntime:         at android.hardware.camera2.CameraManager.getCameraCha
 
 ## kernel
 
-查看kernel日志命令：
+### 查看kernel日志命令：
 
 ```java
 adb shell cat /proc/kmsg > kernel.log

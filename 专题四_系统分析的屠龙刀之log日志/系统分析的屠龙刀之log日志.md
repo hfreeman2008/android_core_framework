@@ -123,6 +123,19 @@ I wm_task_removed: [2,removeChild: last r=ActivityRecord{52a7243 u0 com.android.
 I auditd  : type=1400 audit(0.0:630): avc: denied { read } for comm="Binder:588_2" name="wakeup24" dev="sysfs" ino=36313 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
 ```
 
+### battery相关
+```java
+battery_level: [98,4345,292]
+battery_status: [3,2,1,0,Li-ion]
+```
+
+### sysui_multi_action
+```java
+sysui_multi_action: [757,803,799,key_back_up,802,1]
+sysui_multi_action: [757,804,799,power_consecutive_short_tap_count,801,1,802,1]
+sysui_multi_action: [757,804,799,power_double_tap_interval,801,58183048,802,1]
+
+```
 
 
 

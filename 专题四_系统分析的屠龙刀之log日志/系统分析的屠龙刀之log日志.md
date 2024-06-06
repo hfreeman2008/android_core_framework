@@ -35,8 +35,9 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 
 ## crash
 --------- beginning of crash
+这个crash日志，是平常我们常见的问题处理之一，需要重点关注。
 
-第一种:native crash
+- 第一种:native crash
 
 ```java
 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0 in tid 3374 (com.android.nfc), pid 3374 (com.android.nfc)
@@ -59,7 +60,7 @@ F DEBUG   :       #09 pc 000000000012da14  /apex/com.android.art/lib64/libart.so
 F DEBUG   :       #10 pc 000000000017c858  /system/app/NfcNci/NfcNci.apk (offset 0x1000) (com.android.nfc.NfcService$NfcServiceHandler.handleMessage+1092)
 ```
 
-第二种：app 应用crash
+- 第二种：app 应用crash
 ```java
 E AndroidRuntime: Process: com.dream.recorder, PID: 3691
 E AndroidRuntime: java.lang.IllegalArgumentException: supportsCameraApi:2365: Unknown camera ID 0

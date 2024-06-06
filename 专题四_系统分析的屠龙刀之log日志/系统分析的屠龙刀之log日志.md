@@ -50,7 +50,9 @@ ActivityManager: Start proc 6619:.connect.ConnectorService/1000 for service {com
 V WindowManager: Orientation start waiting for draw, mDrawState=DRAW_PENDING in Window{1e537fa u0 com.android.settings/com.android.settings.FallbackHome}, surfaceController Surface(name=com.android.settings/com.android.settings.FallbackHome)/@0x9822dab
 ```
 
-
+### 各种系统服务的日志
+系统服务的日志，基本上都是在此部分，所以此部分日志是关注的重点。
+系统服务包括：BluetoothManagerService，ConnectivityService，BatteryService，LightsService，StorageManagerService，WallpaperManagerService，UriGrantsManagerService，DisplayManagerService等等。
 
 
 ## events

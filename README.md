@@ -4,23 +4,6 @@ android framework core and key info
 
 当然，这也可以理解为一个android 系统工程师的一些必备技术技能。
 
-# 介绍自己
-2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
-
-[csdn博客](https://blog.csdn.net/hfreeman2008)
-
-[github博客](https://github.com/hfreeman2008)
-
-大学时的我：
-
-<img src=".\Images\2008年大学.JPG">
-
-工作十三年后的我：
-
-<img src=".\Images\2024年工作时的照片.jpg">
-
-android开发是个杀猪刀，入行要考虑清楚。
-
 
 # 前序:如何客制化自己的项目，并上传到github
 [如何客制化自己的项目，并上传到github](./上传项目至github.md)
@@ -42,7 +25,23 @@ android开发是个杀猪刀，入行要考虑清楚。
 
 
 # 计划添加内容：
-ams，wms,pms,traceview,,dumpsys,内存，cpu,自定义系统服务......
+ams，wms,pms,traceview,内存，cpu,自定义系统服务......
 
 
 
+# 介绍自己
+2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
+
+[csdn博客](https://blog.csdn.net/hfreeman2008)
+
+[github博客](https://github.com/hfreeman2008)
+
+大学时的我：
+
+<img src=".\Images\2008年大学.JPG">
+
+工作十三年后的我：
+
+<img src=".\Images\2024年工作时的照片.jpg">
+
+android开发是个杀猪刀，入行要考虑清楚。

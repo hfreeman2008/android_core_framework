@@ -56,7 +56,7 @@ V WindowManager: Orientation start waiting for draw, mDrawState=DRAW_PENDING in 
 ## events
 --------- beginning of events
 
-### 打印system日志的接口：
+### 打印events日志的接口：
 
 ```java
 import android.util.EventLog;

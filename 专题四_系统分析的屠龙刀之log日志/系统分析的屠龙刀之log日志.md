@@ -241,6 +241,11 @@ tombstones日志文件：
 adb pull /data/tombstones ./tombstones
 ```
 
+## dropbox日志：
+```java
+/data/system/dropbox/
+adb pull /data/system/dropbox/ ./dropbox
+```
 
 
 

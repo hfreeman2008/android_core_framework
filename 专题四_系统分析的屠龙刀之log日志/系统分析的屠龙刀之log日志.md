@@ -258,6 +258,12 @@ adb bugreport > bugreport.txt
 adb shell bugreport > bugreport.txt
 ```
 
+## bootprof--mtk平台开机启动时间日志
+```java
+adb shell cat /proc/bootprof
+adb pull /proc/bootprof  ./bootprof
+```
+
 
 # logcat相关的命令
 

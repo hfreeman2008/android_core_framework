@@ -25,7 +25,7 @@ android framework core and key info
 
 
 # 计划添加内容：
-ams，wms,pms,traceview,内存，cpu,自定义系统服务......
+ams，wms,pms,profile,traceview,内存，cpu,自定义系统服务......
 
 
 

@@ -18,11 +18,18 @@ adb shell dumpsys -l
 ```java
 adb shell dumpsys meminfo
 ```
+
+
 查看设备对应应用com.android.pkgname的内存信息：
 ```java
 adb shell dumpsys meminfo com.android.pkgname
 ```
 
+## dumpsys cpuinfo
+查看cpu信息
+```java
+adb shell dumpsys cpuinfo
+```
 
 
 

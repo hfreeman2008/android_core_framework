@@ -11,7 +11,24 @@ android问题的分析，大家使用最多的是日志。
 adb shell dumpsys -l
 ```
 
+# 关键的dumpsys信息
+## dumpsys meminfo
+
+查看所有应用的内存信息：
+```java
+adb shell dumpsys meminfo
+```
+查看设备对应应用com.android.pkgname的内存信息：
+```java
+adb shell dumpsys meminfo com.android.pkgname
+```
 
 
 
 
+
+
+
+# 参考资料
+1.dumpsys
+https://developer.android.google.cn/studio/command-line/dumpsys

@@ -13,12 +13,12 @@ adb shell dumpsys -l
 
 # 关键的dumpsys信息
 ## dumpsys meminfo
+这个命令，我们针对分析设备的memory，特别有用
 
 查看所有应用的内存信息：
 ```java
 adb shell dumpsys meminfo
 ```
-
 
 查看设备对应应用com.android.pkgname的内存信息：
 ```java
@@ -26,10 +26,22 @@ adb shell dumpsys meminfo com.android.pkgname
 ```
 
 ## dumpsys cpuinfo
+这个命令，我们针对分析设备的cpu，特别有用
 查看cpu信息
 ```java
 adb shell dumpsys cpuinfo
 ```
+
+
+## dumpsys package
+这个命令，我们针对分析设备的所有应用信息，特别有用
+
+查看应用包信息
+```java
+adb shell dumpsys package
+adb shell dumpsys package com.android.pkgname
+```
+
 
 
 

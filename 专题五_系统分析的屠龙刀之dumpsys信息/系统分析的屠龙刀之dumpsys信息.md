@@ -168,9 +168,6 @@ Current Battery Service state:
 ```
 
 
-
-
-
 ## dumpsys display
 
 查看display相关：

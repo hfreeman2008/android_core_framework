@@ -171,6 +171,37 @@ Current Battery Service state:
 
 
 
+## dumpsys display
+
+查看display相关：
+```java
+adb shell dumpsys display
+```
+
+查看亮度值mBrightness：
+```java
+BrightnessObserver
+    mBrightness: 102
+```
+
+
+
+自动调节亮度的相关信息：
+```java
+SimpleMappingStrategy
+  mSpline=MonotoneCubicSpline{[(0.0, 0.011453409: 0.0019675908), (10.0, 0.031129315: 0.0022426946), (30.0, 0.08148529: 0.0028148363), (60.0, 0.17484152: 0.0034001395), (100.0, 0.3223777: 0.00396333), (150.0, 0.53429043: 0.0036997495), (210.0, 0.7239651: 0.0033023162), (212.0175, 0.73091215: 0.003443372), (255.0, 0.8789162: 0.0034433564)]}
+  mMaxGamma=3.0
+  mAutoBrightnessAdjustment=-0.2651215
+  mUserLux=212.0175
+  mUserBrightness=0.73091215
+```
+
+
+
+
+
+
+
 
 
 

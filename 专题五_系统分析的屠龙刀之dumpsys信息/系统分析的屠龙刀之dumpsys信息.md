@@ -42,9 +42,33 @@ adb shell dumpsys package
 adb shell dumpsys package com.android.pkgname
 ```
 
+## dumpsys activity
+对于系统来说，ams的dumpsys命令是我们查看系统信息的重要指令
 
+```java
+adb shell dumpsys activity
+```
 
-
+dumpsys activity信息实在是太庞大太多，主要包括如下几个方面：
+```java
+ACTIVITY MANAGER SETTINGS (dumpsys activity settings) activity_manager_constants:
+ACTIVITY MANAGER ALLOWED ASSOCIATION STATE (dumpsys activity allowed-associations)
+ACTIVITY MANAGER PENDING INTENTS (dumpsys activity intents)//intent信息
+ACTIVITY MANAGER BROADCAST STATE (dumpsys activity broadcasts)//broadcasts信息
+ACTIVITY MANAGER CONTENT PROVIDERS (dumpsys activity providers)//provider信息
+ACTIVITY MANAGER URI PERMISSIONS (dumpsys activity permissions)
+ACTIVITY MANAGER SERVICES (dumpsys activity services)  //服务信息
+ACTIVITY MANAGER RECENT TASKS (dumpsys activity recents)
+ACTIVITY MANAGER LAST ANR (dumpsys activity lastanr)//anr信息
+ACTIVITY MANAGER STARTER (dumpsys activity starter)
+ACTIVITY MANAGER CONTAINERS (dumpsys activity containers)
+ACTIVITY MANAGER ACTIVITIES (dumpsys activity activities)//activities信息
+ACTIVITY MANAGER PROCESS EXIT INFO (dumpsys activity exit-info)
+ACTIVITY MANAGER LMK KILLS (dumpsys activity lmk)
+ACTIVITY MANAGER RUNNING PROCESSES (dumpsys activity processes)
+ACTIVITY MANAGER USERS (dumpsys activity users)
+Raw LRU list (dumpsys activity lru)
+```
 
 
 

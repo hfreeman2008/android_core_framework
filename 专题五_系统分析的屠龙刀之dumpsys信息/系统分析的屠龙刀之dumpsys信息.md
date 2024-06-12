@@ -83,6 +83,37 @@ adb shell "dumpsys | grep -i -A 4 'mCurrentFocus'"
 adb shell dumpsys window
 ```
 
+dumpsys window 主要包括如下几个方面：
+```java
+WINDOW MANAGER LAST ANR (dumpsys window lastanr)
+WINDOW MANAGER POLICY STATE (dumpsys window policy)//策略信息
+WINDOW MANAGER ANIMATOR STATE (dumpsys window animator)//窗口动画
+WINDOW MANAGER SESSIONS (dumpsys window sessions)
+WINDOW MANAGER DISPLAY CONTENTS (dumpsys window displays)
+WINDOW MANAGER TOKENS (dumpsys window tokens)
+WINDOW MANAGER WINDOWS (dumpsys window windows)//windows信息
+WINDOW MANAGER TRACE (dumpsys window trace)
+WINDOW MANAGER LOGGING (dumpsys window logging)
+WINDOW MANAGER HIGH REFRESH RATE BLACKLIST (dumpsys window refresh)
+WINDOW MANAGER CONSTANTS (dumpsys window constants)
+```
+
+查看设备分辨率
+```java
+adb shell "dumpsys window | grep init"
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -115,8 +115,26 @@ adb shell dumpsys settings
 
 
 
+## dumpsys input_method
+查看输入法信息：
+```java
+adb shell dumpsys input_method
+```
 
+一些关键的关于输入法的信息：
 
+```java
+Current Input Method Manager state:
+  Input Methods: mMethodMapUpdateCount=2
+  InputMethod #0:
+    mId=com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME mSettingsActivityName=com.google.android.apps.inputmethod.latin.preference.SettingsActivity 
+......
+
+  InputMethod #1:
+    mId=com.inputmethod.tvz/com.android.inputmethod.pinyin.TvzIME mSettingsActivityName=com.android.inputmethod.pinyin.SettingsActivity mIsVrOnly=false 
+ ......
+  mCurMethodId=com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
+```
 
 
 

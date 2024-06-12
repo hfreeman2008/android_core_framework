@@ -139,6 +139,39 @@ Current Input Method Manager state:
 
 
 
+## dumpsys battery
+查看电池信息
+```java
+adb shell dumpsys battery
+adb shell dumpsys batterystats
+```
+
+
+adb shell dumpsys battery:
+```java
+Current Battery Service state:
+  AC powered: false
+  USB powered: true
+  Wireless powered: false
+  Max charging current: 500000
+  Max charging voltage: 5000000
+  Charge counter: 3270000
+  status: 5
+  health: 2
+  present: true
+  level: 100
+  scale: 100
+  voltage: 4352
+  temperature: 274
+  technology: Li-ion
+
+```
+
+
+
+
+
+
 
 
 

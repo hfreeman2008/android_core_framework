@@ -104,6 +104,17 @@ adb shell "dumpsys window | grep init"
 ```
 
 
+## dumpsys settings
+
+读取SettingsProvider数据库中的数据
+```java
+adb shell dumpsys settings
+```
+
+这个命令，是我们开发时确认SettingsProvider数据库的字段的一个常用命令。
+
+
+
 
 
 

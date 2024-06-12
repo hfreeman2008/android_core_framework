@@ -58,10 +58,10 @@ ACTIVITY MANAGER BROADCAST STATE (dumpsys activity broadcasts)//broadcasts信息
 ACTIVITY MANAGER CONTENT PROVIDERS (dumpsys activity providers)//provider信息
 ACTIVITY MANAGER URI PERMISSIONS (dumpsys activity permissions)
 ACTIVITY MANAGER SERVICES (dumpsys activity services)  //服务信息
-ACTIVITY MANAGER RECENT TASKS (dumpsys activity recents)
+ACTIVITY MANAGER RECENT TASKS (dumpsys activity recents)//最近应用的信息
 ACTIVITY MANAGER LAST ANR (dumpsys activity lastanr)//anr信息
 ACTIVITY MANAGER STARTER (dumpsys activity starter)
-ACTIVITY MANAGER CONTAINERS (dumpsys activity containers)
+ACTIVITY MANAGER CONTAINERS (dumpsys activity containers)//activity的容器信息
 ACTIVITY MANAGER ACTIVITIES (dumpsys activity activities)//activities信息
 ACTIVITY MANAGER PROCESS EXIT INFO (dumpsys activity exit-info)
 ACTIVITY MANAGER LMK KILLS (dumpsys activity lmk)
@@ -69,6 +69,20 @@ ACTIVITY MANAGER RUNNING PROCESSES (dumpsys activity processes)
 ACTIVITY MANAGER USERS (dumpsys activity users)
 Raw LRU list (dumpsys activity lru)
 ```
+
+其中，我们平常用的最多的就是查看当前界面的activity信息：
+```java
+adb shell "dumpsys activity | grep -A 45 -i 'from top to'"
+adb shell "dumpsys | grep -i -A 4 'mCurrentFocus'"
+```
+
+## dumpsys window
+对于系统来说，wms的dumpsys命令是我们查看系统信息的重要指令
+
+```java
+adb shell dumpsys window
+```
+
 
 
 

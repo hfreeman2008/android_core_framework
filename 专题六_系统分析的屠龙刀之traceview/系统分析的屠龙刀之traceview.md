@@ -85,8 +85,7 @@ C:\Users\****\AppData\Local\Temp
 
 # 应用例子
 
-记一次TextView跑马灯效果导致系统卡的惨案
-https://xiaozhuanlan.com/topic/7304691258
+[记一次TextView跑马灯效果导致系统卡的惨案](https://xiaozhuanlan.com/topic/7304691258)
 
 
 

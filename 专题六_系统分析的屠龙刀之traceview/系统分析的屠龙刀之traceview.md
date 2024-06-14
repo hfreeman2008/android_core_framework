@@ -8,8 +8,48 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 
 # 如何使用
 - 通过Android studio自带的traceview查看（Android profiler）
+后详见Android profiler
 
-- 通过Android SDK自带的Debug
+
+- 通过Android SDK自带的Debug类
+可以在开始的地方调用Debug类的startMethodTracing函数，在要结束的地方调用Debug类的stopMethodTracing函数。
+这两个函数运行过程中将采集运行时间内该应用所有线程（注意，只能是Java线程）的函数执行情况，并将采集数据保存到/sdcard/trace_view_debug.trace文件中。
+
+开发者然后需要利用SDK中的Traceview工具来分析这些数据。
+
+代码如下：
+```java
+//开始的地方
+Debug.startMethodTracing("trace_view_debug");  
+//结束的地方
+Debug.stopMethodTracing();  
+```
+
+使用此接口，需要在AndroidManifest.xml文件中定义权限：
+```java
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+```
+
+我们将trace_view_debug.trace导出手机：
+
+```java
+adb pull /sdcard/trace_view_debug.trace /home/android/
+```
+
+分别使用traceview来打开此文件：
+
+如果是Eclipse,则进入/SDK/tools目录，执行如下指令：
+```java
+./traceview  /home/android/trace_view_debug.trace
+```
+
+是Android Studio，则进入android_studio/android-sdk-linux/tools目录，执行指令：
+```java
+./traceview /home/android/trace_view_debug.trace
+```
+
+
 
 - 通过DDMS中的traceview查看:
 
@@ -17,7 +57,8 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 ```java
 Android\Sdk\tools\monitor.bat
 ```
- 
+
+
 # 抓取traceview日志
 
 我这以DDMS中的traceview为例，说明如何抓取traceview日志。

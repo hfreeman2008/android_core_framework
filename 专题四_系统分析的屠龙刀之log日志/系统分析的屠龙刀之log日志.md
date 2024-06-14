@@ -3,6 +3,11 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 
 <img src="..\Images\log_sword.png">
 
+
+
+<img src="log_jie_gao.png">
+
+
 # 系统工程师log日志分析要达到什么水平
 
 那log分析，要达到什么程度才算是可以达到系统工程师的水平呢？

@@ -10,8 +10,10 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 # 如何使用
 - 通过Android studio自带的traceview查看（Android profiler）
 
-后详见Android profiler
 
+<img src="profiler.png">
+
+通过上面官网说明，DDMS在Android studio 3.0后已经过时了，后面使用Android profiler替换了，所以后详见Android profiler
 
 
 - 通过Android SDK自带的Debug类

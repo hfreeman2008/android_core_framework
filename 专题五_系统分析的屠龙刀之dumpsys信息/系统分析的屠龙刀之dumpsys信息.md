@@ -9,6 +9,10 @@ android问题的分析，大家使用最多的是日志。
 <img src="mai_bo.png">
 
 
+
+<img src="jie_gao.png">
+
+
 # dumpsys 命令
 
 查看dump系统服务的完整列表：

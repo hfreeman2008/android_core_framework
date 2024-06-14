@@ -106,6 +106,32 @@ C:\Users\****\AppData\Local\Temp
 
 <img src="Open_File.png">
 
+Traceview界面如下：
+<img src="result_detail.png">
+
+
+Traceview界面包括二个部分，Timeline Panel(时间线面板)和Profile Panel(分析面板)：
+
+
+Timeline Panel又可细分为左右两个Pane：
+
+- 左边Pane显示的是测试数据中所采集的线程信息：
+本次测试数据采集了main线程，ReferenceQueueDaemon，FinallizerDaemo,还有二个Thread的信息。
+
+- 右边Pane所示为时间线，时间线上是每个线程测试时间段内所涉及的函数调用信息。
+
+这些信息包括函数名、函数执行时间等。由上图可知，main线程的工作内容非常多，而其他线程的工作也比较多。
+
+
+Profile Panel是Traceview的核心界面。
+
+它主要展示了某个线程（先在Timeline Panel中选择线程）中各个函数调用的情况，包括CPU使用时间、调用次数等信息。而这些信息正是查找hotspot的关键依据。
+所以，对开发者而言，一定要了解Profile Panel中各列的含义。
+
+Profile Panel各列作用说明如下：
+
+
+
 
 # 分析traceview
 我们重点关注二个hotspot:

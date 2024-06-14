@@ -3,7 +3,7 @@ android问题的分析，大家使用最多的是日志。
 但是系统问题分析，我们会发现日志太少，甚至是什么信息都没有，这时候dumpsys信息，因其信息特别完整全面，成为了系统开发的另一把屠龙刀。
 
 
-<img src=".\Images\log_sword.png">
+<img src="..\Images\log_sword.png">
 
 一个android系统工程，你只有掌握了dumpsys工具，你才能说自己已经开始摸到系统的脉搏了。
 

@@ -7,12 +7,16 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 
 
 # 如何使用
-通过Android studio自带的traceview查看（Android profiler）
+- 通过Android studio自带的traceview查看（Android profiler）
 
-通过Android SDK自带的Debug
+- 通过Android SDK自带的Debug
 
-通过DDMS中的traceview查看
+- 通过DDMS中的traceview查看:
 
+双击自己sdk的monitor.bat
+```java
+Android\Sdk\tools\monitor.bat
+```
  
 # 抓取traceview日志
 

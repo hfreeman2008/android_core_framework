@@ -17,6 +17,7 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 ....AppData\Local\Android\Sdk\tools\monitor.bat
  
 (2)选择自己需要分析问题的应用（如com.kookong.tvplus），点击下图标红的图标1(start method profiling)，
+<img src="start_method_profiling.png">
 
 点击ok，开始抓取traceview日志
  

@@ -15,9 +15,14 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 
  
 # 抓取traceview日志
+
 我这以DDMS中的traceview为例，说明如何抓取traceview日志。
+
 (1)双击自己sdk的monitor.bat
-....AppData\Local\Android\Sdk\tools\monitor.bat
+```java
+Android\Sdk\tools\monitor.bat
+```
+
  
 (2)选择自己需要分析问题的应用（如com.kookong.tvplus），点击下图标红的图标1(start method profiling)
 

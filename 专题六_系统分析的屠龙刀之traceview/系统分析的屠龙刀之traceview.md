@@ -24,6 +24,8 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 <img src="start_method_profiling.png">
 
 点击ok，开始抓取traceview日志
+
+<img src="start_method_profiling_001.png">
  
 
 再点击上面标红的图标1，停止抓取traceview日志。

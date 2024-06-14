@@ -118,17 +118,31 @@ Timeline Panel又可细分为左右两个Pane：
 - 左边Pane显示的是测试数据中所采集的线程信息：
 本次测试数据采集了main线程，ReferenceQueueDaemon，FinallizerDaemo,还有二个Thread的信息。
 
-- 右边Pane所示为时间线，时间线上是每个线程测试时间段内所涉及的函数调用信息。
-
+- 右边Pane所示为时间线，时间线上是每个线程测试时间段内所涉及的函数调用信息:
 这些信息包括函数名、函数执行时间等。由上图可知，main线程的工作内容非常多，而其他线程的工作也比较多。
+
 
 
 Profile Panel是Traceview的核心界面。
 
 它主要展示了某个线程（先在Timeline Panel中选择线程）中各个函数调用的情况，包括CPU使用时间、调用次数等信息。而这些信息正是查找hotspot的关键依据。
+
 所以，对开发者而言，一定要了解Profile Panel中各列的含义。
 
 Profile Panel各列作用说明如下：
+| 列名 | 描述|
+|-------|-------|
+| Name | 该线程运行过程中所调用的函数名 |
+| Incl Cpu Time | 某函数占用的CPU时间，包含内部调用其它函数的CPU时间 |
+| Excl Cpu Time | 某函数占用的CPU时间，但不含内部调用其它函数所占用的CPU时间 |
+| Incl Real Time | 某函数运行的真实时间（以毫秒为单位），内含调用其它函数所占用的真实时间 |
+| Excl Real Time | 某函数运行的真实时间（以毫秒为单位），不含调用其它函数所占用的真实时间 |
+| Call+Recur Calls/Total | 某函数被调用次数以及递归调用占总调用次数的百分比 |
+| Cpu Time/Call | 某函数调用CPU时间与调用次数的比。相当于该函数平均执行时间 |
+| Real Time/Call | 同CPU Time/Call类似，只不过统计单位换成了真实时间 |
+
+
+另外，每一个Time列还对应有一个用时间百分比来统计的列（如Incl Cpu Time列对应还有一个列名为Incl Cpu Time %的列，表示以时间百分比来统计的Incl Cpu Time）。
 
 
 

@@ -29,8 +29,10 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
  
 
 再点击上面标红的图标1，停止抓取traceview日志。
- 
-生成traceview的结果图
+
+
+生成traceview的结果图：
+
 
 <img src="result.png">
 
@@ -42,7 +44,11 @@ C:\Users\****\AppData\Local\Temp
 
 
 # 打开traceview
+
 我们可以直接打开traceview文件，打开方式为File–Open File：
+
+<img src="Open_File.png">
+
 
 # 分析traceview
 我们重点关注二个hotspot:

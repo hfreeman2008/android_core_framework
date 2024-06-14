@@ -6,8 +6,8 @@ android问题的分析，大家使用最多的是日志。
 <img src="..\Images\log_sword.png">
 
 一个android系统工程，你只有掌握了dumpsys工具，你才能说自己已经开始摸到系统的脉搏了。
+<img src="mai_bo.png">
 
-就好像一个女生，你只有控制了自己的体重，你才能说自己开始掌握自己的命运了。
 
 # dumpsys 命令
 

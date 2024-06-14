@@ -1,6 +1,7 @@
 # 专题六: 系统分析的屠龙刀之traceview
 
 TraceView是Android平台配备一个很好的性能分析工具，它可以通过图形化的方式让我们了解我们要跟踪的程序的性能，并且能具体到特定的方法，成为了系统开发的另一把屠龙刀。
+
 traceview我主要是用来定位应用短时间的卡，耗时操作。
 
 <img src="..\Images\log_sword.png">
@@ -8,11 +9,15 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 
 # 如何使用
 - 通过Android studio自带的traceview查看（Android profiler）
+
 后详见Android profiler
 
 
+
 - 通过Android SDK自带的Debug类
+
 可以在开始的地方调用Debug类的startMethodTracing函数，在要结束的地方调用Debug类的stopMethodTracing函数。
+
 这两个函数运行过程中将采集运行时间内该应用所有线程（注意，只能是Java线程）的函数执行情况，并将采集数据保存到/sdcard/trace_view_debug.trace文件中。
 
 开发者然后需要利用SDK中的Traceview工具来分析这些数据。

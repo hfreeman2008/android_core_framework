@@ -204,6 +204,35 @@ SimpleMappingStrategy
 
 我以一个比较简单的系统服务DiskStatsService为例，说明其实是系统服务实现Binder接口中的方法dump。
 
+<img src="dumpsys_implement.png">
+
+
+IBinder类：
+```java
+public interface IBinder {
+    /**
+     * Print the object's state into the given stream.
+     * 
+     * @param fd The raw file descriptor that the dump is being sent to.
+     * @param args additional arguments to the dump request.
+     */
+    public void dump(@NonNull FileDescriptor fd, @Nullable String[] args) throws RemoteException;
+
+    /**
+     * Like {@link #dump(FileDescriptor, String[])} but always executes
+     * asynchronously.  If the object is local, a new thread is created
+     * to perform the dump.
+     *
+     * @param fd The raw file descriptor that the dump is being sent to.
+     * @param args additional arguments to the dump request.
+     */
+    public void dumpAsync(@NonNull FileDescriptor fd, @Nullable String[] args)
+            throws RemoteException;
+}
+```
+
+
+
 Binder类：
 
 ```java

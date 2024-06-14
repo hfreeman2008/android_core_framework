@@ -7,16 +7,20 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 
 
 # 如何使用
-通过Android studio自带的traceview查看（Android profiler）。
-通过Android SDK自带的Debug。
-通过DDMS中的traceview查看。
+通过Android studio自带的traceview查看（Android profiler）
+
+通过Android SDK自带的Debug
+
+通过DDMS中的traceview查看
+
  
 # 抓取traceview日志
 我这以DDMS中的traceview为例，说明如何抓取traceview日志。
 (1)双击自己sdk的monitor.bat
 ....AppData\Local\Android\Sdk\tools\monitor.bat
  
-(2)选择自己需要分析问题的应用（如com.kookong.tvplus），点击下图标红的图标1(start method profiling)，
+(2)选择自己需要分析问题的应用（如com.kookong.tvplus），点击下图标红的图标1(start method profiling)
+
 <img src="start_method_profiling.png">
 
 点击ok，开始抓取traceview日志
@@ -57,7 +61,10 @@ C:\Users\****\AppData\Local\Temp
 
 # 参考资料
 1.android核心技术之性能分析工具TraceView
+
 https://blog.csdn.net/hfreeman2008/article/details/53509489
+
 2.记一次TextView跑马灯效果导致系统卡的惨案
+
 https://xiaozhuanlan.com/topic/7304691258
 

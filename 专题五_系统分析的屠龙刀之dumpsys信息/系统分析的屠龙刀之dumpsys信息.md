@@ -2,7 +2,12 @@
 android问题的分析，大家使用最多的是日志。
 但是系统问题分析，我们会发现日志太少，甚至是什么信息都没有，这时候dumpsys信息，因其信息特别完整全面，成为了系统开发的另一把屠龙刀。
 
+
 <img src=".\Images\log_sword.png">
+
+一个android系统工程，你只有掌握了dumpsys工具，你才能说自己已经开始摸到系统的脉搏了。
+
+就好像一个女生，你只有控制了自己的体重，你才能说自己开始掌握自己的命运了。
 
 # dumpsys 命令
 
@@ -195,11 +200,74 @@ SimpleMappingStrategy
 
 
 
+# dumpsys命令的方法实现
+
+我以一个比较简单的系统服务DiskStatsService为例，说明其实是系统服务实现Binder接口中的方法dump。
+
+Binder类：
+
+```java
+public class Binder implements IBinder {
+
+    /**
+     * Print the object's state into the given stream.
+     *
+     * @param fd The raw file descriptor that the dump is being sent to.
+     * @param fout The file to which you should dump your state.  This will be
+     * closed for you after you return.
+     * @param args additional arguments to the dump request.
+     */
+    protected void dump(@NonNull FileDescriptor fd, @NonNull PrintWriter fout,
+            @Nullable String[] args) {
+    }
+
+    /**
+     * Implemented to call the more convenient version
+     * {@link #dump(FileDescriptor, PrintWriter, String[])}.
+     */
+    public void dump(@NonNull FileDescriptor fd, @Nullable String[] args) {
+        FileOutputStream fout = new FileOutputStream(fd);
+        PrintWriter pw = new FastPrintWriter(fout);
+        try {
+            doDump(fd, pw, args);
+        } finally {
+            pw.flush();
+        }
+    }
+
+        /**
+     * Like {@link #dump(FileDescriptor, String[])}, but ensures the target
+     * executes asynchronously.
+     */
+    public void dumpAsync(@NonNull final FileDescriptor fd, @Nullable final String[] args) {
+        final FileOutputStream fout = new FileOutputStream(fd);
+        final PrintWriter pw = new FastPrintWriter(fout);
+        Thread thr = new Thread("Binder.dumpAsync") {
+            public void run() {
+                try {
+                    dump(fd, pw, args);
+                } finally {
+                    pw.flush();
+                }
+            }
+        };
+        thr.start();
+    }
+}
+```
+
+DiskStatsService类：
+
+```java
+public class DiskStatsService extends Binder {
 
 
-
-
-
+    @Override
+    protected void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        ......
+    }
+}
+```
 
 
 

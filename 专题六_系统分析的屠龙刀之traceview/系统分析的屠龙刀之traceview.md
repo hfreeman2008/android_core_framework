@@ -32,6 +32,8 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
  
 生成traceview的结果图
 
+<img src="result.png">
+
 此traceview日志保存的位置一般为：
 C:\Users\****\AppData\Local\Temp
 

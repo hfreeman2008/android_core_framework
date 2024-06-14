@@ -92,6 +92,24 @@ C:\Users\****\AppData\Local\Temp
 非常的清晰明了。
 
 
+
+# adb命令抓取apk启动过程的traceview
+
+在应用冷启动过程中，遇到耗时时间长的问题，需要抓取traceview来确认。但是采用monitor的方式抓取，需要点选process，才能进行抓取。在apk未启动时，monitor没有该process的选项，所以无法抓取。
+
+此时使用adb命令抓取apk启动过程的traceview：
+
+```java
+adb shell setprop debug.traceview-buffer-size-mb 256
+adb shell  am start -n com.android.talkingtom/com.android.talkingtom.Main（apk 启动activity） --start-profiler /data/local/tmp/summer.trace
+adb shell am profile stop com.android.talkingtom
+adb shell ls -lha /data/local/tmp/
+adb pull /data/local/tmp/summer.trace
+```
+
+
+
+
 # 应用例子
 
 [记一次TextView跑马灯效果导致系统卡的惨案](https://xiaozhuanlan.com/topic/7304691258)

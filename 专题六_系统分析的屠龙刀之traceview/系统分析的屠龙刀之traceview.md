@@ -35,7 +35,11 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 <img src="result.png">
 
 此traceview日志保存的位置一般为：
+
+```java
 C:\Users\****\AppData\Local\Temp
+```
+
 
 # 打开traceview
 我们可以直接打开traceview文件，打开方式为File–Open File：

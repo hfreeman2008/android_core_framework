@@ -26,11 +26,14 @@ android framework core and key info
 # 专题六: 系统分析的屠龙刀之traceview
 [系统分析的屠龙刀之traceview.md](./专题六_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
+# 专题七: 系统分析的屠龙刀之Android Profile
+[系统分析的屠龙刀之Profile.md](./专题七_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
+
 
 
 
 # 计划添加内容：
-ams，wms,pms,profile,内存，cpu,自定义系统服务......
+ams，wms,pms,内存，cpu,自定义系统服务......
 
 
 

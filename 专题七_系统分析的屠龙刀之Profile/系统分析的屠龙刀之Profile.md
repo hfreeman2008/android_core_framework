@@ -51,16 +51,23 @@ Sample Java/Kotlin code using Android Runtime。
 在一个Activity中的onResume()接口中，我们添加一个sleep 7秒的模拟耗时操作
 
 ```java
-    protected void onResume() {
-        super.onResume();
+protected void onResume() {
+    super.onResume();
 
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    try {
+        Thread.sleep(7000);
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
+}
 ```
+### 抓取统计数据
+在activity界面息屏后，选择Java/Kotlin Method Trace Recording，点击start，再点亮屏幕，等待activity界面完全显示后，点击stop。
+会自动生成统计结果：
+<img src="result_show.png">
+
+
+### 分析数据
 
 
 

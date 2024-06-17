@@ -21,23 +21,47 @@ Profile主要是针对某个特定应用，监视Cpu和Memory 二个关键指标
 
 
 - Callstack Sample Recording
+
 Sample Java/Kotlin and native code using simpleperf
 可以看出主要追踪的是java/kotlin 和 native 代码
 
 
 - System Trace Recording
+
 Traces Java/Kotlin and native code at the Android platform level
 可以看出，这个是从系统平台角度来追踪java/kotlin 和 native 代码，内容更多更全面
 所以在追踪分析系统cpu时，推荐使用
 
 - Java/Kotlin Method Trace Recording
+
 Instruments Java/Kotlin code using Android Runtime,tracking every method call(this incurs high overhead making timing infomation inaccurate).
 可以看出，这个更偏重是追踪Java/Kotlin代码，会追踪每个回调的方法，所以会导致高昂的开销，并有统计时间不准确的问题。
 所以在app层应用，短时间的追踪cpu时，推荐使用
 
 - Java/Kotlin Method Trace Recording(legacy)
+
 Sample Java/Kotlin code using Android Runtime。
 这个是以前的过时工具
+
+
+## 一个样例
+
+### 在app中添加一个耗时操作
+
+在一个Activity中的onResume()接口中，我们添加一个sleep 7秒的模拟耗时操作
+
+```java
+    protected void onResume() {
+        super.onResume();
+
+        try {
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+```
+
 
 
 

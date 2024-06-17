@@ -146,9 +146,20 @@ protected void onResume() {
 ```
 
 
+### 抓取统计数据
+
+在activity界面息屏后，选择Record Java/Kotlin allocations，点击Record开始抓取统计数据，再点亮屏,会自动生成统计结果。
 
 
+### 分析数据
 
+(1)选择Visualization
+
+(2)输入过滤关键字，一般是应用包名
+
+(3)通过图形化的占用内存大小，直接定位到具体的位置
+
+<img src="memory_anal.png">
 
 
 

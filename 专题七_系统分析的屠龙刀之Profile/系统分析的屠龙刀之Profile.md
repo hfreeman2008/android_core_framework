@@ -64,12 +64,15 @@ protected void onResume() {
 ### 抓取统计数据
 在activity界面息屏后，选择Java/Kotlin Method Trace Recording，点击start，再点亮屏幕，等待activity界面完全显示后，点击stop。
 会自动生成统计结果：
+
 <img src="result_show.png">
 
 
 ### 分析数据
 
 
+
+<img src="result_analize.png">
 
 
 # Memory

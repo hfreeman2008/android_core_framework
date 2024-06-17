@@ -126,6 +126,39 @@ Memory同Cpu类似，有三种内存数据类型
 
 
 
+## 一个样例
+
+### 在app中添加一个占用大量内存的操作
+
+在一个Activity中的onResume()接口中，我们添加一个的模拟占用大量内存操作：
+
+```java
+protected void onResume() {
+    super.onResume();
+    MessageDigest md = null;
+    try {
+        md = MessageDigest.getInstance("MD5");
+    } catch (NoSuchAlgorithmException e) {
+        throw new RuntimeException(e);
+    }
+    new BigInteger(1, md.digest()).toString(16);
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

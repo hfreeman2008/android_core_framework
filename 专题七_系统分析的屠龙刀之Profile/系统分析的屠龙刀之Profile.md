@@ -108,8 +108,24 @@ trace日志，还可以保存成trace格式的文件，方便下次分析。
 
 Memory同Cpu类似，有三种内存数据类型
 
+- Capture heap dump
+
+记录app的view 对象内存信息；
+
+- Record native allocations
+
+记录本地的c,c++ 对象内存信息；
+
+- Record Java/Kotlin allocations
+
+记录java/kotlin的对象内存信息；
+
 
 <img src="memory_type.png">
+
+
+
+
 
 
 

@@ -97,6 +97,11 @@ protected void onResume() {
 <img src="result_analize_top_down.png">
 
 
+### trace数据保存
+
+trace日志，还可以保存成trace格式的文件，方便下次分析。
+
+<img src="save_trace.png">
 
 # Memory
 

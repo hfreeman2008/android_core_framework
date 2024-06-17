@@ -69,8 +69,9 @@ protected void onResume() {
 
 
 ### 分析数据
-
-
+(1)选择Flame Chart,这个就是大名鼎鼎的火焰图；
+(2)在过滤框中输入过滤关键字，一般是应用包名；
+(3)从下到上查看相关的接口，就可以非常清楚的看到MainActivity.onResume方法耗时长，双击可以直接跳转到接口处。一看就能定位到sleep的耗时操作。
 
 <img src="result_analize.png">
 

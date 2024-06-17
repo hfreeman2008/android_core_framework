@@ -16,6 +16,10 @@ Profile主要是针对某个特定应用，监视Cpu和Memory 二个关键指标
 
 
 # CPU
+我们选择某个特定应用，点击CPU，就会看到cpu监视有四个选择：
+<img src="cpu_whole.png">
+
+
 
 
 

@@ -29,11 +29,13 @@ android framework core and key info
 # 专题七: 系统分析的屠龙刀之Android Profile
 [系统分析的屠龙刀之Profile.md](./专题七_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
+# 专题八: 系统开发之自定义系统服务
+[系统开发之自定义系统服务.md](./专题八_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
 
 
 
 # 计划添加内容：
-ams，wms,pms,内存，cpu,自定义系统服务......
+ams，wms,pms,内存，cpu,......
 
 
 

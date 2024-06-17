@@ -74,6 +74,8 @@ protected void onResume() {
 
 ### 分析数据
 
+- Flame Chart(这个方式是图形显示调用时长，非常直观)
+
 (1)选择Flame Chart,这个就是大名鼎鼎的火焰图；
 
 (2)在过滤框中输入过滤关键字，一般是应用包名；
@@ -82,6 +84,18 @@ protected void onResume() {
 
 
 <img src="result_analize.png">
+
+
+- Top Down(这个方式是调用路径，非常直观)
+
+(1)选择Top Down；
+
+(2)在过滤框中输入过滤关键字，一般是应用包名；
+
+(3)从下到上查看调用接口占用cpu的时间百分百，可以非常清楚的定位MainActivity.onResume方法中的sleep的耗时操作。
+
+<img src="result_analize_top_down.png">
+
 
 
 # Memory

@@ -105,7 +105,13 @@ trace日志，还可以保存成trace格式的文件，方便下次分析。
 
 
 # Memory
-Memory同Cpu
+
+Memory同Cpu类似，有三种内存数据类型
+
+
+<img src="memory_type.png">
+
+
 
 
 # 资料

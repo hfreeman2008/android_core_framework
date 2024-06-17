@@ -5,8 +5,15 @@ Android Profile是性能分析工具traceview的升级版本，功能更强大�
 <img src="..\Images\log_sword.png">
 
 # Android Profile主要作用
-- CPU 问题分析
+- Cpu 问题分析
 - Memory问题分析
+
+Profile主要是针对某个特定应用，监视Cpu和Memory 二个关键指标：
+
+<img src="profile_whole.png">
+
+如上图，我们可以知道，这是一个针对应用com.android.phone，监视Cpu和Memory的一个图。
+
 
 # CPU
 

@@ -65,7 +65,7 @@ protected void onResume() {
 ```
 ### 抓取统计数据
 
-在activity界面息屏后，选择Java/Kotlin Method Trace Recording，点击start，再点亮屏幕，等待activity界面完全显示后，点击stop。
+在activity界面息屏后，选择Java/Kotlin Method Trace，点击Record开始抓取统计数据，再点亮屏幕，等待activity界面完全显示后，点击stop。
 
 会自动生成统计结果：
 
@@ -103,8 +103,14 @@ trace日志，还可以保存成trace格式的文件，方便下次分析。
 
 <img src="save_trace.png">
 
-# Memory
 
+# Memory
+Memory同Cpu
+
+
+# 资料
+android核心技术之性能分析工具Memory Monitor
+https://blog.csdn.net/hfreeman2008/article/details/53557655
 
 
 

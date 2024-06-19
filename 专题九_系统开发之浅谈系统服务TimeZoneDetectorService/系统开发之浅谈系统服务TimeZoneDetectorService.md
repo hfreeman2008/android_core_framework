@@ -215,13 +215,65 @@ public synchronized boolean suggestManualTimeZone(
 
 # TimeZoneDetectorService类图
 
+<img src="class_time_zone.png">
 
+可以看出TimeZoneDetectorService类，其具体实现是由TimeZoneDetectorStrategy类完成的。
+
+在TimeZoneDetectorService类中，三种更新时区的接口分别为：
 
 
 ```java
-
+suggestGeolocationTimeZone()   //更新时区主要有三种方式 ，这是Geolocation方式
++boolean suggestManualTimeZone()  //更新时区主要有三种方式 ，这是手动Manual方式
++void suggestTelephonyTimeZone( //更新时区主要有三种方式 ，这是手动telephony方式
 ```
 
+而在TimeZoneDetectorStrategy中，三种更新时区的接口分别为：
+
+```java
+void suggestTelephonyTimeZone(）//这对应用telephony更新时区
+boolean suggestManualTimeZone()//这对应用手动Manual更新时区
++void suggestGeolocationTimeZone()//这对应用Geolocation更新时区
+```
+
+其我们上面提到的doAutoTimeZoneDetection接口，更是关注的重点：
+
+```java
+doAutoTimeZoneDetection(）//针对三种更新时区的方式来更新时区
+```
+
+
+```java
+private void doAutoTimeZoneDetection(
+        @NonNull ConfigurationInternal currentUserConfig, @NonNull String detectionReason) {
+    // Use the correct algorithm based on the user's current configuration. If it changes, then
+    // detection will be re-run.
+    switch (currentUserConfig.getDetectionMode()) {
+        case ConfigurationInternal.DETECTION_MODE_MANUAL:
+            // No work to do.
+            break;
+        case ConfigurationInternal.DETECTION_MODE_GEO: {
+            boolean isGeoDetectionCertain = doGeolocationTimeZoneDetection(detectionReason);
+            // When geolocation detection is uncertain of the time zone, telephony detection
+            // can be used if telephony fallback is enabled and supported.
+            if (!isGeoDetectionCertain
+                    && mTelephonyTimeZoneFallbackEnabled.getValue()
+                    && currentUserConfig.isTelephonyFallbackSupported()) {
+                doTelephonyTimeZoneDetection(detectionReason + ", telephony fallback mode");
+            }
+            break;
+        }
+        case ConfigurationInternal.DETECTION_MODE_TELEPHONY:
+            doTelephonyTimeZoneDetection(detectionReason);
+            break;
+        default:
+            Slog.wtf(LOG_TAG, "Unknown detection mode: "
+                    + currentUserConfig.getDetectionMode());
+    }
+}
+```
+
+完美闭环！
 
 
 # 参考资料

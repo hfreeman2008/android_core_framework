@@ -76,6 +76,7 @@ private void doAutoTimeZoneDetection(
 那为什么明明是Telephony,返回是Manual呢？
 
 进一步追踪代码，发现ConfigurationInternal.getDetectionMode()：
+
 应该是mTelephonyDetectionSupported为false，返回值为false，导致最后返回类型为manual，确实是我们关闭通话导致的。
 
 

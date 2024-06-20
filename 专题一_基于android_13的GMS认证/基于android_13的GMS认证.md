@@ -11,7 +11,8 @@ GMS认证，因为其工作量的爆炸性增加，问题解决的难度也在�
 
 # 整体介绍android 13的GMS认证
 
-https://blog.csdn.net/hfreeman2008/article/details/134425087
+[再谈谷歌GMS认证之Android 13](https://blog.csdn.net/hfreeman2008/article/details/134425087)
+
 
 这个是我在CSDN上写的一个关于android 13的GMS认证博客，文章主要目的是：
 
@@ -23,11 +24,11 @@ https://blog.csdn.net/hfreeman2008/article/details/134425087
 
 这个是我在公司内部做的一个培训PPT
 
+
 # CSDN上关于GMS认证的一个系统文章
 
-android GMS认证
+[android GMS认证](https://blog.csdn.net/hfreeman2008/category_6170578.html)
 
-https://blog.csdn.net/hfreeman2008/category_6170578.html
 
 
 # 结束语

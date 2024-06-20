@@ -166,14 +166,14 @@ protected void onResume() {
 
 
 # 资料
-android核心技术之性能分析工具Memory Monitor
 
+[android核心技术之性能分析工具Memory Monitor](https://blog.csdn.net/hfreeman2008/article/details/53557655)
 https://blog.csdn.net/hfreeman2008/article/details/53557655
 
 
+# 结束语
 
-
-
+<img src="../Images/end_001.png">
 
 
 

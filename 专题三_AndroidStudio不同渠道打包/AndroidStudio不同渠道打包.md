@@ -302,6 +302,7 @@ productFlavors{
 
 # 参考资料
 [Android实现多渠道打包，动态替换包名、Icon、图片等资源，解决因applicationId和BuildConfig路径不匹配的问题](https://blog.csdn.net/woshizisezise/article/details/96303750)
+
 https://blog.csdn.net/woshizisezise/article/details/96303750
 
 

@@ -1,5 +1,6 @@
 # android_core_framework
 
+
 此系统文章主要是针对android framework的一些核心和关键信息做一些笔记，分享一些自己的心得，也算是对于这12年android开发的一个总结吧。
 
 

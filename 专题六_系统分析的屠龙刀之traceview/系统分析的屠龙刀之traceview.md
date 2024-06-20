@@ -201,12 +201,15 @@ adb pull /data/local/tmp/summer.trace
 # 应用例子
 
 [记一次TextView跑马灯效果导致系统卡的惨案](https://xiaozhuanlan.com/topic/7304691258)
-
+https://xiaozhuanlan.com/topic/7304691258
 
 
 # 参考资料
-1.android核心技术之性能分析工具TraceView
-
+[android核心技术之性能分析工具TraceView](https://blog.csdn.net/hfreeman2008/article/details/53509489)
 https://blog.csdn.net/hfreeman2008/article/details/53509489
 
 
+
+# 结束语
+
+<img src="../Images/end_001.png">

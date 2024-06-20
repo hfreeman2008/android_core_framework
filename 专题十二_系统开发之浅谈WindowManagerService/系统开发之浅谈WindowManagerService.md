@@ -116,11 +116,129 @@ https://blog.csdn.net/hfreeman2008/article/details/111996784
 
 # 以addView()接口为例，看一下其调用流程
 <img src="addView.png">
+图二 增加删除更新View的类图
+
+(1)在app应用中调用WindowManager.addView()接口：
+
+```java
+WindowManager mWm = context.getSystemService(WindowManager.class);
+mWm.addView(mContentContainer, params);
+mWm.updateViewLayout(mContentContainer, params);
+mWm.removeView(mContentContainer);
+```
+
+(2)其对应WindowManager.addView：
+
+frameworks/base/core/java/android/view/WindowManagerImpl.java
+
+```java
+@Override
+public void addView(@NonNull View view, @NonNull ViewGroup.LayoutParams params) {
+    applyTokens(params);
+    mGlobal.addView(view, params, mContext.getDisplayNoVerify(), mParentWindow,
+            mContext.getUserId());
+}
+
+@Override
+public void updateViewLayout(@NonNull View view, @NonNull ViewGroup.LayoutParams params) {
+    applyTokens(params);
+    mGlobal.updateViewLayout(view, params);
+}
+
+@Override
+public void removeView(View view) {
+    mGlobal.removeView(view, false);
+}
+```
+
+(3)其对应WindowManagerGlobal.java中定义接口：
+
+frameworks/base/core/java/android/view/WindowManagerGlobal.java
+
+```java
+public void addView(View view, ViewGroup.LayoutParams params,
+        Display display, Window parentWindow, int userId) {
+    ......
+    ViewRootImpl root;
+    View panelParentView = null;
+        ......
+        if (windowlessSession == null) {
+            root = new ViewRootImpl(view.getContext(), display);
+        } else {
+            root = new ViewRootImpl(view.getContext(), display,
+                    windowlessSession);
+        }
+        view.setLayoutParams(wparams);
+        mViews.add(view);//add view
+        mRoots.add(root);
+        mParams.add(wparams);
+        //添加view的实现逻辑
+        root.setView(view, wparams, panelParentView, userId);
+    ......
+}
+
+public void updateViewLayout(View view, ViewGroup.LayoutParams params) {
+     ......
+    final WindowManager.LayoutParams wparams = (WindowManager.LayoutParams)params;
+    view.setLayoutParams(wparams);
+    synchronized (mLock) {
+        int index = findViewLocked(view, true);
+        ViewRootImpl root = mRoots.get(index);
+        mParams.remove(index);
+        mParams.add(index, wparams);
+        root.setLayoutParams(wparams, false);
+    }
+}
+
+public void removeView(View view, boolean immediate) {
+    ......
+    synchronized (mLock) {
+        int index = findViewLocked(view, true);
+        View curView = mRoots.get(index).getView();
+        removeViewLocked(index, immediate);
+        if (curView == view) {
+            return;
+        }
+    ......
+}
+```
+
+(3)Session.addToDisplayAsUser调用wms的addWindow方法
+
+```java
+ WindowManagerService mService;
+ 
+public int addToDisplayAsUser(IWindow window, WindowManager.LayoutParams attrs,
+        int viewVisibility, int displayId, int userId, InsetsVisibilities requestedVisibilities,
+        InputChannel outInputChannel, InsetsState outInsetsState,
+        InsetsSourceControl[] outActiveControls) {
+            //调用wms的addWindow方法
+    return mService.addWindow(this, window, attrs, viewVisibility, displayId, userId,
+            requestedVisibilities, outInputChannel, outInsetsState, outActiveControls);
+}
+
+```
+
+(4)WindowManagerService.addWindow
+
+```java
+public int addWindow(
+......一个特别长的方法
+}
+```
+
+# WindowManagerService类图
 
 
 
+```java
+
+```
 
 
+```java
+
+```
 
 ```java
 
@@ -136,28 +254,9 @@ https://blog.csdn.net/hfreeman2008/article/details/111996784
 
 ```
 
-
 ```java
 
 ```
-
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-
 
 
 

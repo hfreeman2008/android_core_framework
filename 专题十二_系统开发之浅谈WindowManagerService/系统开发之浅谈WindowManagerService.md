@@ -35,6 +35,91 @@ WindowManagerInternal mWindowManagerService;
 mWindowManagerService = LocalServices.getService(WindowManagerInternal.class);
 ```
 
+# WindowManagerService调用流程
+
+<img src="wms_whole.png">
+
+以isKeyguardLocked为例，查看WindowManagerService调用流程：
+
+(1)app应用中调用isKeyguardLocked:
+
+```java
+WindowManagerGlobal.getWindowManagerService().isKeyguardLocked()
+```
+
+(2)获取IWindowManager服务
+
+ WindowManagerGlobal.getWindowManagerService()
+
+```java
+public static IWindowManager getWindowManagerService() {
+    synchronized (WindowManagerGlobal.class) {
+        if (sWindowManagerService == null) {
+            sWindowManagerService = IWindowManager.Stub.asInterface(
+                    ServiceManager.getService("window"));
+            try {
+                if (sWindowManagerService != null) {
+                    ValueAnimator.setDurationScale(
+                            sWindowManagerService.getCurrentAnimatorScale());
+                    sUseBLASTAdapter = sWindowManagerService.useBLAST();
+                }
+            } catch (RemoteException e) {
+                throw e.rethrowFromSystemServer();
+            }
+        }
+        return sWindowManagerService;
+    }
+}
+```
+
+(3)IWindowManager.aidl定义isKeyguardLocked
+
+```java
+@UnsupportedAppUsage
+boolean isKeyguardLocked();
+```
+
+(4)WindowManagerService.isKeyguardLocked
+
+```java
+public boolean isKeyguardLocked() {
+    return mPolicy.isKeyguardLocked();
+}
+```
+
+(5)WindowManagerPolicy.isKeyguardLocked
+
+```java
+public boolean isKeyguardLocked();
+```
+
+# WindowManagerService添加view的详细分析
+
+参考：
+
+[android开发浅谈之Window和WindowManager](https://blog.csdn.net/hfreeman2008/article/details/111882109)
+
+https://blog.csdn.net/hfreeman2008/article/details/111882109
+
+
+[android开发浅谈之DecorView与ViewRootImpl](https://blog.csdn.net/hfreeman2008/article/details/111913489)
+
+https://blog.csdn.net/hfreeman2008/article/details/111913489
+
+
+[android开发浅谈之View测量流程(Measure)](https://blog.csdn.net/hfreeman2008/article/details/111996784)
+
+https://blog.csdn.net/hfreeman2008/article/details/111996784
+
+
+
+
+# 以addView()接口为例，看一下其调用流程
+
+
+
+
+
 
 
 ```java
@@ -71,9 +156,6 @@ mWindowManagerService = LocalServices.getService(WindowManagerInternal.class);
 ```java
 
 ```
-
-
-
 
 
 

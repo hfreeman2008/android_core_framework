@@ -115,7 +115,7 @@ https://blog.csdn.net/hfreeman2008/article/details/111996784
 
 
 # 以addView()接口为例，看一下其调用流程
-
+<img src="addView.png">
 
 
 

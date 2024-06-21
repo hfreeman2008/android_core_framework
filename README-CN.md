@@ -108,7 +108,7 @@ ams,pms,内存，cpu,......
 <img src=".\Images\2008年大学.png" width=500 height=600>
 <div align=left>
 
-工作十三年后的我：
+工作十年+后的我：
 <div align=center>
 <img src=".\Images\2024年工作时的照片.png">
 <div align=left>

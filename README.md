@@ -12,6 +12,7 @@ And these articles are considered personal insights and technical summaries.
 
 Of course, these can also be understood as some essential technical skills for an Android system engineer.
 
+<img src="./flower/flower_red_003.png">
 
 ---
 

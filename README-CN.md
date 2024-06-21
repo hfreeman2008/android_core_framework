@@ -11,6 +11,10 @@
 
 当然，这也可以理解为一个android 系统工程师的一些必备技术技能。
 
+
+<img src="./flower/flower_red_003.png">
+
+
 ---
 
 ## 专题一：基于android 13的GMS认证
@@ -130,4 +134,4 @@ android开发是个杀猪刀，入行要考虑清楚。
 
 [readme]: https://github.com/hfreeman2008/android_core_framework/blob/main/README.md
 [readme-cn]: https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md
-[title_image]: https://github.com/hfreeman2008/android_core_framework/flower_red_003.png
+

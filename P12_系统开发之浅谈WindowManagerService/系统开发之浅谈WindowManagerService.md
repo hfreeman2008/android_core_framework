@@ -1,6 +1,6 @@
 # P12_系统开发之浅谈WindowManagerService
 
-<img src="flows_wms_001.png">
+<img src="../flower/flows_wms_001.png">
 
 ---
 

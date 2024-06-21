@@ -6,66 +6,76 @@
 
 当然，这也可以理解为一个android 系统工程师的一些必备技术技能。
 
+---
 
 # 专题一：基于android 13的GMS认证
 [基于android 13的GMS认证.md](./专题一_基于android_13的GMS认证/基于android_13的GMS认证.md)
 
+---
 
 # 专题二: 开机速度优化
 [开机速度优化.md](./专题二_开机速度优化/开机速度优化.md)
 
+---
 
 # 专题三: AndroidStudio不同渠道打包
 [AndroidStudio不同渠道打包.md](./专题三_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
+---
 
 # 专题四: 系统分析的屠龙刀之log日志
 [系统分析的屠龙刀之log日志.md](./专题四_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
 
+---
 
 # 专题五: 系统分析的屠龙刀之dumpsys信息
 [系统分析的屠龙刀之dumpsys信息.md](./专题五_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
 
+---
 
 # 专题六: 系统分析的屠龙刀之traceview
 [系统分析的屠龙刀之traceview.md](./专题六_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
+---
 
 # 专题七: 系统分析的屠龙刀之Android Profile
 [系统分析的屠龙刀之Profile.md](./专题七_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
+---
 
 # 专题八: 系统开发之自定义系统服务
 [系统开发之自定义系统服务.md](./专题八_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
 
+---
 
 # 专题九: 系统开发之系统服务初步了解
 [系统开发之系统服务初步了解.md](./专题九_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
 
+---
 
 # 专题十: 系统开发之浅谈系统服务TimeZoneDetectorService
 [系统开发之浅谈系统服务TimeZoneDetectorService.md](./专题十_系统开发之浅谈系统服务TimeZoneDetectorService/系统开发之浅谈系统服务TimeZoneDetectorService.md)
 
+---
 
 # 专题十一: 系统开发之浅谈系统服务TimeDetectorService
 [系统开发之浅谈系统服务TimeDetectorService.md](./专题十一_系统开发之浅谈系统服务TimeDetectorService/系统开发之浅谈系统服务TimeDetectorService.md)
 
+---
 
 # 专题十二: 系统开发之浅谈WindowManagerService
 [系统开发之浅谈WindowManagerService.md](./专题十二_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
 
     
-
-    
-
+---
 
 备注：这一系统文章参考源码以android 11为主，还有部分是其他的android 版本。
 
-
+---
 # 计划添加内容：
 ams,pms,内存，cpu,......
 
-
+---
 
 # 介绍自己
 2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
@@ -83,3 +93,5 @@ ams,pms,内存，cpu,......
 <img src=".\Images\2024年工作时的照片.jpg">
 
 android开发是个杀猪刀，入行要考虑清楚。
+
+---

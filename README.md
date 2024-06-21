@@ -57,7 +57,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 9: System Development about Preliminary understanding of system services
-[系统开发之系统服务初步了解.md](./专题9_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
+[系统开发之系统服务初步了解.md](./P9_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
 
 ---
 

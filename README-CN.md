@@ -106,7 +106,7 @@ ams,pms,内存，cpu,......
 
 大学时的我：
 
-<img src=".\Images\2008年大学.JPG">
+<img src=".\Images\2008年大学.png">
 
 工作十三年后的我：
 

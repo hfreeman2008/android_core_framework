@@ -62,7 +62,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 10: System Development about Talking TimeZoneDetectorService
-[系统开发之浅谈TimeZoneDetectorService.md](./专题10_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
+[系统开发之浅谈TimeZoneDetectorService.md](./P10_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
 
 ---
 

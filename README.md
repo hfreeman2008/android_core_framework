@@ -105,7 +105,7 @@ pms,memory，cpu,......
 If this project helps you a lot and you want to support the project's development and maintenance of this project, feel free to scan the following QR code for donation. Your donation is highly appreciated. Thank you!
 
 <div align=center>
-<img src=".\Images\donate.png">
+<img src=".\Images\donate.jpg">
 <div align=left>
 
 ---

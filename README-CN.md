@@ -105,8 +105,9 @@ pms,内存，cpu,......
 
 
 <div align=center>
-<img src=".\Images\donate.png">
+<img src=".\Images\donate.jpg">
 <div align=left>
+
 
 ---
 # Contact

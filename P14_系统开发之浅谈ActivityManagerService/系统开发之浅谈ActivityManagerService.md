@@ -148,6 +148,8 @@ registerService(Context.ACTIVITY_SERVICE, ActivityManager.class,
 图二，我们可以看到ActivityManagerService就是和四大组件的管理（activity,activity的容器，wms，广播，content provider,service）,以及电池电量，app应用管理，oom内存管理等各个方面的一个综合管理体。
 
 其代码将近2万行，变量，方法众多，我们全部研究是不现实的，也没有必要，但是我们可以针对性的了解，方便我们做对应的开发。
+
+
 ---
 
 # 探究mActivityTaskManager

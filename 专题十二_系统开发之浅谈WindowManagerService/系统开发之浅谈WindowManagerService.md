@@ -300,6 +300,8 @@ public static final int REPARENT_TASK_TO_DEFAULT_DISPLAY = 65;
 public static final int INSETS_CHANGED = 66;
 ```
 
+WindowManagerService类为什么这么复杂，多达8千多行代码，handler消息多是一个重要原因。
+
 
 # dump信息
 
@@ -316,6 +318,9 @@ dumpLastANRLocked--------------dumpsys window lastanr
 
 
 # 日志开关：
+
+对于系统服务，仅依靠dumpsys日志有时还是不够，这时我们需要将日志开关打开，还可以自己添加对应的日志来定位分析问题。
+
 frameworks/base/services/core/java/com/android/server/wm/WindowManagerDebugConfig.java
 
 ```java
@@ -455,6 +460,8 @@ final class H extends android.os.Handler {
 
 
 # 结束语
+
+
 
 <img src="../Images/end_001.png">
 

@@ -706,21 +706,72 @@ mHasVisibleRecentTasks = res.getBoolean(com.android.internal.R.bool.config_hasRe
         >com.android.launcher3/com.android.quickstep.RecentsActivity</string>
 ```
 
+# LocalService--ActivityTaskManagerInternal
 
 ```java
+ActivityTaskManagerInternal mInternal;
+mInternal = new LocalService();
 
+private void start() {
+    LocalServices.addService(ActivityTaskManagerInternal.class, mInternal);
+}
+```
+在system server进程中：
+
+```java
+ActivityTaskManagerInternal mLocalActivityTaskManager;
+mLocalActivityTaskManager = getLocalService(ActivityTaskManagerInternal.class);
 ```
 
-```java
+# Lifecycle--publishBinderService
 
+```java
+public static final class Lifecycle extends SystemService {
+    private final ActivityTaskManagerService mService;
+
+    public Lifecycle(Context context) {
+        super(context);
+        mService = new ActivityTaskManagerService(context);
+    }
+
+    @Override
+    public void onStart() {
+        publishBinderService(Context.ACTIVITY_TASK_SERVICE, mService);
+        mService.start();
+    }
+
+    @Override
+    public void onUnlockUser(int userId) {
+        synchronized (mService.getGlobalLock()) {
+            mService.mStackSupervisor.onUserUnlocked(userId);
+        }
+    }
+
+    @Override
+    public void onCleanupUser(int userId) {
+        synchronized (mService.getGlobalLock()) {
+            mService.mStackSupervisor.mLaunchParamsPersister.onCleanupUser(userId);
+        }
+    }
+
+    public ActivityTaskManagerService getService() {
+        return mService;
+    }
+}
 ```
 
+注册ActivityTaskManagerService：
+
+frameworks\base\core\java\android\app\SystemServiceRegistry.java
+
 ```java
-
-```
-
-```java
-
+registerService(Context.ACTIVITY_TASK_SERVICE, ActivityTaskManager.class,
+        new CachedServiceFetcher<ActivityTaskManager>() {
+    @Override
+    public ActivityTaskManager createService(ContextImpl ctx) {
+        return new ActivityTaskManager(
+                ctx.getOuterContext(), ctx.mMainThread.getHandler());
+    }});
 ```
 
 # 结束语

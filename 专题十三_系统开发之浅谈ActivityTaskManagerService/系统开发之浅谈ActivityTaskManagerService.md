@@ -180,17 +180,26 @@ https://blog.csdn.net/hfreeman2008/article/details/113589077
 
 <img src="atms_whole_13.png">
 
+## 2.dump信息
+
+```java
+dumpsys activity activities
+```
+<img src="activity_activities.png">
 
 
 ```java
-
+dumpsys window displays
 ```
 
+<img src="window_displays.png">
 
-```java
 
-```
+## 3.ams和wms关联的类图
+<img src="atms_ams_wms_13.png">
 
+
+## 4.ActivityRecord创建流程：
 
 ```java
 

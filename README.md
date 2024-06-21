@@ -1,6 +1,8 @@
 
 ## [README of Chinese][readme-cn]
 
+---
+
 # android core and key information of framework
 
 

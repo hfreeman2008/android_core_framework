@@ -95,3 +95,7 @@ ams,pms,内存，cpu,......
 android开发是个杀猪刀，入行要考虑清楚。
 
 ---
+
+欢迎大家加我做朋友：
+
+<img src=".\Images\weixin_hxm.png">

@@ -79,9 +79,22 @@
 # 计划添加内容：
 ams,pms,内存，cpu,......
 
----
 
-# 介绍自己
+---
+# Donations
+
+**所谓法不轻传，道不贱卖；**
+
+**千两黄金不卖道；**
+
+如果你看完这个系列的文章，觉得对你有用，或者能助你在android开发上走的更远，那么你可以扫下方二维码随意打赏我，就当是请我喝杯咖啡或是啤酒，我将不胜感激 :-)
+
+
+<img src=".\Images\donate.png">
+
+---
+# Contact
+
 2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
 
 [csdn博客](https://blog.csdn.net/hfreeman2008)
@@ -98,9 +111,9 @@ ams,pms,内存，cpu,......
 
 android开发是个杀猪刀，入行要考虑清楚。
 
----
 
 **欢迎大家加我做朋友**
 
 <img src=".\Images\weixin_hxm_001.png">
 
+---

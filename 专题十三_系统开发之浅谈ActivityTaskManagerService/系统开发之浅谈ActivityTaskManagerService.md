@@ -635,16 +635,41 @@ anr ANR相关 adb shell dumpsys activity log anr 2
 最后build frameworks/base/services 模块即可
 ```
 
-```java
+# 最近应用缩略图的宽,高,显示比例
 
+```java
+/** The dimensions of the thumbnails in the Recents UI. */
+private int mThumbnailWidth;
+private int mThumbnailHeight;
+
+......
+// Load resources only after the current configuration has been set.
+final Resources res = mContext.getResources();
+mThumbnailWidth = res.getDimensionPixelSize(
+        com.android.internal.R.dimen.thumbnail_width);
+mThumbnailHeight = res.getDimensionPixelSize(
+        com.android.internal.R.dimen.thumbnail_height);
+```
+frameworks\base\core\res\res\values\dimens.xml
+
+```xml
+<!-- The width that is used when creating thumbnails of applications. -->
+<dimen name="thumbnail_width">192dp</dimen>
+<!-- The height that is used when creating thumbnails of applications. -->
+<dimen name="thumbnail_height">192dp</dimen>
+<!-- The amount to scale a fullscreen screenshot thumbnail. -->
+<item name="thumbnail_fullscreen_scale" type="fraction">60%</item>
+<!-- The width used to calculate scale for full screen thumbnail on TV -->
+<integer name="thumbnail_width_tv">240</integer>
 ```
 
+getAppTaskThumbnailSize()---获取最近应用缩略图大小
 ```java
-
-```
-
-```java
-
+public Point getAppTaskThumbnailSize() {
+    synchronized (mGlobalLock) {
+        return new Point(mThumbnailWidth, mThumbnailHeight);
+    }
+}
 ```
 
 ```java

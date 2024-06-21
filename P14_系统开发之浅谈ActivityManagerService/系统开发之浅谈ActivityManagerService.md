@@ -446,6 +446,111 @@ anr ANR相关 adb shell dumpsys activity log anr 2
 ```
 ---
 
+# 启动launcher桌面：
+
+启动桌面startHomeActivity
+
+```java
+ActivityManagerService：：systemReady
+mAtmInternal.startHomeOnAllDisplays(currentUserId, "systemReady");
+```
+---
+
+# 是否需要清除应用
+
+```java
+-- base/services/core/java/com/android/server/am/ActivityManagerService.java --
+    /**
+     * Main code for cleaning up a process when it has gone away.  This is
+     * called both as a result of the process dying, or directly when stopping
+     * a process when running in single process mode.
+     *
+     * @return Returns true if the given process has been restarted, so the
+     * app that was passed in must remain on the process lists.
+     */
+    @GuardedBy("this")
+    final boolean cleanUpApplicationRecordLocked(ProcessRecord app,
+            boolean restarting, boolean allowRestart, int index, boolean replacingPid) {
+......
+// If the caller is restarting this app, then leave it in its
+// current lists and let the caller take care of it.
+if (restarting) {
+    return false;
+}
+
+//Start for Memory optimization
+boolean isNotNeedDoPersistent = false;
+if (android.os.Prop.getDefaultSettingBoolean("default_support_adjust_some_app_adj", true)){
+    try {
+
+        if ("com.android.bluetooh.virtualbluetoohprint".equals(app.processName)){
+            Slog.w(TAG_CLEANUP, "===>>clean up com.android.bluetooh.virtualbluetoohprint");
+            if (android.os.SystemProperties.get("persist.sys.bluetooth.STATE_ON", "false").equals("true")){
+                Slog.w(TAG_CLEANUP, "===>>virtualbluetoohprint is using, need restart");
+                isNotNeedDoPersistent = false;
+            }else{
+                Slog.w(TAG_CLEANUP, "===>>virtualbluetoohprint not use, not need restart");
+                isNotNeedDoPersistent = true;
+            }
+        }
+
+        if ("com.android.mqtt".equals(app.processName)){
+            Slog.w(TAG_CLEANUP, "===>>clean up com.android.mqtt");
+            int stateBusy = android.os.SystemProperties.getInt("persist.sys.tms.state_busy", Integer.MAX_VALUE);
+            Slog.w(TAG_CLEANUP, "===>>com.android.mqtt stateBusy=" + stateBusy);
+            if (stateBusy > 0){
+                Slog.w(TAG_CLEANUP, "===>>com.android.mqtt is using, need restart");
+                isNotNeedDoPersistent = false;
+            }else{
+                Slog.w(TAG_CLEANUP, "===>>com.android.mqtt not use, not need restart");
+                isNotNeedDoPersistent = true;
+            }
+        }
+
+        if ("com.android.inputmethod.latin".equals(app.processName)){
+            Slog.w(TAG_CLEANUP, "===>>clean up com.android.inputmethod.latin");
+            if (android.os.SystemProperties.get("persist.sys.latin.using", "false").equals("true")){
+                Slog.w(TAG_CLEANUP, "===>>com.android.inputmethod.latin is using, need restart");
+                isNotNeedDoPersistent = false;
+            }else{
+                Slog.w(TAG_CLEANUP, "===>>com.android.inputmethod.latin not use, not need restart");
+                isNotNeedDoPersistent = true;
+            }
+        }
+
+
+    } catch (Exception ee) {
+        Slog.e(TAG_CLEANUP, "===>>clean up error is " + ee);
+    }
+}
+//End  Memory optimization
+
+if (!app.isPersistent() || app.isolated || isNotNeedDoPersistent) {
+    if (DEBUG_PROCESSES || DEBUG_CLEANUP) Slog.v(TAG_CLEANUP,
+            "Removing non-persistent process during cleanup: " + app);
+    if (!replacingPid) {
+        mProcessList.removeProcessNameLocked(app.processName, app.uid, app);
+    }
+    mAtmInternal.clearHeavyWeightProcessIfEquals(app.getWindowProcessController());
+```
+
+---
+
+# 应用关闭log
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+```java
+
+```
 
 
 ```java

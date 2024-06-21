@@ -2,11 +2,13 @@
 
 <img src="flows_wms_001.png">
 
-
+---
 
 # WindowManagerService 类的作用：
 
 wms是窗口的管理者，负责窗口的启动，添加，删除和更新，窗口动画，窗口的大小和层级，还有壁纸，水印，输入系统的中转站，Surface管理等各个方面的一个综合管理体。
+
+---
 
 # 获取wms的方式：
 
@@ -34,6 +36,7 @@ mWindowManagerService = WindowManagerGlobal.getWindowManagerService();
 WindowManagerInternal mWindowManagerService;
 mWindowManagerService = LocalServices.getService(WindowManagerInternal.class);
 ```
+---
 
 # WindowManagerService调用流程
 
@@ -121,6 +124,7 @@ registerService(Context.WINDOW_SERVICE, WindowManager.class,
     }});
 ```
 
+---
 
 # WindowManagerService添加view的详细分析
 
@@ -141,7 +145,7 @@ https://blog.csdn.net/hfreeman2008/article/details/111913489
 https://blog.csdn.net/hfreeman2008/article/details/111996784
 
 
-
+---
 
 # 以addView()接口为例，看一下其调用流程
 <img src="addView.png">
@@ -255,6 +259,7 @@ public int addWindow(
 ......一个特别长的方法
 }
 ```
+---
 
 # WindowManagerService类图
 
@@ -264,7 +269,7 @@ public int addWindow(
 
 图三，我们可以看到WindowManagerService就是窗口的管理者，负责窗口的启动，添加，删除和更新，窗口动画，窗口的大小和层级，还有壁纸，水印，输入系统的中转站，Surface管理等各个方面的一个综合管理体。
 
-
+---
 
 # activity和各个contain的关系
 
@@ -283,7 +288,7 @@ https://blog.csdn.net/hfreeman2008/article/details/113589077
 
 此部分是以前的关系图，android最新的版本是已经调整了，后面需要同步更新此部分数据。
 
-
+---
 
 # android 13 ams和wms的关系
 
@@ -292,7 +297,7 @@ https://blog.csdn.net/hfreeman2008/article/details/113589077
 <img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/atms_whole_13.png">
 
 
-
+---
 
 ## 2.dump信息
 
@@ -307,11 +312,13 @@ dumpsys window displays
 ```
 <img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/window_displays.png">
 
+---
 
 ## 3.ams和wms关联的类图
 
 <img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/atms_ams_wms_13.png">
 
+---
 
 # handler消息
 
@@ -360,6 +367,7 @@ public static final int INSETS_CHANGED = 66;
 
 WindowManagerService类为什么这么复杂，多达8千多行代码，handler消息多是一个重要原因。
 
+---
 
 # dump信息
 
@@ -373,7 +381,7 @@ dumpSessionsLocked-------------dumpsys window sessions
 dumpWindowsLocked--------------dumpsys window windows
 dumpLastANRLocked--------------dumpsys window lastanr
 ```
-
+---
 
 # 日志开关：
 
@@ -411,7 +419,7 @@ static boolean SHOW_STACK_CRAWLS = false;
 static boolean DEBUG_WINDOW_CROP = false;
 static boolean DEBUG_UNKNOWN_APP_VISIBILITY = false;
 ```
-
+---
 # 创建水印 createWatermark
 
 ```java
@@ -434,6 +442,9 @@ void createWatermark() {
   ......
 }
 ```
+
+---
+
 # 界面转换的日志
 
 ```java
@@ -469,9 +480,9 @@ if(newFocus != null && newFocus.toString() != null){
 }
 //add hexiaoming  youtube app close animation ANIMATOR_DURATION_SCALE 20220901 end
 ```
+---
 
-
-# 监测手机切换应用
+# 监测切换应用
 
 ```java
 final class H extends android.os.Handler {
@@ -515,7 +526,7 @@ final class H extends android.os.Handler {
         ArrayList<WindowState> losers;
 ```
 
-
+---
 
 # 结束语
 

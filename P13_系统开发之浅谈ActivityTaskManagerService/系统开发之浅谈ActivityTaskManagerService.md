@@ -1,6 +1,6 @@
 # P13_系统开发之浅谈ActivityTaskManagerService
 
-<img src="flows_atms_001.png">
+<img src="../flower/flows_atms_001.png">
 
 ---
 # ActivityTaskManagerService 类的作用：

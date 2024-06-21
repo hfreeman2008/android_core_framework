@@ -202,6 +202,132 @@ dumpsys window displays
 ## 4.ActivityRecord创建流程：
 
 ```java
+com.android.server.wm.ActivityRecord.<init>(ActivityRecord.java:1943)
+com.android.server.wm.ActivityRecord$Builder.build(ActivityRecord.java:9914)
+com.android.server.wm.ActivityStarter.executeRequest(ActivityStarter.java:1193)
+com.android.server.wm.ActivityStarter.execute(ActivityStarter.java:702)
+com.android.server.wm.ActivityTaskManagerService.startActivityAsUser(ActivityTaskManagerService.java:1294)
+com.android.server.wm.ActivityTaskManagerService.startActivityAsUser(ActivityTaskManagerService.java:1213)
+com.android.server.wm.ActivityTaskManagerService.startActivity(ActivityTaskManagerService.java:1188)
+android.app.IActivityTaskManager$Stub.onTransact(IActivityTaskManager.java:893)
+com.android.server.wm.ActivityTaskManagerService.onTransact(ActivityTaskManagerService.java:5241)
+android.os.Binder.execTransactInternal(Binder.java:1280)
+android.os.Binder.execTransact(Binder.java:1244)
+```
+
+ActivityTaskManagerService.startActivity
+
+```java
+public final int startActivity(IApplicationThread caller, String callingPackage,
+        String callingFeatureId, Intent intent, String resolvedType, IBinder resultTo,
+        String resultWho, int requestCode, int startFlags, ProfilerInfo profilerInfo,
+        Bundle bOptions) {
+    return startActivityAsUser(caller, callingPackage, callingFeatureId, intent, resolvedType,
+            resultTo, resultWho, requestCode, startFlags, profilerInfo, bOptions,
+            UserHandle.getCallingUserId());
+}
+```
+ActivityTaskManagerService.startActivityAsUser
+
+```java
+@Override
+public int startActivityAsUser(IApplicationThread caller, String callingPackage,
+        String callingFeatureId, Intent intent, String resolvedType, IBinder resultTo,
+        String resultWho, int requestCode, int startFlags, ProfilerInfo profilerInfo,
+        Bundle bOptions, int userId) {
+    return startActivityAsUser(caller, callingPackage, callingFeatureId, intent, resolvedType,
+            resultTo, resultWho, requestCode, startFlags, profilerInfo, bOptions, userId,
+            true /*validateIncomingUser*/);
+}
+```
+
+ActivityTaskManagerService.startActivityAsUser
+
+```java
+private int startActivityAsUser(IApplicationThread caller, String callingPackage,
+        @Nullable String callingFeatureId, Intent intent, String resolvedType,
+        IBinder resultTo, String resultWho, int requestCode, int startFlags,
+        ProfilerInfo profilerInfo, Bundle bOptions, int userId, boolean validateIncomingUser) {
+......
+// TODO: Switch to user app stacks here.
+return getActivityStartController().obtainStarter(intent, "startActivityAsUser")
+        .setCaller(caller)
+        .setCallingPackage(callingPackage)
+        .setCallingFeatureId(callingFeatureId)
+        .setResolvedType(resolvedType)
+        .setResultTo(resultTo)
+        .setResultWho(resultWho)
+        .setRequestCode(requestCode)
+        .setStartFlags(startFlags)
+        .setProfilerInfo(profilerInfo)
+        .setActivityOptions(bOptions)
+        .setUserId(userId)
+        .execute();
+}
+```
+
+ActivityStarter.execute
+```java
+int execute() {
+    .....
+    res = executeRequest(mRequest);
+}
+
+private int executeRequest(Request request) {
+    ......    
+    final ActivityRecord r = new ActivityRecord.Builder(mService)
+        .setCaller(callerApp)
+        .setLaunchedFromPid(callingPid)
+        .setLaunchedFromUid(callingUid)
+        .setLaunchedFromPackage(callingPackage)
+        .setLaunchedFromFeature(callingFeatureId)
+        .setIntent(intent)
+        .setResolvedType(resolvedType)
+        .setActivityInfo(aInfo)
+        .setConfiguration(mService.getGlobalConfiguration())
+        .setResultTo(resultRecord)
+        .setResultWho(resultWho)
+        .setRequestCode(requestCode)
+        .setComponentSpecified(request.componentSpecified)
+        .setRootVoiceInteraction(voiceSession != null)
+        .setActivityOptions(checkedOptions)
+        .setSourceRecord(sourceRecord)
+        .build();
+}
+```
+
+ActivityRecord$Builder.build
+
+```java
+static class Builder {
+    .....
+    ActivityRecord build() {
+        if (mConfiguration == null) {
+            mConfiguration = mAtmService.getConfiguration();
+        }
+        return new ActivityRecord(mAtmService, mCallerApp, mLaunchedFromPid,
+                mLaunchedFromUid, mLaunchedFromPackage, mLaunchedFromFeature, mIntent,
+                mResolvedType, mActivityInfo, mConfiguration, mResultTo, mResultWho,
+                mRequestCode, mComponentSpecified, mRootVoiceInteraction,
+                mAtmService.mTaskSupervisor, mOptions, mSourceRecord, mPersistentState,
+                mTaskDescription, mCreateTime);
+    }
+}
+```
+
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
 
 ```
 

@@ -7,6 +7,8 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 <img src="..\Images\log_sword.png">
 
 
+---
+
 # 如何使用
 - 通过Android studio自带的traceview查看（Android profiler）
 
@@ -65,6 +67,7 @@ adb pull /sdcard/trace_view_debug.trace /home/android/
 Android\Sdk\tools\monitor.bat
 ```
 
+---
 
 # 抓取traceview日志
 
@@ -99,6 +102,7 @@ Android\Sdk\tools\monitor.bat
 C:\Users\****\AppData\Local\Temp
 ```
 
+---
 
 # 打开traceview
 
@@ -145,7 +149,7 @@ Profile Panel各列作用说明如下：
 另外，每一个Time列还对应有一个用时间百分比来统计的列（如Incl Cpu Time列对应还有一个列名为Incl Cpu Time %的列，表示以时间百分比来统计的Incl Cpu Time）。
 
 
-
+---
 
 # 分析traceview
 我们重点关注二个hotspot:
@@ -179,7 +183,7 @@ Profile Panel各列作用说明如下：
 
 非常的清晰明了。
 
-
+---
 
 # adb命令抓取apk启动过程的traceview
 
@@ -196,7 +200,7 @@ adb pull /data/local/tmp/summer.trace
 ```
 
 
-
+---
 
 # 应用例子
 
@@ -204,6 +208,7 @@ adb pull /data/local/tmp/summer.trace
 
 https://xiaozhuanlan.com/topic/7304691258
 
+---
 
 # 参考资料
 [android核心技术之性能分析工具TraceView](https://blog.csdn.net/hfreeman2008/article/details/53509489)
@@ -211,6 +216,7 @@ https://xiaozhuanlan.com/topic/7304691258
 https://blog.csdn.net/hfreeman2008/article/details/53509489
 
 
+---
 
 # 结束语
 

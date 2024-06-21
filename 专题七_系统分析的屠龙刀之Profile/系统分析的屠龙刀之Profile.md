@@ -4,6 +4,8 @@ Android Profile是性能分析工具traceview的升级版本，功能更强大�
 
 <img src="..\Images\log_sword.png">
 
+---
+
 # Android Profile主要作用
 - Cpu 问题分析
 - Memory问题分析
@@ -14,6 +16,8 @@ Profile主要是针对某个特定应用，监视Cpu和Memory 二个关键指标
 
 如上图，我们可以知道，这是一个针对应用com.android.phone，监视Cpu和Memory的一个图。
 
+
+---
 
 # CPU
 
@@ -45,6 +49,7 @@ Instruments Java/Kotlin code using Android Runtime,tracking every method call(th
 Sample Java/Kotlin code using Android Runtime。
 这个是以前的过时工具
 
+---
 
 ## 一个样例
 
@@ -63,6 +68,10 @@ protected void onResume() {
     }
 }
 ```
+
+---
+
+
 ### 抓取统计数据
 
 在activity界面息屏后，选择Java/Kotlin Method Trace，点击Record开始抓取统计数据，再点亮屏幕，等待activity界面完全显示后，点击stop。
@@ -71,6 +80,7 @@ protected void onResume() {
 
 <img src="result_show.png">
 
+---
 
 ### 分析数据
 
@@ -97,12 +107,16 @@ protected void onResume() {
 <img src="result_analize_top_down.png">
 
 
+---
+
 ### trace数据保存
 
 trace日志，还可以保存成trace格式的文件，方便下次分析。
 
 <img src="save_trace.png">
 
+
+---
 
 # Memory
 
@@ -124,7 +138,7 @@ Memory同Cpu类似，有三种内存数据类型
 <img src="memory_type.png">
 
 
-
+---
 
 ## 一个样例
 
@@ -145,11 +159,14 @@ protected void onResume() {
 }
 ```
 
+---
 
 ### 抓取统计数据
 
 在activity界面息屏后，选择Record Java/Kotlin allocations，点击Record开始抓取统计数据，再点亮屏,会自动生成统计结果。
 
+
+---
 
 ### 分析数据
 
@@ -162,7 +179,7 @@ protected void onResume() {
 <img src="memory_anal.png">
 
 
-
+---
 
 
 # 资料
@@ -171,6 +188,8 @@ protected void onResume() {
 
 https://blog.csdn.net/hfreeman2008/article/details/53557655
 
+
+---
 
 # 结束语
 

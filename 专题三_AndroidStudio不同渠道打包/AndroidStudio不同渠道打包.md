@@ -6,6 +6,7 @@
 按比较专业的术语描述此需求为：
 要实现一个壳工程打出不同样式的包，也就是使用Gradle中的productFlavors，在做定制或适配的时候，不需要建立多个工程、来回切换项目分支、逐个编译apk，使用productFlavors可以帮我们简化这一步操作，快速打包所有项目版本的apk。
 
+---
 
 # 实现效果
 ## 生成二个不同包名的apk，并且应用图标和应用名称实现动态替换
@@ -13,16 +14,22 @@
 
 图一：桌面显示二个不同包名应用动态替换不同应用图标和应用名称的效果图
 
+---
+
 ## 图标，字符串实现动态替换
 <img src=".\Image\activity_ui.PNG">
 
 图二：显示二个不同应用图标和字符串动态替换的效果图
+
+---
 
 # Demo源码
 这个demo源码，非常的简单，主要是显示一个activity界面，此界面包括二个TextView和一个ImageView。如上面的图二。
 
 DemoDiffPkg2.zip
 这个就是Demo的源码
+
+---
 
 # 实现方案
 
@@ -65,6 +72,8 @@ productFlavors{
     }
 }
 ```
+---
+
 ## 其配置项的解释说明：
 ### 配置生成不同的包名
 对应我们添加二个项目(mtk,qcom)，分别生成包名为(com.example.demodiffpkg2_mtk，com.example.demodiffpkg2_qcom)的二个apk应用。
@@ -87,6 +96,10 @@ productFlavors{
     }
 }
 ```
+
+---
+
+
 ### 动态替换应用图标和应用名
 ```java
 productFlavors{
@@ -124,6 +137,8 @@ app\src\main\res\values\strings.xml
 <string name="app_name_mtk">demodiffpkg2_mtk</string>
 <string name="app_name_qcom">demodiffpkg2_qcom</string>
 ```
+
+---
 
 ### 资源的overlay（包括图片，字符串），也可以说是动态替换资源文件----特别推荐！！
 这部分，主要是activity主界面的图片和字符串：
@@ -193,7 +208,7 @@ qcom/res/values/strings.xml
 图四：资源文件overlay动态替换的代码结构
 
 
-
+---
 
 ### resValue简单的字符串动态替换
 上面的资源overlay动态替换作用非常大，并且还可以实现字符串的国符化，当然缺点是需要创建文件，resValue可以非常方便的实现简单的字符串动态替换
@@ -240,7 +255,7 @@ DemoDiffPkg2\app\build\generated\res\resValues\mtk\debug\values\gradleResValues.
 </resources>
 ```
 
-
+---
 
 ### buildConfigField动态配置
 这个是主要是对应自动生成BuildConfig类，方便项目来客制化：
@@ -273,6 +288,7 @@ java文件的调用方式为：
 boolean isOK = BuildConfig.isEnable;
 ```
 
+---
 
 ### 动态替换版本号
 这个非常明显，只是动态设置一下：versionCode，versionName
@@ -293,12 +309,14 @@ productFlavors{
 }
 ```
 
+---
 
 # 编译apk
 在Build Variants----Active Build Variant中选择我们对应的项目来编译：
 
 <img src=".\Image\make_build.png">
 
+---
 
 # 参考资料
 [Android实现多渠道打包，动态替换包名、Icon、图片等资源，解决因applicationId和BuildConfig路径不匹配的问题](https://blog.csdn.net/woshizisezise/article/details/96303750)
@@ -306,14 +324,19 @@ productFlavors{
 https://blog.csdn.net/woshizisezise/article/details/96303750
 
 
+---
+
 # 附文档：
 
 Android实现多渠道打包，动态替换包名、Icon、图片等资源的方案.pdf
+
+---
 
 # 附Demo的源码
 
 DemoDiffPkg2.zip
 
+---
 
 # 结束语
 

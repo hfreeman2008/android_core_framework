@@ -3,10 +3,12 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 
 <img src="..\Images\log_sword.png">
 
+---
 
 
 <img src="log_jie_gao.png">
 
+---
 
 # 系统工程师log日志分析要达到什么水平
 
@@ -22,11 +24,14 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 
 且来看下面分解。
 
+---
 
 # log日志常见分类
 
 ## system
 --------- beginning of system
+
+
 
 ### 打印system日志的接口：
 
@@ -34,6 +39,8 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 import android.util.Slog;
  Slog.v(TAG, "system log ");
 ```
+
+---
 
 ### ams相关
 启动应用:
@@ -48,17 +55,20 @@ ActivityManager: Start proc 6499:com.dream.dreamlogger/1000 for pre-top-activity
 ActivityManager: Start proc 6619:.connect.ConnectorService/1000 for service {com.android.usbaccessory/com.android.usbaccessory.connect.ConnectorService}
 ```
 
-
+---
 ### wms相关
 
 ```java
 V WindowManager: Orientation start waiting for draw, mDrawState=DRAW_PENDING in Window{1e537fa u0 com.android.settings/com.android.settings.FallbackHome}, surfaceController Surface(name=com.android.settings/com.android.settings.FallbackHome)/@0x9822dab
 ```
 
+---
+
 ### 各种系统服务的日志
 系统服务的日志，基本上都是在此部分，所以此部分日志是关注的重点。
 系统服务包括：BluetoothManagerService，ConnectivityService，BatteryService，LightsService，StorageManagerService，WallpaperManagerService，UriGrantsManagerService，DisplayManagerService等等。
 
+---
 
 ## events
 --------- beginning of events
@@ -70,6 +80,7 @@ import android.util.EventLog;
 EventLog.writeEvent(......);
 ```
 
+---
 
 ### am 和进程相关
 ```java
@@ -78,16 +89,21 @@ am_proc_died: [0,4391,com.qti.ltebc,0,11]
 am_proc_bound: [0,6499,com.dream.dreamlogger]
 ```
 
+---
+
 ### am 和service相关
 ```java
 am_stop_idle_service: [10049,com.qti.ltebc/com.qualcomm.ltebc.LTERootService]
 ```
+
+---
 
 ### am 和broadcast相关
 ```java
 am_broadcast_discard_app: [0,4020578,android.intent.action.MEDIA_MOUNTED,2,ResolveInfo{6fe2974 com.qti.ltebc/com.qualcomm.ltebc.LTEBroadcastReceiver m=0x208000}]
 ```
 
+---
 
 ### wm 和activity相关
 ```java
@@ -113,6 +129,8 @@ I wm_finish_activity: [0,193515979,34,com.dream.dreamlogger/.DreamOfflineLogActi
 
 ```
 
+---
+
 ### wm 和task,stack相关
 
 ```java
@@ -125,16 +143,22 @@ I wm_task_removed: [2,removeChild: last r=ActivityRecord{52a7243 u0 com.android.
 
 ```
 
+---
+
 ### selinux权限相关
 ```java
 I auditd  : type=1400 audit(0.0:630): avc: denied { read } for comm="Binder:588_2" name="wakeup24" dev="sysfs" ino=36313 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
 ```
+
+---
 
 ### battery相关
 ```java
 battery_level: [98,4345,292]
 battery_status: [3,2,1,0,Li-ion]
 ```
+
+---
 
 ### sysui_multi_action
 ```java
@@ -145,7 +169,7 @@ sysui_multi_action: [757,804,799,power_double_tap_interval,801,58183048,802,1]
 ```
 
 
-
+---
 
 ## main
 --------- beginning of main
@@ -158,6 +182,7 @@ sysui_multi_action: [757,804,799,power_double_tap_interval,801,58183048,802,1]
 
 通过这个，我们就知道main日志大部分是app应用自已打印输出的，没有什么规律。
 
+---
 
 ## crash
 --------- beginning of crash
@@ -211,6 +236,8 @@ E AndroidRuntime:         at android.hardware.camera2.CameraManager.supportsCame
 E AndroidRuntime:         at android.hardware.camera2.CameraManager.getCameraCharacteristics(CameraManager.java:434)
 ```
 
+---
+
 ## radio
 --------- beginning of radio
 ```java
@@ -218,6 +245,8 @@ Rlog.w(LOG_TAG, "------------");
 ```
 此部分日志,也就是通信模块相关的日志，譬如RIL
 留白，因为本人没有什么有效的经验分享。
+
+---
 
 ## kernel
 
@@ -230,6 +259,7 @@ adb shell dmesg > kernel_001.log
 
 此部分留白，因为本人没有做过驱动，没有什么有效的经验分享。
 
+---
 
 ## anr日志
 anr日志文件：
@@ -238,6 +268,7 @@ anr日志文件：
 adb pull /data/anr/ ./anr
 ```
 
+---
 
 ## tombstones日志
 tombstones日志文件：
@@ -246,16 +277,21 @@ tombstones日志文件：
 adb pull /data/tombstones ./tombstones
 ```
 
+---
+
 ## dropbox日志：
 ```java
 /data/system/dropbox/
 adb pull /data/system/dropbox/ ./dropbox
 ```
 
+---
 
 ## 日志缓存位置：
 dev/log
 
+
+---
 
 ## bugreport日志
 ```java
@@ -263,12 +299,15 @@ adb bugreport > bugreport.txt
 adb shell bugreport > bugreport.txt
 ```
 
+---
+
 ## bootprof--mtk平台开机启动时间日志
 ```java
 adb shell cat /proc/bootprof
 adb pull /proc/bootprof  ./bootprof
 ```
 
+---
 
 # logcat相关的命令
 
@@ -290,16 +329,20 @@ adb logcat -b radio
 
 
 
-
+---
 
 # 如何合理的添加日志
 要想回答这个问题，我们需要先回想一下，我们什么时候需要日志？
+
+---
 
 ## 我们什么时候需要日志？
 如果碰到问题，测试的同事从开发那边听的最多的一句话，有没有日志。
 通过这句话，我们知道，碰到问题，我们希望日志中有相关的异常或错误信息，从而方便开发者来定位问题。
 
 所以，日志一定是要记录异常和错误的信息，这个是最重要的内容。
+
+---
 
 ## 日志的目的是什么?
 日志,我们可以比喻成一台记录历史的史官如实写下的史书，开发者可以通过阅读日志，就像阅读史书一样，了解过去的历史。
@@ -312,7 +355,7 @@ adb logcat -b radio
 - 关键的信息  
 这部分包括关键的业务，关键动作，关键状态等等。
 
-
+---
 
 # 结束语
 

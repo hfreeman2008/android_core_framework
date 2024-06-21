@@ -5,13 +5,15 @@ android问题的分析，大家使用最多的是日志。
 
 <img src="..\Images\log_sword.png">
 
+---
 一个android系统工程，你只有掌握了dumpsys工具，你才能说自己已经开始摸到系统的脉搏了。
 <img src="mai_bo.png">
 
-
+---
 
 <img src="jie_gao.png">
 
+---
 
 # dumpsys 命令
 
@@ -20,6 +22,7 @@ android问题的分析，大家使用最多的是日志。
 adb shell dumpsys -l
 ```
 
+---
 # 关键的dumpsys信息
 ## dumpsys meminfo
 这个命令，我们针对分析设备的memory，特别有用
@@ -33,6 +36,7 @@ adb shell dumpsys meminfo
 ```java
 adb shell dumpsys meminfo com.android.pkgname
 ```
+---
 
 ## dumpsys cpuinfo
 这个命令，我们针对分析设备的cpu，特别有用
@@ -41,6 +45,7 @@ adb shell dumpsys meminfo com.android.pkgname
 adb shell dumpsys cpuinfo
 ```
 
+---
 
 ## dumpsys package
 这个命令，我们针对分析设备的所有应用信息，特别有用
@@ -50,6 +55,8 @@ adb shell dumpsys cpuinfo
 adb shell dumpsys package
 adb shell dumpsys package com.android.pkgname
 ```
+
+---
 
 ## dumpsys activity
 对于系统来说，ams的dumpsys命令是我们查看系统信息的重要指令
@@ -85,6 +92,8 @@ adb shell "dumpsys activity | grep -A 45 -i 'from top to'"
 adb shell "dumpsys | grep -i -A 4 'mCurrentFocus'"
 ```
 
+---
+
 ## dumpsys window
 对于系统来说，wms的dumpsys命令是我们查看系统信息的重要指令
 
@@ -112,6 +121,7 @@ WINDOW MANAGER CONSTANTS (dumpsys window constants)
 adb shell "dumpsys window | grep init"
 ```
 
+---
 
 ## dumpsys settings
 
@@ -123,6 +133,7 @@ adb shell dumpsys settings
 这个命令，是我们开发时确认SettingsProvider数据库的字段的一个常用命令。
 
 
+---
 
 ## dumpsys input_method
 查看输入法信息：
@@ -147,6 +158,7 @@ Current Input Method Manager state:
 
 
 
+---
 
 ## dumpsys battery
 查看电池信息
@@ -176,6 +188,7 @@ Current Battery Service state:
 
 ```
 
+---
 
 ## dumpsys display
 
@@ -202,7 +215,7 @@ SimpleMappingStrategy
   mUserBrightness=0.73091215
 ```
 
-
+---
 
 # dumpsys命令的方法实现
 
@@ -302,6 +315,7 @@ public class DiskStatsService extends Binder {
 }
 ```
 
+---
 
 # 参考资料
 [dumpsys](https://developer.android.google.cn/studio/command-line/dumpsys)
@@ -309,6 +323,7 @@ public class DiskStatsService extends Binder {
 https://developer.android.google.cn/studio/command-line/dumpsys
 
 
+---
 
 # 结束语
 

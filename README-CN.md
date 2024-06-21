@@ -6,7 +6,7 @@
 # android core and key information of framework
 
 
-此系统文章主要是针对android framework的一些核心和关键信息做一些笔记，同时也分享一些自己的心得和技术总结。
+此系统文章主要是针对android framework的一些核心和关键信息做一些笔记，同时也是分享一些自己的心得和技术总结。
 
 
 当然，这也可以理解为一个android 系统工程师的一些必备技术技能。

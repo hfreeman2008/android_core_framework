@@ -315,10 +315,225 @@ static class Builder {
 }
 ```
 
+## 5.Task创建流程
+
+```java
+com.android.server.wm.Task.<init>(Task.java:630)
+com.android.server.wm.Task$Builder.buildInner(Task.java:6638)
+com.android.server.wm.Task$Builder.build(Task.java:6609)
+com.android.server.wm.TaskDisplayArea.getOrCreateRootTask(TaskDisplayArea.java:1005)
+com.android.server.wm.TaskDisplayArea.getOrCreateRootTask(TaskDisplayArea.java:1030)
+com.android.server.wm.RootWindowContainer.getOrCreateRootTask(RootWindowContainer.java:2842)
+com.android.server.wm.ActivityStarter.getOrCreateRootTask(ActivityStarter.java:3018)
+com.android.server.wm.ActivityStarter.startActivityInner(ActivityStarter.java:1858)
+com.android.server.wm.ActivityStarter.startActivityUnchecked(ActivityStarter.java:1661)
+com.android.server.wm.ActivityStarter.executeRequest(ActivityStarter.java:1216)
+com.android.server.wm.ActivityStarter.execute(ActivityStarter.java:702)
+com.android.server.wm.ActivityTaskManagerService.startActivityAsUser(ActivityTaskManagerService.java:1294)
+com.android.server.wm.ActivityTaskManagerService.startActivityAsUser(ActivityTaskManagerService.java:1213)
+com.android.server.wm.ActivityTaskManagerService.startActivity(ActivityTaskManagerService.java:1188)
+android.app.IActivityTaskManager$Stub.onTransact(IActivityTaskManager.java:893)
+com.android.server.wm.ActivityTaskManagerService.onTransact(ActivityTaskManagerService.java:5241)
+android.os.Binder.execTransactInternal(Binder.java:1280)
+android.os.Binder.execTransact(Binder.java:1244)
+```
+
+前面的同ActivityRecord创建流程：
+ActivityStarter.executeRequest
+
+```java
+private int executeRequest(Request request) {
+    .....
+    mLastStartActivityResult = startActivityUnchecked(r, sourceRecord, voiceSession,
+        request.voiceInteractor, startFlags, true /* doResume */, checkedOptions,
+        inTask, inTaskFragment, restrictedBgActivity, intentGrants);
+}
+```
+
+ActivityStarter.startActivityUnchecked
+```java
+private int startActivityUnchecked(final ActivityRecord r, ActivityRecord sourceRecord,
+        IVoiceInteractionSession voiceSession, IVoiceInteractor voiceInteractor,
+        int startFlags, boolean doResume, ActivityOptions options, Task inTask,
+        TaskFragment inTaskFragment, boolean restrictedBgActivity,
+        NeededUriGrants intentGrants) {
+    ......
+    result = startActivityInner(r, sourceRecord, voiceSession, voiceInteractor,
+        startFlags, doResume, options, inTask, inTaskFragment, restrictedBgActivity,
+        intentGrants);
+}
+```
+
+ActivityStarter.startActivityInner
+```java
+int startActivityInner(final ActivityRecord r, ActivityRecord sourceRecord,
+        IVoiceInteractionSession voiceSession, IVoiceInteractor voiceInteractor,
+        int startFlags, boolean doResume, ActivityOptions options, Task inTask,
+        TaskFragment inTaskFragment, boolean restrictedBgActivity,
+        NeededUriGrants intentGrants) {
+      .....
+    if (mTargetRootTask == null) {
+        mTargetRootTask = getOrCreateRootTask(mStartActivity, mLaunchFlags, targetTask,
+            mOptions);
+    }      
+}
+```
+ActivityStarter.getOrCreateRootTask
+
+```java
+private Task getOrCreateRootTask(ActivityRecord r, int launchFlags, Task task,
+        ActivityOptions aOptions) {
+    final boolean onTop =
+            (aOptions == null || !aOptions.getAvoidMoveToFront()) && !mLaunchTaskBehind;
+    final Task sourceTask = mSourceRecord != null ? mSourceRecord.getTask() : null;
+    //调用mRootWindowContainer.getOrCreateRootTask
+    return mRootWindowContainer.getOrCreateRootTask(r, aOptions, task, sourceTask, onTop,
+            mLaunchParams, launchFlags);
+}
+```
+
+RootWindowContainer.getOrCreateRootTask
+```java
+Task getOrCreateRootTask(@Nullable ActivityRecord r,
+        @Nullable ActivityOptions options, @Nullable Task candidateTask,
+        @Nullable Task sourceTask, boolean onTop,
+        @Nullable LaunchParamsController.LaunchParams launchParams, int launchFlags) {
+    ......
+    if (taskDisplayArea != null) {
+        if (canLaunchOnDisplay(r, taskDisplayArea.getDisplayId())) {
+            //调用 taskDisplayArea.getOrCreateRootTask
+            return taskDisplayArea.getOrCreateRootTask(r, options, candidateTask,
+                    sourceTask, launchParams, launchFlags, activityType, onTop);
+        } else {
+            taskDisplayArea = null;
+        }
+    }
+}
+```
+
+TaskDisplayArea.getOrCreateRootTask
+```java
+Task getOrCreateRootTask(@Nullable ActivityRecord r, @Nullable ActivityOptions options,
+        @Nullable Task candidateTask, @Nullable Task sourceTask,
+        @Nullable LaunchParams launchParams, int launchFlags, int activityType, boolean onTop) {
+     .....
+    return getOrCreateRootTask(windowingMode, activityType, onTop, candidateTask, sourceTask,
+            options, launchFlags);
+}
+
+Task getOrCreateRootTask(int windowingMode, int activityType, boolean onTop,
+        @Nullable Task candidateTask, @Nullable Task sourceTask,
+        @Nullable ActivityOptions options, int launchFlags) {
+    .....
+    if (!alwaysCreateRootTask(resolvedWindowingMode, activityType)) {
+        Task rootTask = getRootTask(resolvedWindowingMode, activityType);
+        if (rootTask != null) {
+            //返回已经有的Task
+            return rootTask;
+        }
+    .....
+    //新建Task
+    return new Task.Builder(mAtmService)
+        .setWindowingMode(windowingMode)
+        .setActivityType(activityType)
+        .setOnTop(onTop)
+        .setParent(this)
+        .setSourceTask(sourceTask)
+        .setActivityOptions(options)
+        .setLaunchFlags(launchFlags)
+        .build();
+}
+```
+
+
+Task$Builder.build
+```java
+Task build() {
+    .....
+    Task task = buildInner();
+ }
+    
+```
+Task$Builder.buildInner
+
+```java
+Task buildInner() {
+    return new Task(mAtmService, mTaskId, mIntent, mAffinityIntent, mAffinity,
+            mRootAffinity, mRealActivity, mOrigActivity, mRootWasReset, mAutoRemoveRecents,
+            mAskedCompatMode, mUserId, mEffectiveUid, mLastDescription, mLastTimeMoved,
+            mNeverRelinquishIdentity, mLastTaskDescription, mLastSnapshotData,
+            mTaskAffiliation, mPrevAffiliateTaskId, mNextAffiliateTaskId, mCallingUid,
+            mCallingPackage, mCallingFeatureId, mResizeMode, mSupportsPictureInPicture,
+            mRealActivitySuspended, mUserSetupComplete, mMinWidth, mMinHeight,
+            mActivityInfo, mVoiceSession, mVoiceInteractor, mCreatedByOrganizer,
+            mLaunchCookie, mDeferTaskAppear, mRemoveWithTaskOrganizer);
+}
+```
+
+# handler
+
+(1)H和对应的消息：
+
+```java
+final class H extends Handler {
+    static final int REPORT_TIME_TRACKER_MSG = 1;
+    static final int UPDATE_PROCESS_ANIMATING_STATE = 2;
+    static final int END_POWER_MODE_UNKNOWN_VISIBILITY_MSG = 3;
+    static final int RESUME_FG_APP_SWITCH_MSG = 4;
+    static final int FIRST_ACTIVITY_TASK_MSG = 100;
+    static final int FIRST_SUPERVISOR_TASK_MSG = 200;
+.....
+}
+```
+
+(2)UiHandler及其对应的消息：
+```java
+final class UiHandler extends Handler {
+    static final int DISMISS_DIALOG_UI_MSG = 1;
+    ......    
+}
+```
+
+# dump信息
+
+dumpLastANRLocked
+
+```java
+adb shell dumpsys activity lastanr
+```
+
+dumpLastANRTracesLocked
+```java
+adb shell dumpsys activity lastanr-traces
+```
+
+dumpActivitiesLocked
+```java
+adb shell dumpsys activity activities
+```
+
+dumpActivityContainersLocked
+```java
+adb shell dumpsys activity containers
+```
+
+dumpActivityStarterLocked
+```java
+adb shell dumpsys activity starter
+```
+
 
 
 ```java
-
+public static final String DUMP_ACTIVITIES_CMD = "activities";
+public static final String DUMP_ACTIVITIES_SHORT_CMD = "a";
+public static final String DUMP_LASTANR_CMD = "lastanr";
+public static final String DUMP_LASTANR_TRACES_CMD = "lastanr-traces";
+public static final String DUMP_STARTER_CMD = "starter";
+public static final String DUMP_CONTAINERS_CMD = "containers";
+public static final String DUMP_RECENTS_CMD = "recents";
+public static final String DUMP_RECENTS_SHORT_CMD = "r";
+public static final String DUMP_TOP_RESUMED_ACTIVITY = "top-resumed";
 ```
 
 
@@ -326,21 +541,13 @@ static class Builder {
 
 ```
 
-
 ```java
 
 ```
 
-
 ```java
 
 ```
-
-
-```java
-
-```
-
 
 ```java
 

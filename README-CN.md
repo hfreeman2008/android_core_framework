@@ -79,6 +79,10 @@
 
 ## 专题十三: 系统开发之浅谈ActivityTaskManagerService
 [系统开发之浅谈ActivityTaskManagerService.md](./专题十三_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
+---
+
+## 专题14: 系统开发之浅谈ActivityManagerService
+[系统开发之浅谈ActivityManagerService.md](./专题14_系统开发之浅谈ActivityManagerService/系统开发之浅谈ActivityManagerService.md)
 
 ---
 

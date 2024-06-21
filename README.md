@@ -105,9 +105,9 @@ I graduated from Shenzhen University in 2011. I have been engaged in Android dev
 My development experience is focus on the app, framework(Java layers). And familiar with sh scripts, Android compilation, and configuration.
 
 
-- [csdn博客](https://blog.csdn.net/hfreeman2008)
+- [csdn blog](https://blog.csdn.net/hfreeman2008)
 
-- [github博客](https://github.com/hfreeman2008)
+- [github blog](https://github.com/hfreeman2008)
 
 
 In college(2008)：

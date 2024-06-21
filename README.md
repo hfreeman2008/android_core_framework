@@ -90,7 +90,9 @@ ams,pms,内存，cpu,......
 如果你看完这个系列的文章，觉得对你有用，或者能助你在android开发上走的更远，那么你可以扫下方二维码随意打赏我，就当是请我喝杯咖啡或是啤酒，我将不胜感激 :-)
 
 
+<div align=center>
 <img src=".\Images\donate.png">
+<div align=left>
 
 ---
 # Contact
@@ -102,20 +104,20 @@ ams,pms,内存，cpu,......
 [github博客](https://github.com/hfreeman2008)
 
 大学时的我：
-
+<div align=center>
 <img src=".\Images\2008年大学.png">
-
+<div align=left>
 
 工作十三年后的我：
-
+<div align=center>
 <img src=".\Images\2024年工作时的照片.png">
-
+<div align=left>
 
 android开发是个杀猪刀，入行要考虑清楚。
 
 
 **欢迎大家加我做朋友**
-
+<div align=center>
 <img src=".\Images\weixin_hxm_001.png">
-
+<div align=left>
 ---

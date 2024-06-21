@@ -105,7 +105,7 @@ pms,内存，cpu,......
 
 
 <div align=center>
-<img src=".\Images\donate.jpg">
+<img src=".\Images\donate.jpg" width=200 height=300>
 <div align=left>
 
 

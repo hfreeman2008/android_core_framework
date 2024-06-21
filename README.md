@@ -52,7 +52,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 8: System Development about Customized System Services
-[系统开发之自定义系统服务.md](./专题8_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
+[系统开发之自定义系统服务.md](./P8_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
 
 ---
 

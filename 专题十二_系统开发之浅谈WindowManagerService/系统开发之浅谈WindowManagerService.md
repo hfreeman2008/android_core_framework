@@ -461,6 +461,13 @@ final class H extends android.os.Handler {
 
 # 结束语
 
+对于android第一个核心系统服务 WindowManagerService ，至此你是不是已经有了一个比较整体的了解呢？
+
+那为什么我先介绍wms,而不是ams,pms？
+
+原因比较简单，因为wms比ams,pms简单的多。
+
+毕竟8000+行代码比20000+代码看起来是要轻松的多了。
 
 
 <img src="../Images/end_001.png">

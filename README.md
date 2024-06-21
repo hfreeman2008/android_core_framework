@@ -106,14 +106,22 @@ If this project helps you a lot and you want to support the project's developmen
 
 # Contact
 
-I graduated from Shenzhen University in 2011. I have been engaged in Android development until now。
-
-My development experience is focus on the app, framework(Java layers). And familiar with sh scripts, Android compilation, and configuration.
-
-
 - [csdn blog](https://blog.csdn.net/hfreeman2008)
 
 - [github blog](https://github.com/hfreeman2008)
+
+**Welcome everyone to add me as a friend**
+<div align=center>
+<img src=".\Images\weixin_hxm_001.png">
+<div align=left>
+
+---
+
+# About me
+
+I graduated from Shenzhen University in 2011. I have been engaged in Android development until now。
+
+My development experience is focus on the app, framework(Java layers). And familiar with sh scripts, Android compilation, and configuration.
 
 
 In college(2008)：
@@ -132,10 +140,7 @@ After working for more than ten years(2024):
 Android development is a pig killing knife, so it's important to consider it carefully when entering the industry.
 
 
-**Welcome everyone to add me as a friend**
-<div align=center>
-<img src=".\Images\weixin_hxm_001.png">
-<div align=left>
+
 ---
 
 

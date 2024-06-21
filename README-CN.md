@@ -106,11 +106,21 @@ pms,内存，cpu,......
 ---
 # Contact
 
-2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
-
 - [csdn博客](https://blog.csdn.net/hfreeman2008)
 
 - [github博客](https://github.com/hfreeman2008)
+
+**欢迎大家加我做朋友**
+<div align=center>
+<img src=".\Images\weixin_hxm_001.png">
+<div align=left>
+
+---
+
+# About me
+
+2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
+
 
 大学时的我(2011)：
 <div align=center>
@@ -125,10 +135,7 @@ pms,内存，cpu,......
 android开发是个杀猪刀，入行要考虑清楚。
 
 
-**欢迎大家加我做朋友**
-<div align=center>
-<img src=".\Images\weixin_hxm_001.png">
-<div align=left>
+
 ---
 
 

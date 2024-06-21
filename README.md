@@ -37,7 +37,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 5: Key Technologies in System Analysis - dumpsys
-[系统分析的屠龙刀之dumpsys信息.md](./专题5_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
+[系统分析的屠龙刀之dumpsys信息.md](./P5_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
 
 ---
 

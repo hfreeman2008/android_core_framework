@@ -37,8 +37,8 @@
 
 ---
 
-## 专题5: 系统分析的屠龙刀之dumpsys信息
-[系统分析的屠龙刀之dumpsys信息.md](./专题5_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
+## P5: 系统分析的屠龙刀之dumpsys信息
+[系统分析的屠龙刀之dumpsys信息.md](./P5_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
 
 ---
 

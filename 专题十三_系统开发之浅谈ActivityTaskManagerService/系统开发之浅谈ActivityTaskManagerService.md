@@ -672,6 +672,49 @@ public Point getAppTaskThumbnailSize() {
 }
 ```
 
+# 判断设备是否有最近应用的功能:
+
+```java
+/** Flag whether the device has a Recents UI */
+boolean mHasRecents;
+mHasRecents = res.getBoolean(com.android.internal.R.bool.config_hasRecents);
+```
+frameworks\base\core\res\res\values\config.xml
+
+```xml
+<!-- default device has recents property -->
+<bool name="config_hasRecents">true</bool>
+```
+android 13版本：
+
+RecentTasks.java
+```java
+mHasVisibleRecentTasks = res.getBoolean(com.android.internal.R.bool.config_hasRecents);
+```
+
+```xml
+<!-- Determines whether recent tasks are provided to the user. Default device has recents
+     property. If this is false, then the following recents config flags are ignored. -->
+<bool name="config_hasRecents">true</bool>
+
+<!-- Component name for the activity that will be presenting the Recents UI, which will receive
+     special permissions for API related to fetching and presenting recent tasks. The default
+     configuration uses Launcehr3QuickStep as default launcher and points to the corresponding
+     recents component. When using a different default launcher, change this appropriately or
+     use the default systemui implementation: com.android.systemui/.recents.RecentsActivity -->
+<string name="config_recentsComponentName" translatable="false"
+        >com.android.launcher3/com.android.quickstep.RecentsActivity</string>
+```
+
+
+```java
+
+```
+
+```java
+
+```
+
 ```java
 
 ```

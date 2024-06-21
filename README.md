@@ -42,7 +42,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 6: Key Technologies in System Analysis - traceview
-[系统分析的屠龙刀之traceview.md](./专题6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
+[系统分析的屠龙刀之traceview.md](./P6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
 ---
 

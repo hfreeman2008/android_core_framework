@@ -42,8 +42,8 @@
 
 ---
 
-## 专题6: 系统分析的屠龙刀之traceview
-[系统分析的屠龙刀之traceview.md](./专题6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
+## P6: 系统分析的屠龙刀之traceview
+[系统分析的屠龙刀之traceview.md](./P6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
 ---
 

@@ -175,23 +175,160 @@ public void onActivityManagerInternalAdded() {
 ```
 可以看出，这就是一个初始化的逻辑调用。
 ---
+# handler消息
+
+有二个handler:
+
+```java
+class MainHandler extends Handler
+class UiHandler extends Handler 
+```
+
+消息列表为：
+```java
+static final int SHOW_ERROR_UI_MSG = 1;
+static final int SHOW_NOT_RESPONDING_UI_MSG = 2;
+static final int GC_BACKGROUND_PROCESSES_MSG = 5;
+static final int WAIT_FOR_DEBUGGER_UI_MSG = 6;
+static final int SERVICE_TIMEOUT_MSG = 12;//服务超时
+static final int UPDATE_TIME_ZONE = 13;
+static final int PROC_START_TIMEOUT_MSG = 20;//进程启动超时
+static final int KILL_APPLICATION_MSG = 22;//kill应用
+static final int SHOW_STRICT_MODE_VIOLATION_UI_MSG = 26;
+static final int CHECK_EXCESSIVE_POWER_USE_MSG = 27;
+static final int CLEAR_DNS_CACHE_MSG = 28;
+static final int UPDATE_HTTP_PROXY_MSG = 29;
+static final int DISPATCH_PROCESSES_CHANGED_UI_MSG = 31;
+static final int DISPATCH_PROCESS_DIED_UI_MSG = 32;
+static final int REPORT_MEM_USAGE_MSG = 33;
+static final int UPDATE_TIME_PREFERENCE_MSG = 41;
+static final int NOTIFY_CLEARTEXT_NETWORK_MSG = 49;
+static final int POST_DUMP_HEAP_NOTIFICATION_MSG = 50;
+static final int ABORT_DUMPHEAP_MSG = 51;
+static final int SHUTDOWN_UI_AUTOMATION_CONNECTION_MSG = 56;
+static final int CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG = 57;
+static final int IDLE_UIDS_MSG = 58;
+static final int HANDLE_TRUST_STORAGE_UPDATE_MSG = 63;
+static final int SERVICE_FOREGROUND_TIMEOUT_MSG = 66;//前台服务超时
+static final int SERVICE_FOREGROUND_TIMEOUT_ANR_MSG = 67;//前台服务anr超时
+static final int PUSH_TEMP_ALLOWLIST_UI_MSG = 68;
+static final int SERVICE_FOREGROUND_CRASH_MSG = 69;//前台服务crash
+static final int DISPATCH_OOM_ADJ_OBSERVER_MSG = 70;
+static final int KILL_APP_ZYGOTE_MSG = 71;//kill应用zygote
+static final int BINDER_HEAVYHITTER_AUTOSAMPLER_TIMEOUT_MSG = 72;
+static final int WAIT_FOR_CONTENT_PROVIDER_TIMEOUT_MSG = 73;
+static final int DISPATCH_SENDING_BROADCAST_EVENT = 74;//分发发送广播整件
+static final int DISPATCH_BINDING_SERVICE_EVENT = 75;//分发bind服务
+
+static final int FIRST_BROADCAST_QUEUE_MSG = 200;
+```
+---
+
+小技巧：
+
+可以在这添加一个新的消息，来完成一个新的功能。
+
+以添加STOP_VIRTUAL_BT_SERVER_MSG消息为例：
+
+（1）定义消息：
+```java
+//停止virtual bt 服务：
+static final int STOP_VIRTUAL_BT_SERVER_MSG = 300;
+```
+
+（2）接收消息：
+```java
+final class MainHandler extends Handler {
+    public MainHandler(Looper looper) {
+        super(looper, null, true);
+    }
+
+    @Override
+    public void handleMessage(Message msg) {
+        ......
+        case STOP_VIRTUAL_BT_SERVER_MSG: {
+            Slog.w(TAG, "do STOP_VIRTUAL_BT_SERVER_MSG");
+            startVirtualBtService(false);
+        } break;
+
+.....
+
+//启动或者停止服务
+private void startVirtualBtService(boolean isStart) {
+    try {
+        Intent intent = new Intent("com.android.bluetooh.virtualbluetoohprint.START_SERVICE");
+        intent.setClassName("com.android.bluetooh.virtualbluetoohprint", "com.android.bluetooh.virtualbluetoohprint.VirtualBluetoothService");
+        if (isStart) {
+            android.util.Log.i("AMS","BluetoothSocket start VirtualBluetoothService");
+            mContext.startService(intent);
+        } else {
+            android.util.Log.i("AMS","BluetoothSocket stop VirtualBluetoothService");
+            mContext.stopService(intent);
+        }
+    } catch (Exception e) {
+        android.util.Log.e("AMS","BluetoothSocket start virtual bt service failed!");
+        //throw new Exception(e);
+    }
+}
+```
+（3）发送消息：
+```java
+
+final void finishBooting() {
+    ......
+    //使用内容监听的文式，实现字段的监听
+    mContext.getContentResolver().registerContentObserver(
+        Settings.Global.getUriFor("adjust_app_adj_vbt"), false,
+            new ContentObserver(mHandler) {
+            @Override
+            public void onChange(boolean selfChange) {
+            ......
+            if (mHandler != null){
+                mHandler.removeMessages(STOP_VIRTUAL_BT_SERVER_MSG);
+                Slog.w(TAG, "===>>sendMessageDelayed STOP_VIRTUAL_BT_SERVER_MSG");
+                Message stopVirtualBtMsg = mHandler.obtainMessage(STOP_VIRTUAL_BT_SERVER_MSG);
+                mHandler.sendMessageDelayed(stopVirtualBtMsg, 5000);
+            }
+            ......
+      }
+}  
+```
+（4）触发消息：
+因为是使用内容监听的文式，实现字段的监听，所以我们只需要修改这个字段adjust_app_adj_vbt的值就可以触发消息的发送。
+
+---
+
+# setSystemProcess 添加各种服务
+
+```java
+public void setSystemProcess() {
+        ServiceManager.addService(Context.ACTIVITY_SERVICE, this, /* allowIsolated= */ true,
+                DUMP_FLAG_PRIORITY_CRITICAL | DUMP_FLAG_PRIORITY_NORMAL | DUMP_FLAG_PROTO);
+        ServiceManager.addService(ProcessStats.SERVICE_NAME, mProcessStats);
+        ServiceManager.addService("meminfo", new MemBinder(this), /* allowIsolated= */ false,
+                DUMP_FLAG_PRIORITY_HIGH);
+        ServiceManager.addService("gfxinfo", new GraphicsBinder(this));
+        ServiceManager.addService("dbinfo", new DbBinder(this));
+        mAppProfiler.setCpuInfoService();
+        ServiceManager.addService("permission", new PermissionController(this));
+        ServiceManager.addService("processinfo", new ProcessInfoService(this));
+        ServiceManager.addService("cacheinfo", new CacheBinder(this));
+......
+}
+```
+
+---
 
 
 ```java
 
 ```
 
-```java
-
-```
 
 ```java
 
 ```
 
-```java
-
-```
 
 ```java
 

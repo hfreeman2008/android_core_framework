@@ -284,6 +284,35 @@ https://blog.csdn.net/hfreeman2008/article/details/113589077
 此部分是以前的关系图，android最新的版本是已经调整了，后面需要同步更新此部分数据。
 
 
+
+# android 13 ams和wms的关系
+
+## 1. 界面结构布局
+
+<img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/atms_whole_13.png">
+
+
+
+
+## 2.dump信息
+
+```java
+dumpsys activity activities
+```
+<img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/activity_activities.png">
+
+
+```java
+dumpsys window displays
+```
+<img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/window_displays.png">
+
+
+## 3.ams和wms关联的类图
+
+<img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/atms_ams_wms_13.png">
+
+
 # handler消息
 
 有一个handler:

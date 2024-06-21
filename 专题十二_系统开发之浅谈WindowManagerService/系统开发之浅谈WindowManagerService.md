@@ -26,11 +26,11 @@ IWindowManager sWindowManagerService;
 sWindowManagerService = IWindowManager.Stub.asInterface(ServiceManager.getService("window"));
 
 
-方式4
+方式4 (system server进程使用)
 WindowManagerInternal mWindowManagerService;
 mWindowManagerService = WindowManagerGlobal.getWindowManagerService();
 
-方式5
+方式5 (system server进程使用)
 WindowManagerInternal mWindowManagerService;
 mWindowManagerService = LocalServices.getService(WindowManagerInternal.class);
 ```

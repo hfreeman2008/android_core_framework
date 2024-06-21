@@ -72,7 +72,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 12: System Development about Talking WindowManagerService
-[系统开发之浅谈WindowManagerService.md](./专题12_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
+[系统开发之浅谈WindowManagerService.md](./P12_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
 
 ---
 

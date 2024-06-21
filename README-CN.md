@@ -17,68 +17,69 @@
 
 ---
 
-## 专题一：基于android 13的GMS认证
-[基于android 13的GMS认证.md](./专题一_基于android_13的GMS认证/基于android_13的GMS认证.md)
+## 专题1：基于android 13的GMS认证
+[基于android 13的GMS认证.md](./专题1_基于android_13的GMS认证/基于android_13的GMS认证.md)
 
 ---
 
-## 专题二: 开机速度优化
-[开机速度优化.md](./专题二_开机速度优化/开机速度优化.md)
+## 专题2: 开机速度优化
+[开机速度优化.md](./专题2_开机速度优化/开机速度优化.md)
 
 ---
 
-## 专题三: AndroidStudio不同渠道打包
-[AndroidStudio不同渠道打包.md](./专题三_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
+## 专题3: AndroidStudio不同渠道打包
+[AndroidStudio不同渠道打包.md](./专题3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
 ---
 
-## 专题四: 系统分析的屠龙刀之log日志
-[系统分析的屠龙刀之log日志.md](./专题四_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
+## 专题4: 系统分析的屠龙刀之log日志
+[系统分析的屠龙刀之log日志.md](./专题4_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
 
 ---
 
-## 专题五: 系统分析的屠龙刀之dumpsys信息
-[系统分析的屠龙刀之dumpsys信息.md](./专题五_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
+## 专题5: 系统分析的屠龙刀之dumpsys信息
+[系统分析的屠龙刀之dumpsys信息.md](./专题5_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
 
 ---
 
-## 专题六: 系统分析的屠龙刀之traceview
-[系统分析的屠龙刀之traceview.md](./专题六_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
+## 专题6: 系统分析的屠龙刀之traceview
+[系统分析的屠龙刀之traceview.md](./专题6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
 ---
 
-## 专题七: 系统分析的屠龙刀之Android Profile
-[系统分析的屠龙刀之Profile.md](./专题七_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
+## 专题7: 系统分析的屠龙刀之Android Profile
+[系统分析的屠龙刀之Profile.md](./专题7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
 ---
 
-## 专题八: 系统开发之自定义系统服务
-[系统开发之自定义系统服务.md](./专题八_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
+## 专题8: 系统开发之自定义系统服务
+[系统开发之自定义系统服务.md](./专题8_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
 
 ---
 
-## 专题九: 系统开发之系统服务初步了解
-[系统开发之系统服务初步了解.md](./专题九_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
+## 专题9: 系统开发之系统服务初步了解
+[系统开发之系统服务初步了解.md](./专题9_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
 
 ---
 
-## 专题十: 系统开发之浅谈TimeZoneDetectorService
-[系统开发之浅谈TimeZoneDetectorService.md](./专题十_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
+## 专题10: 系统开发之浅谈TimeZoneDetectorService
+[系统开发之浅谈TimeZoneDetectorService.md](./专题10_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
 
 ---
 
-## 专题十一: 系统开发之浅谈TimeDetectorService
-[系统开发之浅谈TimeDetectorService.md](./专题十一_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
+## 专题11: 系统开发之浅谈TimeDetectorService
+[系统开发之浅谈TimeDetectorService.md](./专题11_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
 
 ---
 
-## 专题十二: 系统开发之浅谈WindowManagerService
-[系统开发之浅谈WindowManagerService.md](./专题十二_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
+## 专题12: 系统开发之浅谈WindowManagerService
+[系统开发之浅谈WindowManagerService.md](./专题12_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
 
 ---
 
-## 专题十三: 系统开发之浅谈ActivityTaskManagerService
-[系统开发之浅谈ActivityTaskManagerService.md](./专题十三_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
+## 专题13: 系统开发之浅谈ActivityTaskManagerService
+[系统开发之浅谈ActivityTaskManagerService.md](./专题13_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
+
 ---
 
 ## 专题14: 系统开发之浅谈ActivityManagerService

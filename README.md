@@ -17,69 +17,71 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 1：GMS certification based on Android 13
-[基于android 13的GMS认证.md](./专题一_基于android_13的GMS认证/基于android_13的GMS认证.md)
+[基于android 13的GMS认证.md](./专题1_基于android_13的GMS认证/基于android_13的GMS认证.md)
 
 ---
 
 ## Part 2: Optimization of startup speed
-[开机速度优化.md](./专题二_开机速度优化/开机速度优化.md)
+[开机速度优化.md](./专题2_开机速度优化/开机速度优化.md)
 
 ---
 
 ## Part 3: Android Studio packaged through different channels
-[AndroidStudio不同渠道打包.md](./专题三_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
+[AndroidStudio不同渠道打包.md](./专题3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
 ---
 
 ## Part 4: Key Technologies in System Analysis - Log
-[系统分析的屠龙刀之log日志.md](./专题四_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
+[系统分析的屠龙刀之log日志.md](./专题4_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
 
 ---
 
 ## Part 5: Key Technologies in System Analysis - dumpsys
-[系统分析的屠龙刀之dumpsys信息.md](./专题五_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
+[系统分析的屠龙刀之dumpsys信息.md](./专题5_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
 
 ---
 
 ## Part 6: Key Technologies in System Analysis - traceview
-[系统分析的屠龙刀之traceview.md](./专题六_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
+[系统分析的屠龙刀之traceview.md](./专题6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
 ---
 
 ## Part 7: Key Technologies in System Analysis -Profile
-[系统分析的屠龙刀之Profile.md](./专题七_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
+[系统分析的屠龙刀之Profile.md](./专题7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
 ---
 
 ## Part 8: System Development about Customized System Services
-[系统开发之自定义系统服务.md](./专题八_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
+[系统开发之自定义系统服务.md](./专题8_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
 
 ---
 
 ## Part 9: System Development about Preliminary understanding of system services
-[系统开发之系统服务初步了解.md](./专题九_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
+[系统开发之系统服务初步了解.md](./专题9_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
 
 ---
 
 ## Part 10: System Development about Talking TimeZoneDetectorService
-[系统开发之浅谈TimeZoneDetectorService.md](./专题十_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
+[系统开发之浅谈TimeZoneDetectorService.md](./专题10_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
 
 ---
 
 ## Part 11: System Development about Talking TimeDetectorService
-[系统开发之浅谈TimeDetectorService.md](./专题十一_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
+[系统开发之浅谈TimeDetectorService.md](./专题11_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
 
 ---
 
 ## Part 12: System Development about Talking WindowManagerService
-[系统开发之浅谈WindowManagerService.md](./专题十二_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
+[系统开发之浅谈WindowManagerService.md](./专题12_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
 
 ---
 
 ## Part 13: System Development about Talking ActivityTaskManagerService
-[系统开发之浅谈ActivityTaskManagerService.md](./专题十三_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
+[系统开发之浅谈ActivityTaskManagerService.md](./专题13_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
 
 ---
+
+
 ## Part 14: System Development about Talking ActivityManagerService
 [系统开发之浅谈ActivityManagerService.md](./专题14_系统开发之浅谈ActivityManagerService/系统开发之浅谈ActivityManagerService.md)
 

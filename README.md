@@ -1,7 +1,7 @@
 # android_core_framework
 
 
-此系统文章主要是针对android framework的一些核心和关键信息做一些笔记，分享一些自己的心得，也算是对于这12年android开发的一个总结吧。
+此系统文章主要是针对android framework的一些核心和关键信息做一些笔记，同时也分享一些自己的心得和技术总结。
 
 
 当然，这也可以理解为一个android 系统工程师的一些必备技术技能。
@@ -53,13 +53,13 @@
 
 ---
 
-## 专题十: 系统开发之浅谈系统服务TimeZoneDetectorService
-[系统开发之浅谈系统服务TimeZoneDetectorService.md](./专题十_系统开发之浅谈系统服务TimeZoneDetectorService/系统开发之浅谈系统服务TimeZoneDetectorService.md)
+## 专题十: 系统开发之浅谈TimeZoneDetectorService
+[系统开发之浅谈TimeZoneDetectorService.md](./专题十_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
 
 ---
 
-## 专题十一: 系统开发之浅谈系统服务TimeDetectorService
-[系统开发之浅谈系统服务TimeDetectorService.md](./专题十一_系统开发之浅谈系统服务TimeDetectorService/系统开发之浅谈系统服务TimeDetectorService.md)
+## 专题十一: 系统开发之浅谈TimeDetectorService
+[系统开发之浅谈TimeDetectorService.md](./专题十一_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
 
 ---
 

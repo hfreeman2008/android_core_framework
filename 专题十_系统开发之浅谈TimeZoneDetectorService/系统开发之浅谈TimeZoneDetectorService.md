@@ -1,4 +1,4 @@
-# 专题十: 系统开发之浅谈系统服务TimeZoneDetectorService
+# 专题十: 系统开发之浅谈TimeZoneDetectorService
 
 <img src="flows_time.png">
 

@@ -27,7 +27,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 3: Android Studio packaged through different channels
-[AndroidStudio不同渠道打包.md](./专题3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
+[AndroidStudio不同渠道打包.md](./P3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
 ---
 

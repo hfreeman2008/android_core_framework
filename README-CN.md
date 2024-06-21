@@ -27,8 +27,8 @@
 
 ---
 
-## 专题3: AndroidStudio不同渠道打包
-[AndroidStudio不同渠道打包.md](./专题3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
+## P3: AndroidStudio不同渠道打包
+[AndroidStudio不同渠道打包.md](./P3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
 ---
 

@@ -2,7 +2,7 @@
 
 <img src="flows_atms_001.png">
 
-
+---
 # ActivityTaskManagerService 类的作用：
 ActivityTaskManagerService 类的作用就是管理activity，和activity的容器（task,stack,displays）
 
@@ -13,7 +13,7 @@ ActivityTaskManagerService 类的作用就是管理activity，和activity的容�
  * {@hide}
  */
 ```
-
+---
 
 # 获取atms的方式：
 
@@ -37,6 +37,7 @@ ActivityTaskManagerInternal mActivityTaskManagerService;
 mActivityTaskManagerService = LocalServices.getService(ActivityTaskManagerInternal.class);
 ```
 
+---
 
 # ActivityTaskManagerService调用流程
 
@@ -143,7 +144,7 @@ public ActivityTaskManager createService(ContextImpl ctx) {
             ctx.getOuterContext(), ctx.mMainThread.getHandler());
 }});
 ```
-
+---
 
 # ActivityTaskManagerService类图
 
@@ -154,7 +155,7 @@ public ActivityTaskManager createService(ContextImpl ctx) {
 
 图二，我们可以看到ActivityTaskManagerService主要是管理activity,activity 容器，wms，应用管理，状态栏，锁屏，返回手势，用户管理等。
 
-
+---
 # activity和各个contain的关系
 
 <img src="../专题十二_系统开发之浅谈WindowManagerService/ams_wms_001.png">
@@ -173,12 +174,14 @@ https://blog.csdn.net/hfreeman2008/article/details/113589077
 
 此部分是以前的关系图，android最新的版本是已经调整了，后面需要同步更新此部分数据。
 
-
+---
 # android 13 ams和wms的关系
 
 ## 1. 界面结构布局
 
 <img src="atms_whole_13.png">
+
+---
 
 ## 2.dump信息
 
@@ -194,10 +197,12 @@ dumpsys window displays
 
 <img src="window_displays.png">
 
+---
 
 ## 3.ams和wms关联的类图
 <img src="atms_ams_wms_13.png">
 
+---
 
 ## 4.ActivityRecord创建流程：
 
@@ -314,6 +319,7 @@ static class Builder {
     }
 }
 ```
+---
 
 ## 5.Task创建流程
 
@@ -470,6 +476,8 @@ Task buildInner() {
 }
 ```
 
+---
+
 # handler
 
 (1)H和对应的消息：
@@ -493,6 +501,7 @@ final class UiHandler extends Handler {
     ......    
 }
 ```
+---
 
 # dump信息
 
@@ -535,6 +544,8 @@ public static final String DUMP_RECENTS_CMD = "recents";
 public static final String DUMP_RECENTS_SHORT_CMD = "r";
 public static final String DUMP_TOP_RESUMED_ACTIVITY = "top-resumed";
 ```
+
+---
 
 # 日志开关：
 
@@ -634,6 +645,7 @@ anr ANR相关 adb shell dumpsys activity log anr 2
 打开某一个debug开关，则单独修改对应的debug开关
 最后build frameworks/base/services 模块即可
 ```
+---
 
 # 最近应用缩略图的宽,高,显示比例
 
@@ -671,6 +683,7 @@ public Point getAppTaskThumbnailSize() {
     }
 }
 ```
+---
 
 # 判断设备是否有最近应用的功能:
 
@@ -705,6 +718,7 @@ mHasVisibleRecentTasks = res.getBoolean(com.android.internal.R.bool.config_hasRe
 <string name="config_recentsComponentName" translatable="false"
         >com.android.launcher3/com.android.quickstep.RecentsActivity</string>
 ```
+---
 
 # LocalService--ActivityTaskManagerInternal
 
@@ -722,6 +736,7 @@ private void start() {
 ActivityTaskManagerInternal mLocalActivityTaskManager;
 mLocalActivityTaskManager = getLocalService(ActivityTaskManagerInternal.class);
 ```
+---
 
 # Lifecycle--publishBinderService
 
@@ -773,6 +788,8 @@ registerService(Context.ACTIVITY_TASK_SERVICE, ActivityTaskManager.class,
                 ctx.getOuterContext(), ctx.mMainThread.getHandler());
     }});
 ```
+
+---
 
 # 结束语
 

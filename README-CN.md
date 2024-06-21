@@ -130,3 +130,4 @@ android开发是个杀猪刀，入行要考虑清楚。
 
 [readme]: https://github.com/hfreeman2008/android_core_framework/blob/main/README.md
 [readme-cn]: https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md
+[title_image]: https://github.com/hfreeman2008/android_core_framework/flower_red_003.png

@@ -93,6 +93,35 @@ public boolean isKeyguardLocked() {
 public boolean isKeyguardLocked();
 ```
 
+(6)在SystemServer启动WindowManagerService服务：
+```java
+t.traceBegin("StartWindowManagerService");
+// WMS needs sensor service ready
+ConcurrentUtils.waitForFutureNoInterrupt(mSensorServiceStart, START_SENSOR_SERVICE);
+mSensorServiceStart = null;
+wm = WindowManagerService.main(context, inputManager, !mFirstBoot, mOnlyCore,
+        new PhoneWindowManager(), mActivityManagerService.mActivityTaskManager);
+ServiceManager.addService(Context.WINDOW_SERVICE, wm, /* allowIsolated= */ false,
+        DUMP_FLAG_PRIORITY_CRITICAL | DUMP_FLAG_PROTO);
+ServiceManager.addService(Context.INPUT_SERVICE, inputManager,
+        /* allowIsolated= */ false, DUMP_FLAG_PRIORITY_CRITICAL);
+t.traceEnd();
+```
+
+(7)注册WindowManagerService服务：
+
+SystemServiceRegistry.java
+
+```java
+registerService(Context.WINDOW_SERVICE, WindowManager.class,
+        new CachedServiceFetcher<WindowManager>() {
+    @Override
+    public WindowManager createService(ContextImpl ctx) {
+        return new WindowManagerImpl(ctx);
+    }});
+```
+
+
 # WindowManagerService添加view的详细分析
 
 参考：

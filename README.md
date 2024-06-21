@@ -55,70 +55,78 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
-## 专题十: 系统开发之浅谈TimeZoneDetectorService
+## Part 10: System Development about Talking TimeZoneDetectorService
 [系统开发之浅谈TimeZoneDetectorService.md](./专题十_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
 
 ---
 
-## 专题十一: 系统开发之浅谈TimeDetectorService
+## Part 11: System Development about Talking TimeDetectorService
 [系统开发之浅谈TimeDetectorService.md](./专题十一_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
 
 ---
 
-## 专题十二: 系统开发之浅谈WindowManagerService
+## Part 12: System Development about Talking WindowManagerService
 [系统开发之浅谈WindowManagerService.md](./专题十二_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
 
 ---
 
-## 专题十三: 系统开发之浅谈ActivityTaskManagerService
+## Part 13: System Development about Talking ActivityTaskManagerService
 [系统开发之浅谈ActivityTaskManagerService.md](./专题十三_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
 
 ---
 
-备注：这一系统文章参考源码以android 11为主，还有部分是其他的android 版本。
+Note: 
+
+The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.
 
 ---
+
 # Plan
-ams,pms,内存，cpu,......
+pms,memory，cpu,......
 
 
 ---
 # Donations
 
-**所谓法不轻传，道不贱卖；**
+**Knowledge is priceless！！**
 
-**千两黄金不卖道；**
-
-如果你看完这个系列的文章，觉得对你有用，或者能助你在android开发上走的更远，那么你可以扫下方二维码随意打赏我，就当是请我喝杯咖啡或是啤酒，我将不胜感激 :-)
-
+If this project helps you a lot and you want to support the project's development and maintenance of this project, feel free to scan the following QR code for donation. Your donation is highly appreciated. Thank you!
 
 <div align=center>
 <img src=".\Images\donate.png">
 <div align=left>
 
 ---
+
 # Contact
 
-2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
+I graduated from Shenzhen University in 2011. I have been engaged in Android development until now。
+
+My development experience is focus on the app, framework(Java layers). And familiar with sh scripts, Android compilation, and configuration.
+
 
 - [csdn博客](https://blog.csdn.net/hfreeman2008)
 
 - [github博客](https://github.com/hfreeman2008)
 
-大学时的我：
+
+In college(2008)：
+
 <div align=center>
 <img src=".\Images\2008年大学.png" width=500 height=600>
 <div align=left>
 
-工作十年+后的我：
+
+After working for more than ten years(2024):
+
 <div align=center>
 <img src=".\Images\2024年工作时的照片.png">
 <div align=left>
 
-android开发是个杀猪刀，入行要考虑清楚。
+Android development is a pig killing knife, so it's important to consider it carefully when entering the industry.
 
 
-**欢迎大家加我做朋友**
+**Welcome everyone to add me as a friend**
 <div align=center>
 <img src=".\Images\weixin_hxm_001.png">
 <div align=left>

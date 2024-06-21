@@ -47,7 +47,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 7: Key Technologies in System Analysis -Profile
-[系统分析的屠龙刀之Profile.md](./专题7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
+[系统分析的屠龙刀之Profile.md](./P7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
 ---
 

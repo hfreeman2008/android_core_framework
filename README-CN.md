@@ -47,8 +47,8 @@
 
 ---
 
-## 专题7: 系统分析的屠龙刀之Android Profile
-[系统分析的屠龙刀之Profile.md](./专题7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
+## P7: 系统分析的屠龙刀之Android Profile
+[系统分析的屠龙刀之Profile.md](./P7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
 ---
 

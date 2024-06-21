@@ -17,7 +17,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 1：GMS certification based on Android 13
-[基于android 13的GMS认证.md](./专题1_基于android_13的GMS认证/基于android_13的GMS认证.md)
+[基于android 13的GMS认证.md](./P1_基于android_13的GMS认证/基于android_13的GMS认证.md)
 
 ---
 

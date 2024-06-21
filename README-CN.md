@@ -17,8 +17,8 @@
 
 ---
 
-## 专题1：基于android 13的GMS认证
-[基于android 13的GMS认证.md](./专题1_基于android_13的GMS认证/基于android_13的GMS认证.md)
+## P1：基于android 13的GMS认证
+[基于android 13的GMS认证.md](./P1_基于android_13的GMS认证/基于android_13的GMS认证.md)
 
 ---
 

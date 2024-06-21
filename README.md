@@ -107,7 +107,8 @@ ams,pms,内存，cpu,......
 
 工作十三年后的我：
 
-<img src=".\Images\2024年工作时的照片.jpg">
+<img src=".\Images\2024年工作时的照片.png">
+
 
 android开发是个杀猪刀，入行要考虑清楚。
 

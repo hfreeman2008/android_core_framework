@@ -538,6 +538,314 @@ if (!app.isPersistent() || app.isolated || isNotNeedDoPersistent) {
 
 # 应用关闭log
 
+日志为：
+```java
+1118  6684 V ActivityManager: New death recipient com.android.server.am.ActivityManagerService$AppDeathRecipient@81caa92 for thread android.os.BinderProxy@f194c63
+1118  1551 V ActivityManager: Death received in com.android.server.am.ActivityManagerService$AppDeathRecipient@95fede0 for thread android.os.BinderProxy@392b899
+
+1118  1551 I ActivityManager: Process com.google.android.gms.unstable (pid 17344) has died: cch+15 CEM //此日志对应下面代码
+```
+
+对应代码：
+
+frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+
+ActivityManagerService--appDiedLocked
+
+```java
+final void appDiedLocked(ProcessRecord app, int pid, IApplicationThread thread,
+        boolean fromBinderDied, String reason) {
+......
+// Clean up already done if the process has been re-started.
+IApplicationThread appThread;
+final int setAdj = app.mState.getSetAdj();
+final int setProcState = app.mState.getSetProcState();
+if (app.getPid() == pid && (appThread = app.getThread()) != null
+        && appThread.asBinder() == thread.asBinder()) {
+    boolean doLowMem = app.getActiveInstrumentation() == null;
+    boolean doOomAdj = doLowMem;
+    if (!app.isKilledByAm()) {
+        reportUidInfoMessageLocked(TAG,
+                "Process " + app.processName + " (pid " + pid + ") has died: "
+                + ProcessList.makeOomAdjString(setAdj, true) + " "
+                + ProcessList.makeProcStateString(setProcState), app.info.uid);
+        mAppProfiler.setAllowLowerMemLevelLocked(true);
+```
+
+其中CEM 对应：
+
+frameworks/base/core/java/android/app/ActivityManager.java---procStateToString
+
+```java
+public static String procStateToString(int procState) {
+    final String procStateStr;
+    switch (procState) {
+        case ActivityManager.PROCESS_STATE_PERSISTENT:
+            procStateStr = "PER ";
+            break;
+        case ActivityManager.PROCESS_STATE_PERSISTENT_UI:
+            procStateStr = "PERU";
+            break;
+        case ActivityManager.PROCESS_STATE_TOP:
+            procStateStr = "TOP ";
+            break;
+        case ActivityManager.PROCESS_STATE_BOUND_TOP:
+            procStateStr = "BTOP";
+            break;
+        case ActivityManager.PROCESS_STATE_FOREGROUND_SERVICE:
+            procStateStr = "FGS ";
+            break;
+        case ActivityManager.PROCESS_STATE_BOUND_FOREGROUND_SERVICE:
+            procStateStr = "BFGS";
+            break;
+        case ActivityManager.PROCESS_STATE_IMPORTANT_FOREGROUND:
+            procStateStr = "IMPF";
+            break;
+        case ActivityManager.PROCESS_STATE_IMPORTANT_BACKGROUND:
+            procStateStr = "IMPB";
+            break;
+        case ActivityManager.PROCESS_STATE_TRANSIENT_BACKGROUND:
+            procStateStr = "TRNB";
+            break;
+        case ActivityManager.PROCESS_STATE_BACKUP:
+            procStateStr = "BKUP";
+            break;
+        case ActivityManager.PROCESS_STATE_SERVICE:
+            procStateStr = "SVC ";
+            break;
+        case ActivityManager.PROCESS_STATE_RECEIVER:
+            procStateStr = "RCVR";
+            break;
+        case ActivityManager.PROCESS_STATE_TOP_SLEEPING:
+            procStateStr = "TPSL";
+            break;
+        case ActivityManager.PROCESS_STATE_HEAVY_WEIGHT:
+            procStateStr = "HVY ";
+            break;
+        case ActivityManager.PROCESS_STATE_HOME:
+            procStateStr = "HOME";
+            break;
+        case ActivityManager.PROCESS_STATE_LAST_ACTIVITY:
+            procStateStr = "LAST";
+            break;
+        case ActivityManager.PROCESS_STATE_CACHED_ACTIVITY:
+            procStateStr = "CAC ";
+            break;
+        case ActivityManager.PROCESS_STATE_CACHED_ACTIVITY_CLIENT:
+            procStateStr = "CACC";
+            break;
+        case ActivityManager.PROCESS_STATE_CACHED_RECENT:
+            procStateStr = "CRE ";
+            break;
+        case ActivityManager.PROCESS_STATE_CACHED_EMPTY:
+            procStateStr = "CEM ";
+            break;
+        case ActivityManager.PROCESS_STATE_NONEXISTENT:
+            procStateStr = "NONE";
+            break;
+        default:
+            procStateStr = "??";
+            break;
+    }
+    return procStateStr;
+}
+```
+
+对应定义：
+```java
+
+/*
+ * PROCESS_STATE_* must come from frameworks/base/core/java/android/app/ProcessStateEnum.aidl.
+ * This is to make sure that Java side uses the same values as native.
+ */
+
+/** @hide Not a real process state. */
+public static final int PROCESS_STATE_UNKNOWN = ProcessStateEnum.UNKNOWN;
+
+/** @hide Process is a persistent system process. */
+public static final int PROCESS_STATE_PERSISTENT = ProcessStateEnum.PERSISTENT;
+
+/** @hide Process is a persistent system process and is doing UI. */
+public static final int PROCESS_STATE_PERSISTENT_UI = ProcessStateEnum.PERSISTENT_UI;
+
+/** @hide Process is hosting the current top activities.  Note that this covers
+ * all activities that are visible to the user. */
+@UnsupportedAppUsage
+@TestApi
+public static final int PROCESS_STATE_TOP = ProcessStateEnum.TOP;
+
+/** @hide Process is bound to a TOP app. */
+public static final int PROCESS_STATE_BOUND_TOP = ProcessStateEnum.BOUND_TOP;
+
+/** @hide Process is hosting a foreground service. */
+@UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)
+@TestApi
+public static final int PROCESS_STATE_FOREGROUND_SERVICE = ProcessStateEnum.FOREGROUND_SERVICE;
+
+/** @hide Process is hosting a foreground service due to a system binding. */
+@UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)
+public static final int PROCESS_STATE_BOUND_FOREGROUND_SERVICE =
+        ProcessStateEnum.BOUND_FOREGROUND_SERVICE;
+
+/** @hide Process is important to the user, and something they are aware of. */
+public static final int PROCESS_STATE_IMPORTANT_FOREGROUND =
+        ProcessStateEnum.IMPORTANT_FOREGROUND;
+
+/** @hide Process is important to the user, but not something they are aware of. */
+@UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)
+public static final int PROCESS_STATE_IMPORTANT_BACKGROUND =
+        ProcessStateEnum.IMPORTANT_BACKGROUND;
+
+/** @hide Process is in the background transient so we will try to keep running. */
+public static final int PROCESS_STATE_TRANSIENT_BACKGROUND =
+        ProcessStateEnum.TRANSIENT_BACKGROUND;
+
+/** @hide Process is in the background running a backup/restore operation. */
+public static final int PROCESS_STATE_BACKUP = ProcessStateEnum.BACKUP;
+
+/** @hide Process is in the background running a service.  Unlike oom_adj, this level
+ * is used for both the normal running in background state and the executing
+ * operations state. */
+@UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)
+public static final int PROCESS_STATE_SERVICE = ProcessStateEnum.SERVICE;
+
+/** @hide Process is in the background running a receiver.   Note that from the
+ * perspective of oom_adj, receivers run at a higher foreground level, but for our
+ * prioritization here that is not necessary and putting them below services means
+ * many fewer changes in some process states as they receive broadcasts. */
+@UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)
+public static final int PROCESS_STATE_RECEIVER = ProcessStateEnum.RECEIVER;
+
+/** @hide Same as {@link #PROCESS_STATE_TOP} but while device is sleeping. */
+public static final int PROCESS_STATE_TOP_SLEEPING = ProcessStateEnum.TOP_SLEEPING;
+
+/** @hide Process is in the background, but it can't restore its state so we want
+ * to try to avoid killing it. */
+public static final int PROCESS_STATE_HEAVY_WEIGHT = ProcessStateEnum.HEAVY_WEIGHT;
+
+/** @hide Process is in the background but hosts the home activity. */
+@UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)
+public static final int PROCESS_STATE_HOME = ProcessStateEnum.HOME;
+
+/** @hide Process is in the background but hosts the last shown activity. */
+public static final int PROCESS_STATE_LAST_ACTIVITY = ProcessStateEnum.LAST_ACTIVITY;
+
+/** @hide Process is being cached for later use and contains activities. */
+@UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)
+public static final int PROCESS_STATE_CACHED_ACTIVITY = ProcessStateEnum.CACHED_ACTIVITY;
+
+/** @hide Process is being cached for later use and is a client of another cached
+ * process that contains activities. */
+public static final int PROCESS_STATE_CACHED_ACTIVITY_CLIENT =
+        ProcessStateEnum.CACHED_ACTIVITY_CLIENT;
+
+/** @hide Process is being cached for later use and has an activity that corresponds
+ * to an existing recent task. */
+public static final int PROCESS_STATE_CACHED_RECENT = ProcessStateEnum.CACHED_RECENT;
+
+/** @hide Process is being cached for later use and is empty. */
+public static final int PROCESS_STATE_CACHED_EMPTY = ProcessStateEnum.CACHED_EMPTY;
+
+/** @hide Process does not exist. */
+public static final int PROCESS_STATE_NONEXISTENT = ProcessStateEnum.NONEXISTENT;
+```
+
+对应于aidl：
+frameworks/base/core/java/android/app/ProcessStateEnum.aidl
+
+
+```java
+/**
+ * Defines the PROCESS_STATE_* values used by ActivityManager.
+ * These values are shared by Java and native side.
+ * {@hide}
+ */
+@Backing(type="int")
+enum ProcessStateEnum {
+    /** @hide Not a real process state. */
+    UNKNOWN = -1,
+
+    /** @hide Process is a persistent system process. */
+    PERSISTENT = 0,
+
+    /** @hide Process is a persistent system process and is doing UI. */
+    PERSISTENT_UI = 1,
+
+    /** @hide Process is hosting the current top activities.  Note that this covers
+     * all activities that are visible to the user. */
+    TOP = 2,
+
+    /** @hide Process is bound to a TOP app. */
+    BOUND_TOP = 3,
+
+    /** @hide Process is hosting a foreground service. */
+    FOREGROUND_SERVICE = 4,
+
+    /** @hide Process is hosting a foreground service due to a system binding. */
+    BOUND_FOREGROUND_SERVICE = 5,
+
+    /** @hide Process is important to the user, and something they are aware of. */
+    IMPORTANT_FOREGROUND = 6,
+
+    /** @hide Process is important to the user, but not something they are aware of. */
+    IMPORTANT_BACKGROUND = 7,
+
+    /** @hide Process is in the background transient so we will try to keep running. */
+    TRANSIENT_BACKGROUND = 8,
+
+    /** @hide Process is in the background running a backup/restore operation. */
+    BACKUP = 9,
+
+    /** @hide Process is in the background running a service.  Unlike oom_adj, this level
+     * is used for both the normal running in background state and the executing
+     * operations state. */
+    SERVICE = 10,
+
+    /** @hide Process is in the background running a receiver.   Note that from the
+     * perspective of oom_adj, receivers run at a higher foreground level, but for our
+     * prioritization here that is not necessary and putting them below services means
+     * many fewer changes in some process states as they receive broadcasts. */
+    RECEIVER = 11,
+
+    /** @hide Same as {@link #PROCESS_STATE_TOP} but while device is sleeping. */
+    TOP_SLEEPING = 12,
+
+    /** @hide Process is in the background, but it can't restore its state so we want
+     * to try to avoid killing it. */
+    HEAVY_WEIGHT = 13,
+
+    /** @hide Process is in the background but hosts the home activity. */
+    HOME = 14,
+
+    /** @hide Process is in the background but hosts the last shown activity. */
+    LAST_ACTIVITY = 15,
+
+    /** @hide Process is being cached for later use and contains activities. */
+    CACHED_ACTIVITY = 16,
+
+    /** @hide Process is being cached for later use and is a client of another cached
+     * process that contains activities. */
+    CACHED_ACTIVITY_CLIENT = 17,
+
+    /** @hide Process is being cached for later use and has an activity that corresponds
+     * to an existing recent task. */
+    CACHED_RECENT = 18,
+
+    /** @hide Process is being cached for later use and is empty. */
+    CACHED_EMPTY = 19,
+
+    /** @hide Process does not exist. */
+    NONEXISTENT = 20,
+}
+
+```
+---
+
+# LocalService--ActivityManagerInternal
+
+```java
+
+```
 
 ```java
 
@@ -548,18 +856,11 @@ if (!app.isPersistent() || app.isolated || isNotNeedDoPersistent) {
 
 ```
 
-```java
-
-```
-
 
 ```java
 
 ```
 
-```java
-
-```
 
 
 ---

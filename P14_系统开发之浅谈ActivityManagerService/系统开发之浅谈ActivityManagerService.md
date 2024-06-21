@@ -844,28 +844,82 @@ enum ProcessStateEnum {
 # LocalService--ActivityManagerInternal
 
 ```java
-
+ActivityManagerInternal mInternal;
+mInternal = new LocalService();
+LocalServices.addService(ActivityManagerInternal.class, mInternal);
 ```
+
+system server进程引用：
 
 ```java
-
+private ActivityManagerInternal mActivityManagerInternal;
+mActivityManagerInternal = LocalServices.getService(ActivityManagerInternal.class);
+mActivityManagerInternal.isSystemReady()
 ```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-
 ---
 
+# Lifecycle
+
+```java
+
+public static final class Lifecycle extends SystemService {
+    private final ActivityManagerService mService;
+    private static ActivityTaskManagerService sAtm;
+
+    public Lifecycle(Context context) {
+        super(context);
+        mService = new ActivityManagerService(context, sAtm);
+    }
+
+    public static ActivityManagerService startService(
+            SystemServiceManager ssm, ActivityTaskManagerService atm) {
+        sAtm = atm;
+        return ssm.startService(ActivityManagerService.Lifecycle.class).getService();
+    }
+
+    @Override
+    public void onStart() {
+        mService.start();
+    }
+
+    @Override
+    public void onBootPhase(int phase) {
+        mService.mBootPhase = phase;
+        if (phase == PHASE_SYSTEM_SERVICES_READY) {
+            mService.mBatteryStatsService.systemServicesReady();
+            mService.mServices.systemServicesReady();
+        } else if (phase == PHASE_ACTIVITY_MANAGER_READY) {
+            mService.startBroadcastObservers();
+        } else if (phase == PHASE_THIRD_PARTY_APPS_CAN_START) {
+            mService.mPackageWatchdog.onPackagesReady();
+        }
+    }
+
+    @Override
+    public void onCleanupUser(int userId) {
+        mService.mBatteryStatsService.onCleanupUser(userId);
+    }
+
+    public ActivityManagerService getService() {
+        return mService;
+    }
+}
+```
+
+注册ActivityManagerService到servicemanager：
+
+frameworks\base\core\java\android\app\SystemServiceRegistry.java
+
+```java
+registerService(Context.ACTIVITY_SERVICE, ActivityManager.class,
+        new CachedServiceFetcher<ActivityManager>() {
+    @Override
+    public ActivityManager createService(ContextImpl ctx) {
+        return new ActivityManager(ctx.getOuterContext(), ctx.mMainThread.getHandler());
+    }});
+```
 ---
+
 
 # 结束语
 

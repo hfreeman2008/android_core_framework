@@ -143,8 +143,51 @@ registerService(Context.ACTIVITY_SERVICE, ActivityManager.class,
 
 <img src="ams_class.png">
 
+图二 ActivityManagerService类图
+
+图二，我们可以看到ActivityManagerService就是和四大组件的管理（activity,activity的容器，wms，广播，content provider,service）,以及电池电量，app应用管理，oom内存管理等各个方面的一个综合管理体。
+
+其代码将近2万行，变量，方法众多，我们全部研究是不现实的，也没有必要，但是我们可以针对性的了解，方便我们做对应的开发。
 ---
 
+# 探究mActivityTaskManager
+
+如我们想研究mActivityTaskManager,探究mActivityTaskManager是如何调用的，我们可以直接搜索mActivityTaskManager：
+
+```java
+public ActivityTaskManagerService mActivityTaskManager;
+
+private void start() {
+    .....
+    mActivityTaskManager.onActivityManagerInternalAdded();
+}
+
+```
+查看ActivityTaskManagerService.onActivityManagerInternalAdded：
+
+```java
+public void onActivityManagerInternalAdded() {
+    synchronized (mGlobalLock) {
+        mAmInternal = LocalServices.getService(ActivityManagerInternal.class);
+        mUgmInternal = LocalServices.getService(UriGrantsManagerInternal.class);
+    }
+}
+```
+可以看出，这就是一个初始化的逻辑调用。
+---
+
+
+```java
+
+```
+
+```java
+
+```
+
+```java
+
+```
 
 ```java
 

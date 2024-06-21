@@ -139,7 +139,11 @@ registerService(Context.ACTIVITY_SERVICE, ActivityManager.class,
 ```
 ---
 
+# ActivityManagerService类图
 
+<img src="ams_class.png">
+
+---
 
 
 ```java

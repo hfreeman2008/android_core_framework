@@ -536,6 +536,108 @@ public static final String DUMP_RECENTS_SHORT_CMD = "r";
 public static final String DUMP_TOP_RESUMED_ACTIVITY = "top-resumed";
 ```
 
+# 日志开关：
+
+frameworks/base/services/core/java/com/android/server/wm/ActivityTaskManagerDebugConfig.java
+
+```java
+static final boolean TAG_WITH_CLASS_NAME = false;
+public static boolean APPEND_CATEGORY_NAME = false;
+static final String TAG_ATM = "ActivityTaskManager";
+// Enable all debug log categories.
+public static boolean DEBUG_ALL = false;
+
+// Enable all debug log categories for activities.
+public static boolean DEBUG_ALL_ACTIVITIES = DEBUG_ALL || false;
+
+public static boolean DEBUG_RECENTS = DEBUG_ALL || false;
+public static boolean DEBUG_RECENTS_TRIM_TASKS = DEBUG_RECENTS || false;
+public static boolean DEBUG_ROOT_TASK = DEBUG_ALL || false;
+public static boolean DEBUG_SWITCH = DEBUG_ALL || false;
+public static boolean DEBUG_TRANSITION = DEBUG_ALL || false;
+public static boolean DEBUG_VISIBILITY = DEBUG_ALL || false;
+public static boolean DEBUG_APP = DEBUG_ALL_ACTIVITIES || false;
+public static boolean DEBUG_IDLE = DEBUG_ALL_ACTIVITIES || false;
+public static boolean DEBUG_RELEASE = DEBUG_ALL_ACTIVITIES || false;
+public static boolean DEBUG_USER_LEAVING = DEBUG_ALL || false;
+public static boolean DEBUG_PERMISSIONS_REVIEW = DEBUG_ALL || false;
+public static boolean DEBUG_RESULTS = DEBUG_ALL || false;
+public static boolean DEBUG_ACTIVITY_STARTS = DEBUG_ALL || false;
+public static boolean DEBUG_CLEANUP = DEBUG_ALL || false;
+public static boolean DEBUG_METRICS = DEBUG_ALL || false;
+
+```
+frameworks/base/services/core/java/com/android/server/am/ActivityManagerDebugConfig.java
+```java
+public static boolean APPEND_CATEGORY_NAME = false;
+
+// Default log tag for the activity manager package.
+static final String TAG_AM = "ActivityManager";
+
+// Enable all debug log categories.
+public static boolean DEBUG_ALL = false;
+
+// Available log categories in the activity manager package.
+public static boolean DEBUG_ANR = false;
+public static boolean DEBUG_BACKGROUND_CHECK = DEBUG_ALL || false;
+public static boolean DEBUG_BACKUP = DEBUG_ALL || false;
+public static boolean DEBUG_BROADCAST = DEBUG_ALL || false;
+public static boolean DEBUG_BROADCAST_BACKGROUND = DEBUG_BROADCAST || false;
+public static boolean DEBUG_BROADCAST_LIGHT = DEBUG_BROADCAST || false;
+public static boolean DEBUG_BROADCAST_DEFERRAL = DEBUG_BROADCAST || false;
+public static boolean DEBUG_COMPACTION = DEBUG_ALL || false;
+public static boolean DEBUG_FREEZER = DEBUG_ALL || false;
+public static boolean DEBUG_LRU = DEBUG_ALL || false;
+public static boolean DEBUG_MU = DEBUG_ALL || false;
+public static boolean DEBUG_NETWORK = DEBUG_ALL || false;
+public static boolean DEBUG_OOM_ADJ = DEBUG_ALL || false;
+public static boolean DEBUG_OOM_ADJ_REASON = DEBUG_ALL || false;
+public static boolean DEBUG_POWER = DEBUG_ALL || false;
+public static boolean DEBUG_POWER_QUICK = DEBUG_POWER || false;
+public static boolean DEBUG_PROCESS_OBSERVERS = DEBUG_ALL || false;
+public static boolean DEBUG_PROCESSES = DEBUG_ALL || false;
+public static boolean DEBUG_PROVIDER = DEBUG_ALL || false;
+public static boolean DEBUG_PSS = DEBUG_ALL || false;
+public static boolean DEBUG_SERVICE = DEBUG_ALL || false;
+public static boolean DEBUG_FOREGROUND_SERVICE = DEBUG_ALL || false;
+public static boolean DEBUG_SERVICE_EXECUTING = DEBUG_ALL || false;
+public static boolean DEBUG_UID_OBSERVERS = DEBUG_ALL || false;
+public static boolean DEBUG_USAGE_STATS = DEBUG_ALL || false;
+public static boolean DEBUG_PERMISSIONS_REVIEW = DEBUG_ALL || false;
+public static boolean DEBUG_ALLOWLISTS = DEBUG_ALL || false;
+```
+
+
+备注：
+```java
+[FAQ20338] 如何打开ActivityManagerService的debug开关？
+命令行动态打开
+
+命令行
+x 打开所有的开关 adb shell dumpsys activity log x on
+
+a activity相关 adb shell dumpsys activity log a on
+da 查看OOM_ADJ等，一般用于Debug Memory问题时用 adb shell dumpsys activity log da on
+br Broadcast相关 adb shell dumpsys activity log br on
+s Service相关 adb shell dumpsys activity log s on
+cp ContentProvider相关 adb shell dumpsys activity log cp on
+p Permission相关 adb shell dumpsys activity log p on
+lp 打开某个进程的looper adb shell dumpsys activity log lp 进程名
+anr ANR相关 adb shell dumpsys activity log anr 2
+
+修改代码的方式打开(一般用于分析开机慢或进入launcher慢等问题)
+/frameworks/base/services/core/java/com/android/server/am/ActivityManagerDebugConfig.java
+打开所有的：
+46 /// M: Dynamically enable AMS logs @{
+47 // Enable all debug log categories.
+48 static boolean DEBUG_ALL = false; //change to true
+打开某一个debug开关，则单独修改对应的debug开关
+最后build frameworks/base/services 模块即可
+```
+
+```java
+
+```
 
 ```java
 

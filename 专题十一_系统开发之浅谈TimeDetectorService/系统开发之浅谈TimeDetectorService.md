@@ -3,6 +3,7 @@
 
 <img src="flows_time_001.png">
 
+---
 
 # TimeDetectorService 时间识别服务是做什么的
 
@@ -20,6 +21,7 @@
  * implementation to deal with the logic around time detection.
  */
 ```
+---
 
 # TimeDetectorService整体调用流程
 
@@ -132,6 +134,7 @@ public void suggestNetworkTime(@NonNull NetworkTimeSuggestion timeSignal) {
     mHandler.post(() -> mTimeDetectorStrategy.suggestNetworkTime(timeSignal));
 }
 ```
+---
 
 # TimeDetectorService类图
 
@@ -154,6 +157,7 @@ public void suggestNetworkTime(@NonNull NetworkTimeSuggestion timeSignal) {
 @Origin int ORIGIN_EXTERNAL = 5;
 ```
 
+---
 
 # Dump信息：
 
@@ -193,7 +197,7 @@ TimeDetectorStrategy:
     {Empty}
 ```
 
-
+---
 
 # 结束语
 

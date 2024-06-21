@@ -2,10 +2,12 @@
 
 <img src="flows_time.png">
 
-
+---
 
 # 问题描述：
 客户有一个关闭通话功能的需求，根据MTK的配置方法关闭了大概8个宏开关后，实现通话功能，但是导致插好sim卡开机后，时间和时区不能更新的问题。
+
+---
 
 # 问题分析：
 (1).MTK的日志分析，可以确认为时间已经更新，但是时区确实是没有更新
@@ -103,7 +105,7 @@ public boolean isAutoDetectionSupported() {
 }
 ```
 
-
+---
 
 # 问题解决
 
@@ -111,10 +113,13 @@ public boolean isAutoDetectionSupported() {
 
 我们针对关闭通话的情况，进行适配处理一下，强行更新时区或强行修改返回类型都可以。
 
+---
 
 # TimeZoneDetectorService的作用：
 
 TimeZoneDetectorService类主要是用来更新时区的。
+
+---
 
 # 获取TimeZoneDetectorService的方式：
 
@@ -123,6 +128,7 @@ TimeZoneDetectorService类主要是用来更新时区的。
 TimeZoneDetector timeZoneDetector = getActivity().getSystemService(TimeZoneDetector.class);
 ```
 
+---
 
 # TimeZoneDetectorService整体调用流程
 
@@ -212,7 +218,7 @@ public synchronized boolean suggestManualTimeZone(
 }
 ```
 
-
+---
 
 # TimeZoneDetectorService类图
 
@@ -276,6 +282,7 @@ private void doAutoTimeZoneDetection(
 
 完美闭环！
 
+---
 
 # 参考资料
 
@@ -287,7 +294,7 @@ https://blog.csdn.net/hfreeman2008/article/details/135871074
 
 https://blog.csdn.net/hfreeman2008/article/details/135895224
 
-
+---
 
 # 结束语
 

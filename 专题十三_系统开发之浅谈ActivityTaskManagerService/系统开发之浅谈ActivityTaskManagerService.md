@@ -145,6 +145,43 @@ public ActivityTaskManager createService(ContextImpl ctx) {
 ```
 
 
+# ActivityTaskManagerService类图
+
+<img src="atms_class.png">
+
+图二 ActivityTaskManagerService类图
+
+
+图二，我们可以看到ActivityTaskManagerService主要是管理activity,activity 容器，wms，应用管理，状态栏，锁屏，返回手势，用户管理等。
+
+
+# activity和各个contain的关系
+
+<img src="../专题十二_系统开发之浅谈WindowManagerService/ams_wms_001.png">
+
+
+这部分参考：
+
+[android开发浅谈之ActivityDisplay/ActivityStack/TaskRecord/ActivityRecord](https://blog.csdn.net/hfreeman2008/article/details/113309272)
+
+https://blog.csdn.net/hfreeman2008/article/details/113309272
+
+[android开发浅谈之WindowToken,AppWindowToken,Task,TaskStack和DisplayContent](https://blog.csdn.net/hfreeman2008/article/details/113589077)
+
+https://blog.csdn.net/hfreeman2008/article/details/113589077
+
+
+此部分是以前的关系图，android最新的版本是已经调整了，后面需要同步更新此部分数据。
+
+
+# android 13 ams和wms的关系
+
+## 1. 界面结构布局
+
+<img src="atms_whole_13.png">
+
+
+
 ```java
 
 ```
@@ -159,6 +196,20 @@ public ActivityTaskManager createService(ContextImpl ctx) {
 
 ```
 
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
 
 # 结束语
 

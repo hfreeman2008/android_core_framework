@@ -83,7 +83,7 @@ Of course, these can also be understood as some essential technical skills for a
 
 
 ## Part 14: System Development about Talking ActivityManagerService
-[系统开发之浅谈ActivityManagerService.md](./专题14_系统开发之浅谈ActivityManagerService/系统开发之浅谈ActivityManagerService.md)
+[系统开发之浅谈ActivityManagerService.md](./P14_系统开发之浅谈ActivityManagerService/系统开发之浅谈ActivityManagerService.md)
 
 ---
 

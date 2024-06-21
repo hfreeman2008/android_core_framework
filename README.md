@@ -1,54 +1,56 @@
-# android_core_framework
+# android core and key information of framework
 
 
-此系统文章主要是针对android framework的一些核心和关键信息做一些笔记，同时也分享一些自己的心得和技术总结。
+These articles mainly focuses on some core and key information of the Android framework.
 
+And these articles are considered personal insights and technical summaries.
 
-当然，这也可以理解为一个android 系统工程师的一些必备技术技能。
+Of course, these can also be understood as some essential technical skills for an Android system engineer.
+
 
 ---
 
-## 专题一：基于android 13的GMS认证
+## Part 1：GMS certification based on Android 13
 [基于android 13的GMS认证.md](./专题一_基于android_13的GMS认证/基于android_13的GMS认证.md)
 
 ---
 
-## 专题二: 开机速度优化
+## Part 2: Optimization of startup speed
 [开机速度优化.md](./专题二_开机速度优化/开机速度优化.md)
 
 ---
 
-## 专题三: AndroidStudio不同渠道打包
+## Part 3: Android Studio packaged through different channels
 [AndroidStudio不同渠道打包.md](./专题三_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
 ---
 
-## 专题四: 系统分析的屠龙刀之log日志
+## Part 4: Key Technologies in System Analysis - Log
 [系统分析的屠龙刀之log日志.md](./专题四_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
 
 ---
 
-## 专题五: 系统分析的屠龙刀之dumpsys信息
+## Part 5: Key Technologies in System Analysis - dumpsys
 [系统分析的屠龙刀之dumpsys信息.md](./专题五_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
 
 ---
 
-## 专题六: 系统分析的屠龙刀之traceview
+## Part 6: Key Technologies in System Analysis - traceview
 [系统分析的屠龙刀之traceview.md](./专题六_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
 ---
 
-## 专题七: 系统分析的屠龙刀之Android Profile
+## Part 7: Key Technologies in System Analysis -Profile
 [系统分析的屠龙刀之Profile.md](./专题七_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
 ---
 
-## 专题八: 系统开发之自定义系统服务
+## Part 8: System Development about Customized System Services
 [系统开发之自定义系统服务.md](./专题八_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
 
 ---
 
-## 专题九: 系统开发之系统服务初步了解
+## Part 9: System Development about Preliminary understanding of system services
 [系统开发之系统服务初步了解.md](./专题九_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
 
 ---

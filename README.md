@@ -22,7 +22,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 2: Optimization of startup speed
-[开机速度优化.md](./专题2_开机速度优化/开机速度优化.md)
+[开机速度优化.md](./P2_开机速度优化/开机速度优化.md)
 
 ---
 

@@ -1,6 +1,6 @@
 # P10: 系统开发之浅谈TimeZoneDetectorService
 
-<img src="flows_time.png">
+<img src="../flower/flows_time.png">
 
 ---
 

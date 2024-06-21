@@ -1,7 +1,7 @@
 
 # P11: 系统开发之浅谈TimeDetectorService
 
-<img src="flows_time_001.png">
+<img src="../flower/flows_time_001.png">
 
 ---
 

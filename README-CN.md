@@ -99,13 +99,13 @@ ams,pms,内存，cpu,......
 
 2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发。主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
 
-[csdn博客](https://blog.csdn.net/hfreeman2008)
+- [csdn博客](https://blog.csdn.net/hfreeman2008)
 
-[github博客](https://github.com/hfreeman2008)
+- [github博客](https://github.com/hfreeman2008)
 
 大学时的我：
 <div align=center>
-<img src=".\Images\2008年大学.png">
+<img src=".\Images\2008年大学.png" width=500 height=600>
 <div align=left>
 
 工作十三年后的我：

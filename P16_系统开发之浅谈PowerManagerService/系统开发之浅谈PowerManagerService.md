@@ -335,16 +335,179 @@ mLocalPowerManager = LocalServices.getService(PowerManagerInternal.class);
 
 ---
 
-
+# 相关的系统属性
 
 ```java
+adb shell getprop sys.boot.reason      设备启动的原因
 
+private static final String REASON_SHUTDOWN = "shutdown";
+private static final String REASON_REBOOT = "reboot";
+private static final String REASON_USERREQUESTED = "shutdown,userrequested";
+private static final String REASON_THERMAL_SHUTDOWN = "shutdown,thermal";
+private static final String REASON_LOW_BATTERY = "shutdown,battery";
+private static final String REASON_BATTERY_THERMAL_STATE = "shutdown,thermal,battery";
+```
+
+
+
+---
+
+# 低电量关机或重启
+
+```java
+shutdownOrRebootInternal
+lowLevelShutdown
+lowLevelReboot
+```
+
+---
+
+# native方法--nativeSetInteractive为例:
+
+定义nativeSetInteractive:
+```java
+private static native void nativeSetInteractive(boolean enable);
+```
+
+调用:
+```java
+public PowerManagerService(Context context) {
+    ...........
+    mNativeWrapper.nativeSetInteractive(true);
+}
+
+public void nativeSetInteractive(boolean enable) {
+    PowerManagerService.nativeSetInteractive(enable);
+}
+```
+
+frameworks\base\services\core\jni\com_android_server_power_PowerManagerService.cpp
+```java
+static void nativeSetInteractive(JNIEnv* /* env */, jclass /* clazz */, jboolean enable) {
+    std::unique_lock<std::mutex> lock(gPowerHalMutex);
+    switch (connectPowerHalLocked()) {
+        case HalVersion::NONE:
+            return;
+        case HalVersion::HIDL_1_0:
+            FALLTHROUGH_INTENDED;
+        case HalVersion::HIDL_1_1: {
+            android::base::Timer t;
+            sp<IPowerV1_0> handle = gPowerHalHidlV1_0_;
+            lock.unlock();
+            auto ret = handle->setInteractive(enable);
+            processPowerHalReturn(ret.isOk(), "setInteractive");
+            if (t.duration() > 20ms) {
+                ALOGD("Excessive delay in setInteractive(%s) while turning screen %s",
+                      enable ? "true" : "false", enable ? "on" : "off");
+            }
+            return;
+        }
+        case HalVersion::AIDL: {
+            sp<IPowerAidl> handle = gPowerHalAidl_;
+            lock.unlock();
+            setPowerModeWithHandle(handle, Mode::INTERACTIVE, enable);
+            return;
+        }
+        default: {
+            ALOGE("Unknown power HAL state");
+            return;
+        }
+    }
+}
+
+
+
+static const JNINativeMethod gPowerManagerServiceMethods[] = {
+        /* name, signature, funcPtr */
+        {"nativeInit", "()V", (void*)nativeInit},
+        {"nativeAcquireSuspendBlocker", "(Ljava/lang/String;)V",
+         (void*)nativeAcquireSuspendBlocker},
+        {"nativeForceSuspend", "()Z", (void*)nativeForceSuspend},
+        {"nativeReleaseSuspendBlocker", "(Ljava/lang/String;)V",
+         (void*)nativeReleaseSuspendBlocker},
+        {"nativeSetInteractive", "(Z)V", (void*)nativeSetInteractive},
+```
+
+注册方法
+
+```java
+int register_android_server_PowerManagerService(JNIEnv* env) {
+    int res = jniRegisterNativeMethods(env, "com/android/server/power/PowerManagerService",
+            gPowerManagerServiceMethods, NELEM(gPowerManagerServiceMethods));
+    (void) res;  // Faked use when LOG_NDEBUG.
+    LOG_FATAL_IF(res < 0, "Unable to register native methods.");
+
+    // Callbacks
+
+    jclass clazz;
+    FIND_CLASS(clazz, "com/android/server/power/PowerManagerService");
+
+    GET_METHOD_ID(gPowerManagerServiceClassInfo.userActivityFromNative, clazz,
+            "userActivityFromNative", "(JII)V");
+
+    // Initialize
+    for (int i = 0; i <= USER_ACTIVITY_EVENT_LAST; i++) {
+        gLastEventTime[i] = LLONG_MIN;
+    }
+    gPowerManagerServiceObj = NULL;
+    return 0;
+}
+```
+
+---
+
+# 按电源键快速亮灭屏
+
+```java
+private boolean wakeUpNoUpdateLocked(long eventTime, @WakeReason int reason, String details,
+int reasonUid, String opPackageName, int opUid) {
+    if (DEBUG_SPEW) {
+        Slog.d(TAG, "wakeUpNoUpdateLocked: eventTime=" + eventTime + ", uid=" + reasonUid);
+    }
+
+    if (eventTime < mLastSleepTime || mWakefulness == WAKEFULNESS_AWAKE
+    || !mBootCompleted || !mSystemReady || mForceSuspendActive) {
+        return false;
+    }
+
+    Trace.asyncTraceBegin(Trace.TRACE_TAG_POWER, TRACE_SCREEN_ON, 0);
+
+    Trace.traceBegin(Trace.TRACE_TAG_POWER, "wakeUp");
+    try {
+        Slog.i(TAG, "Waking up from "
+        + PowerManagerInternal.wakefulnessToString(mWakefulness)
+        + " (uid=" + reasonUid
+        + ", reason=" + PowerManager.wakeReasonToString(reason)
+        + ", details=" + details
+        + ")...");
+        //optimize screen on/off time
+        if("android.policy:POWER".equals(details)) {
+            setPerfLock();
+        }
+        //optimize screen on/off time
+
+        //optimize screen on/off time
+        private void setPerfLock() {
+            int aBoostTimeOut = 300;
+            int aBoostParamVal[] = {0x40C00000, 0x1, 0x40804000, 0xFFF, 0x40804100, 0xFFF, 0x40800000, 0xFFF, 0x40800100, 0xFFF};
+            mPerf = new BoostFramework();
+            if(mPerf != null) {
+                mPerf.perfLockAcquire(aBoostTimeOut, aBoostParamVal);
+            }
+        }
+        //optimize screen on/off time
 ```
 
 
 ```java
 
 ```
+
+
+```java
+
+```
+
 
 ```java
 

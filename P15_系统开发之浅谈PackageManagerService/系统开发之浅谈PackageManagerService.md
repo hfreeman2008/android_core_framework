@@ -173,29 +173,85 @@ t.traceEnd();
 
 ---
 
+# handler消息
 
-
-```java
-
-```
+有一个handler:
 
 ```java
-
+Handler mHandler;
 ```
 
+消息列表为：
 
 ```java
-
+static final int SEND_PENDING_BROADCAST = 1;
+static final int INIT_COPY = 5;//复制
+static final int POST_INSTALL = 9;//安装前
+static final int WRITE_SETTINGS = 13;//写settings
+static final int WRITE_PACKAGE_RESTRICTIONS = 14;
+static final int PACKAGE_VERIFIED = 15;//应用较验
+static final int CHECK_PENDING_VERIFICATION = 16;
+// public static final int UNUSED = 17;
+// public static final int UNUSED = 18;
+static final int WRITE_PACKAGE_LIST = 19;//写应用列表
+static final int INSTANT_APP_RESOLUTION_PHASE_TWO = 20;
+static final int ENABLE_ROLLBACK_STATUS = 21;
+static final int ENABLE_ROLLBACK_TIMEOUT = 22;
+static final int DEFERRED_NO_KILL_POST_DELETE = 23;
+static final int DEFERRED_NO_KILL_INSTALL_OBSERVER = 24;
+static final int INTEGRITY_VERIFICATION_COMPLETE = 25;//完整性较验结束
+static final int CHECK_PENDING_INTEGRITY_VERIFICATION = 26;
+static final int DOMAIN_VERIFICATION = 27;
+static final int PRUNE_UNUSED_STATIC_SHARED_LIBRARIES = 28;
+static final int DEFERRED_PENDING_KILL_INSTALL_OBSERVER = 29;
+static final int DEFERRED_NO_KILL_POST_DELETE_DELAY_MS = 3 * 1000;
+private static final int DEFERRED_NO_KILL_INSTALL_OBSERVER_DELAY_MS = 500;
+private static final int DEFERRED_PENDING_KILL_INSTALL_OBSERVER_DELAY_MS = 1000;
 ```
 
+
+---
+
+# dump信息
 
 ```java
-
+adb shell dumpsys package
 ```
+
+---
+
+# 日志开关
 
 ```java
-
+public static boolean DEBUG_SETTINGS = false;
+public static boolean DEBUG_PREFERRED = false;
+public static boolean DEBUG_UPGRADE = false;
+public static boolean DEBUG_DOMAIN_VERIFICATION = false;
+public static boolean DEBUG_BACKUP = false;
+public static boolean DEBUG_INSTALL = false;
+public static boolean DEBUG_REMOVE = false;
+public static boolean DEBUG_BROADCASTS = false;
+public static boolean DEBUG_PACKAGE_INFO = false;
+public static boolean DEBUG_INTENT_MATCHING = false;
+public static boolean DEBUG_PACKAGE_SCANNING = false;
+public static boolean DEBUG_VERIFY = false;
+public static boolean DEBUG_PERMISSIONS = false;
+public static boolean DEBUG_SHARED_LIBRARIES = false;
+public static final boolean DEBUG_COMPRESSION = Build.IS_DEBUGGABLE;
+public static final boolean TRACE_SNAPSHOTS = false;
+private static final boolean DEBUG_PER_UID_READ_TIMEOUTS = false;
+//Not report ART metrics to statsd after first flash boot
+public static boolean DEBUG_ART_STATSLOG = SystemProperties.getBoolean(
+        "persist.sys.pm.art.statslog", false);
+// Debug output for dexopting. This is shared between PackageManagerService, OtaDexoptService
+// and PackageDexOptimizer. All these classes have their own flag to allow switching a single
+// user, but by default initialize to this.
+public static boolean DEBUG_DEXOPT = false;
+public static boolean DEBUG_ABI_SELECTION = false;
+public static boolean DEBUG_INSTANT = Build.IS_DEBUGGABLE;
+public static boolean DEBUG_APP_DATA = false;
 ```
+
 
 ---
 

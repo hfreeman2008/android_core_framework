@@ -288,6 +288,91 @@ private void doAutoTimeZoneDetection(
 
 完美闭环！
 
+
+
+
+---
+
+# 启动 TimeZoneDetectorService 服务：
+
+SystemServer.java
+
+```java
+private static final String TIME_ZONE_DETECTOR_SERVICE_CLASS =
+        "com.android.server.timezonedetector.TimeZoneDetectorService$Lifecycle";
+
+t.traceBegin("StartTimeZoneDetectorService");
+try {
+    mSystemServiceManager.startService(TIME_ZONE_DETECTOR_SERVICE_CLASS);
+} catch (Throwable e) {
+    reportWtf("starting StartTimeZoneDetectorService service", e);
+}
+t.traceEnd();
+```
+
+---
+
+# publishBinderService--Lifecycle
+
+```java
+/**
+ * Handles the lifecycle for {@link TimeZoneDetectorService}.
+ */
+public static class Lifecycle extends SystemService {
+
+    public Lifecycle(@NonNull Context context) {
+        super(context);
+    }
+
+    @Override
+    public void onStart() {
+        TimeZoneDetectorService service = TimeZoneDetectorService.create(getContext());
+
+        // Publish the binder service so it can be accessed from other (appropriately
+        // permissioned) processes.
+        publishBinderService(Context.TIME_ZONE_DETECTOR_SERVICE, service);
+    }
+}
+
+private static TimeZoneDetectorService create(@NonNull Context context) {
+    final TimeZoneDetectorStrategy timeZoneDetectorStrategy =
+            TimeZoneDetectorStrategyImpl.create(context);
+
+    TimeZoneDetectorService service =
+            new TimeZoneDetectorService(context, handler, timeZoneDetectorStrategy);
+    //字段AUTO_TIME_ZONE内容观察模式
+    ContentResolver contentResolver = context.getContentResolver();
+    contentResolver.registerContentObserver(
+            Settings.Global.getUriFor(Settings.Global.AUTO_TIME_ZONE), true,
+            new ContentObserver(handler) {
+                public void onChange(boolean selfChange) {
+                    service.handleAutoTimeZoneDetectionChanged();
+                }
+            });
+    return service;
+}
+```
+
+
+---
+
+# 注册 TimeZoneDetectorService 服务：
+
+SystemServiceRegistry.java
+
+```java
+registerService(Context.TIME_ZONE_DETECTOR_SERVICE, TimeZoneDetector.class,
+        new CachedServiceFetcher<TimeZoneDetector>() {
+            @Override
+            public TimeZoneDetector createService(ContextImpl ctx)
+                    throws ServiceNotFoundException {
+                return new TimeZoneDetectorImpl();
+            }});
+```
+
+
+
+
 ---
 
 # 参考资料

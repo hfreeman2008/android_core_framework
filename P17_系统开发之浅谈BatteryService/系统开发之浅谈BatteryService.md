@@ -14,7 +14,7 @@
 
 # 电源架构
 
-<img src="power_whole.png">
+<img src="../Images/power_whole.png">
 
 
 ---

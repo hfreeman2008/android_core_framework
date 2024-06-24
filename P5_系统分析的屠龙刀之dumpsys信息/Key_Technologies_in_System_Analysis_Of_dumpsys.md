@@ -10,7 +10,9 @@ At this point, dumpsys information, due to its particularly complete and compreh
 <img src="..\Images\log_sword.png">
 
 ---
-一个android系统工程，你只有掌握了dumpsys工具，你才能说自己已经开始摸到系统的脉搏了。
+
+As an Android system development engineer, you can only say that you have started to feel the pulse of the system if you have mastered the dumpsys tool。
+
 <img src="mai_bo.png">
 
 ---

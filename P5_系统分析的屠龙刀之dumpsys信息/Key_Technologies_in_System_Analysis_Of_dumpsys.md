@@ -106,7 +106,8 @@ Raw LRU list (dumpsys activity lru)
 ```
 
 
-其中，我们平常用的最多的就是查看当前界面的activity信息：
+the most commonly used one is to view the focus activity：
+
 ```java
 adb shell "dumpsys activity | grep -A 45 -i 'from top to'"
 adb shell "dumpsys | grep -i -A 4 'mCurrentFocus'"

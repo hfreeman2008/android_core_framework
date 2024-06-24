@@ -499,19 +499,17 @@ int reasonUid, String opPackageName, int opUid) {
 ```
 
 
-```java
+---
 
-```
+# 电源管理架构
 
+PowerManagerService在Framework层本质为策略控制方案，其作用为：
 
-```java
+- 向上提供给应用程序接口，例如音频场景中保持系统唤醒、消息通知中唤醒手机屏幕场景；
+- 向下决策HAL层以及Kernel层来控制设备待机状态，控制显示屏、背光灯、距离传感器、光线传感器等硬件设备的状态；
 
-```
+<img src="power_whole.png">
 
-
-```java
-
-```
 
 ---
 

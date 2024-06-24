@@ -1,6 +1,9 @@
 # P4: Key Technologies in System Analysis - log
 
-android问题的分析，大家使用最多的，也可以说是最重要的就是日志，日志是系统问题分析的屠龙刀，是一点都不夸张。
+The analysis of Android issues, the most commonly used one is logs, which can be said to be the most important one。
+
+The log is a key technology for system problem analysis, and it is not an exaggeration at all
+
 
 <img src="..\Images\log_sword.png">
 
@@ -11,30 +14,30 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 
 ---
 
-# 系统工程师log日志分析要达到什么水平
+# What level of system engineer log analysis should be achieved
 
-那log分析，要达到什么程度才算是可以达到系统工程师的水平呢？
+So, what level of log analysis is necessary to reach the level of a system engineer?
 
-我的回答是：
+My answer is:
 
-- 1.可以从log复盘出指定时间段的机器的操作和运行情况；
+- 1.The operation and operation status of the machine during the specified time period can be replicated from the log;
 
-- 2.可以通过关键字定位到未知时间特定的异常或错误；
+- 2.Can locate errors to unknown times through keywords;
 
-那对于这样一个每个人都会，每个人都用的log日志，我们这篇文章，准备能玩出什么花来了。
+So for a log that everyone knows and uses，What kind of flowers can we play with in this article.
 
-且来看下面分解。
+Let's take a look at the decomposition below。
 
 ---
 
-# log日志常见分类
+# log Common classifications
 
 ## system
 --------- beginning of system
 
 
 
-### 打印system日志的接口：
+### system log api：
 
 ```java
 import android.util.Slog;
@@ -43,21 +46,22 @@ import android.util.Slog;
 
 ---
 
-### ams相关
-启动应用:
+### ams
+
+Start the application:
 ```java
 ActivityTaskManager: START u0 {cmp=com.dream.dreamlogger/.DreagActivity} from uid 1000
 ActivityManager: Start proc 6499:com.dream.dreamlogger/1000 for pre-top-activity {com.dream.dreamlogger/com.dream.dreamlogger.DreagActivity}
 ```
 
 
-启动服务：
+Start the service：
 ```java
 ActivityManager: Start proc 6619:.connect.ConnectorService/1000 for service {com.android.usbaccessory/com.android.usbaccessory.connect.ConnectorService}
 ```
 
 ---
-### wms相关
+### wms
 
 ```java
 V WindowManager: Orientation start waiting for draw, mDrawState=DRAW_PENDING in Window{1e537fa u0 com.android.settings/com.android.settings.FallbackHome}, surfaceController Surface(name=com.android.settings/com.android.settings.FallbackHome)/@0x9822dab
@@ -65,16 +69,18 @@ V WindowManager: Orientation start waiting for draw, mDrawState=DRAW_PENDING in 
 
 ---
 
-### 各种系统服务的日志
-系统服务的日志，基本上都是在此部分，所以此部分日志是关注的重点。
-系统服务包括：BluetoothManagerService，ConnectivityService，BatteryService，LightsService，StorageManagerService，WallpaperManagerService，UriGrantsManagerService，DisplayManagerService等等。
+### Logs of various system services
+
+The logs of system services are mostly in this section，So this section of the log is the focus of attention。
+
+System services include：BluetoothManagerService，ConnectivityService，BatteryService，LightsService，StorageManagerService，WallpaperManagerService，UriGrantsManagerService，DisplayManagerService......。
 
 ---
 
 ## events
 --------- beginning of events
 
-### 打印events日志的接口：
+### events log api：
 
 ```java
 import android.util.EventLog;
@@ -83,7 +89,7 @@ EventLog.writeEvent(......);
 
 ---
 
-### am 和进程相关
+### am and process
 ```java
 am_proc_start: [0,3487,1000,com.qualcomm.qti.services.secureui:sui_service,added application,com.qualcomm.qti.services.secureui:sui_service]
 am_proc_died: [0,4391,com.qti.ltebc,0,11]
@@ -92,21 +98,21 @@ am_proc_bound: [0,6499,com.dream.dreamlogger]
 
 ---
 
-### am 和service相关
+### am and service
 ```java
 am_stop_idle_service: [10049,com.qti.ltebc/com.qualcomm.ltebc.LTERootService]
 ```
 
 ---
 
-### am 和broadcast相关
+### am and broadcast
 ```java
 am_broadcast_discard_app: [0,4020578,android.intent.action.MEDIA_MOUNTED,2,ResolveInfo{6fe2974 com.qti.ltebc/com.qualcomm.ltebc.LTEBroadcastReceiver m=0x208000}]
 ```
 
 ---
 
-### wm 和activity相关
+### wm and activity
 ```java
 I wm_activity_launch_time: [0,160827187,com.android.launcher/.MainActivity,1130]
 I wm_create_activity: [0,60813961,34,com.qualcomm.qti.qmmi/.framework.MainActivity,NULL,NULL,NULL,0]
@@ -132,7 +138,7 @@ I wm_finish_activity: [0,193515979,34,com.dream.dreamlogger/.DreamOfflineLogActi
 
 ---
 
-### wm 和task,stack相关
+### wm and task,stack
 
 ```java
 I wm_stack_created: 34
@@ -146,14 +152,16 @@ I wm_task_removed: [2,removeChild: last r=ActivityRecord{52a7243 u0 com.android.
 
 ---
 
-### selinux权限相关
+### selinux
+
 ```java
 I auditd  : type=1400 audit(0.0:630): avc: denied { read } for comm="Binder:588_2" name="wakeup24" dev="sysfs" ino=36313 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
 ```
 
 ---
 
-### battery相关
+### battery
+
 ```java
 battery_level: [98,4345,292]
 battery_status: [3,2,1,0,Li-ion]
@@ -175,13 +183,14 @@ sysui_multi_action: [757,804,799,power_double_tap_interval,801,58183048,802,1]
 ## main
 --------- beginning of main
 
-### 打印main日志的接口：
+### main log api：
 
 ```java
  android.util.Log.i(TAG, "log info is ===========");
 ```
 
-通过这个，我们就知道main日志大部分是app应用自已打印输出的，没有什么规律。
+From this, we know that most of the main logs are printed and outputed by the app itself.There is no pattern.
+
 
 ---
 

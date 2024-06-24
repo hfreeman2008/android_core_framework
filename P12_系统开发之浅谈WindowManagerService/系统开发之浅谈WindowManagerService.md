@@ -528,6 +528,39 @@ final class H extends android.os.Handler {
 
 ---
 
+
+# LocalService--WindowManagerInternal
+
+```java
+
+LocalServices.addService(WindowManagerInternal.class, new LocalService());
+
+private final class LocalService extends WindowManagerInternal {
+    ......
+}
+```
+
+system server进程读取WindowManagerInternal
+
+```java
+WindowManagerInternal mWindowManagerInternal = LocalServices.getService(WindowManagerInternal.class);
+```
+
+---
+
+
+
+
+```java
+
+```
+
+
+
+---
+
+
+
 # 结束语
 
 对于android第一个核心系统服务 WindowManagerService ，至此你是不是已经有了一个比较整体的了解呢？

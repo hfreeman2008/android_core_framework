@@ -23,6 +23,19 @@
 ```
 ---
 
+# 获取 TimeDetectorService 的方式：
+
+```java
+方式1
+TimeDetector mTimeDetector = mContext.getSystemService(TimeDetector.class);
+
+方式2
+ITimeDetectorService mITimeDetectorService = ITimeDetectorService.Stub.asInterface(
+        ServiceManager.getServiceOrThrow(Context.TIME_DETECTOR_SERVICE));
+```
+
+---
+
 # TimeDetectorService整体调用流程
 
 以调用TimeDetectorService的suggestNetworkTime接口为例：
@@ -196,6 +209,86 @@ TimeDetectorStrategy:
   External suggestion history:
     {Empty}
 ```
+
+---
+
+
+# 启动 TimeDetectorService 服务：
+
+SystemServer.java
+
+```java
+private static final String TIME_DETECTOR_SERVICE_CLASS =
+        "com.android.server.timedetector.TimeDetectorService$Lifecycle";
+
+t.traceBegin("StartTimeDetectorService");
+try {
+    mSystemServiceManager.startService(TIME_DETECTOR_SERVICE_CLASS);
+} catch (Throwable e) {
+    reportWtf("starting StartTimeDetectorService service", e);
+}
+t.traceEnd();
+```
+
+---
+
+# publishBinderService--Lifecycle
+
+```java
+public static class Lifecycle extends SystemService {
+
+    public Lifecycle(@NonNull Context context) {
+        super(context);
+    }
+
+    @Override
+    public void onStart() {
+        TimeDetectorService service = TimeDetectorService.create(getContext());
+
+        // Publish the binder service so it can be accessed from other (appropriately
+        // permissioned) processes.
+        publishBinderService(Context.TIME_DETECTOR_SERVICE, service);
+    }
+}
+
+
+private static TimeDetectorService create(@NonNull Context context) {
+    TimeDetectorStrategy timeDetectorStrategy = new TimeDetectorStrategyImpl();
+
+    TimeDetectorService timeDetectorService =
+            new TimeDetectorService(context, handler, timeDetectorStrategy);
+    
+    //字段AUTO_TIME_ZONE内容观察模式
+    // Wire up event listening.
+    ContentResolver contentResolver = context.getContentResolver();
+    contentResolver.registerContentObserver(
+            Settings.Global.getUriFor(Settings.Global.AUTO_TIME), true,
+            new ContentObserver(handler) {
+                public void onChange(boolean selfChange) {
+                    timeDetectorService.handleAutoTimeDetectionChanged();
+                }
+            });
+
+    return timeDetectorService;
+}
+```
+
+---
+
+# 注册 TimeDetectorService 服务：
+
+SystemServiceRegistry.java
+
+```java
+registerService(Context.TIME_DETECTOR_SERVICE, TimeDetector.class,
+        new CachedServiceFetcher<TimeDetector>() {
+            @Override
+            public TimeDetector createService(ContextImpl ctx)
+                    throws ServiceNotFoundException {
+                return new TimeDetectorImpl();
+            }});
+```
+
 
 ---
 

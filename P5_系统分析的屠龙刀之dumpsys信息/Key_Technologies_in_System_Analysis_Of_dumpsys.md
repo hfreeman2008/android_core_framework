@@ -1,6 +1,10 @@
 # P5: 系统分析的屠龙刀之dumpsys信息
-android问题的分析，大家使用最多的是日志。
-但是系统问题分析，我们会发现日志太少，甚至是什么信息都没有，这时候dumpsys信息，因其信息特别完整全面，成为了系统开发的另一把屠龙刀。
+
+The most commonly used analysis of Android issues is logs。
+
+But when analyzing system issues, we will find that there are too few logs, and even no information at all.
+
+At this point, dumpsys information, due to its particularly complete and comprehensive nature, became another useful tool  in system development.
 
 
 <img src="..\Images\log_sword.png">
@@ -17,7 +21,8 @@ android问题的分析，大家使用最多的是日志。
 
 # dumpsys 命令
 
-查看dump系统服务的完整列表：
+View the complete list of system services：
+
 ```java
 adb shell dumpsys -l
 ```

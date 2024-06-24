@@ -34,22 +34,70 @@ PowerManagerInternal mLocalPowerManager = getLocalService(PowerManagerInternal.c
 
 <img src="PowerManagerService_whole.png">
 
+图一 PowerManagerService调用流程
 
-
-
-```
-
-```java
-
-```
-
-```java
-
-```
-
+PowerManagerService调用流程和其他的服务完全是一样的，这部分具体讲解就不说了。
 
 ---
 
+# 启动PowerManagerService服务：
+
+
+
+SystemServer.java
+
+```java
+t.traceBegin("StartPowerManager");
+mPowerManagerService = mSystemServiceManager.startService(PowerManagerService.class);
+t.traceEnd();
+
+......
+
+t.traceBegin("MakePowerManagerServiceReady");
+try {
+    // TODO: use boot phase
+    mPowerManagerService.systemReady(mActivityManagerService.getAppOpsService());
+} catch (Throwable e) {
+    reportWtf("making Power Manager Service ready", e);
+}
+t.traceEnd();
+```
+
+---
+
+
+# 注册 PowerManagerService 服务：
+
+SystemServiceRegistry.java
+```java
+registerService(Context.POWER_SERVICE, PowerManager.class,
+        new CachedServiceFetcher<PowerManager>() {
+    @Override
+    public PowerManager createService(ContextImpl ctx) throws ServiceNotFoundException {
+        IBinder powerBinder = ServiceManager.getServiceOrThrow(Context.POWER_SERVICE);
+        IPowerManager powerService = IPowerManager.Stub.asInterface(powerBinder);
+        IBinder thermalBinder = ServiceManager.getServiceOrThrow(Context.THERMAL_SERVICE);
+        IThermalService thermalService = IThermalService.Stub.asInterface(thermalBinder);
+        return new PowerManager(ctx.getOuterContext(), powerService, thermalService,
+                ctx.mMainThread.getHandler());
+    }});
+```
+
+---
+
+
+
+```java
+
+```
+
+
+
+```java
+
+```
+
+---
 
 
 # 结束语

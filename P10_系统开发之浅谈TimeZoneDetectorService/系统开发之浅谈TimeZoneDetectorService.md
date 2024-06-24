@@ -121,17 +121,18 @@ TimeZoneDetectorService类主要是用来更新时区的。
 
 ---
 
-# 获取TimeZoneDetectorService的方式：
+# 获取 TimeZoneDetectorService 的方式：
 
 ```java
 方式1
 TimeZoneDetector timeZoneDetector = getActivity().getSystemService(TimeZoneDetector.class);
 
-
 方式2
+TimeZoneDetector timeZoneDetector = (TimeZoneDetector) getSystemService(Context.TIME_ZONE_DETECTOR_SERVICE);
+
+方式3
 ITimeZoneDetectorService mITimeZoneDetectorService;
 mITimeZoneDetectorService = ITimeZoneDetectorService.Stub.asInterface(ServiceManager.getServiceOrThrow(Context.TIME_ZONE_DETECTOR_SERVICE));
-
 ```
 
 ---

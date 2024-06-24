@@ -277,9 +277,45 @@ mLowBatteryCloseWarningLevel = mLowBatteryWarningLevel + mContext.getResources()
 
 ---
 
+# 关机电池温度
+
 
 ```java
+private int mShutdownBatteryTemperature;
 
+mShutdownBatteryTemperature = mContext.getResources().getInteger(
+    com.android.internal.R.integer.config_shutdownBatteryTemperature);
+```
+
+```xml
+<!-- Shutdown if the battery temperature exceeds (this value * 0.1) Celsius. -->
+<integer name="config_shutdownBatteryTemperature">680</integer>
+```
+
+shutdownIfOverTempLocked-----电池超高温度时关机
+
+```java
+private final Handler mHandler;
+mHandler = new Handler(true /*async*/);
+
+private void shutdownIfOverTempLocked() {
+    // shut down gracefully if temperature is too high (> 68.0C by default)
+    // wait until the system has booted before attempting to display the
+    // shutdown dialog.
+    if (mBatteryProps.batteryTemperature > mShutdownBatteryTemperature) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mActivityManagerInternal.isSystemReady()) {
+                    Intent intent = new Intent(Intent.ACTION_REQUEST_SHUTDOWN);
+                    intent.putExtra(Intent.EXTRA_KEY_CONFIRM, false);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivityAsUser(intent, UserHandle.CURRENT);
+                }
+            }
+        });
+    }
+}
 ```
 
 ```java
@@ -289,6 +325,17 @@ mLowBatteryCloseWarningLevel = mLowBatteryWarningLevel + mContext.getResources()
 ```java
 
 ```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
 
 ```java
 

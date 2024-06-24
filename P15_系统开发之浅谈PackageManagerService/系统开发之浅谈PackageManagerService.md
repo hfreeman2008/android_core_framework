@@ -1,7 +1,6 @@
 # P15_系统开发之浅谈PackageManagerService
 
-<img src="../flower/flower_u_green_white_000.png">
-
+<img src="../flower/flower_green_white_000.png">
 ---
 
 # PackageManagerService 类的作用：

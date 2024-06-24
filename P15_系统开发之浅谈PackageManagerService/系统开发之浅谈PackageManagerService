@@ -1,0 +1,80 @@
+
+# P15_系统开发之浅谈PackageManagerService
+
+<img src="../flower/flower_green_white_000.png">
+
+---
+
+# PackageManagerService 类的作用：
+
+管理应用，包括应用安装，删除，更新，应用的位置，应用的权限管理，截图，dex等。
+
+追踪所有的apks，有三个重要的锁：mLock，mInstallLock，mSnapshotLock
+
+```java
+* Keep track of all those APKs everywhere.
+* Internally there are three important locks:mLock，mInstallLock，mSnapshotLock
+
+如果有修改，请跑一下cts验证修改是否会影响cts：
+* $ runtest -c android.content.pm.PackageManagerTests frameworks-core
+* $ cts-tradefed run commandAndExit cts -m CtsAppSecurityHostTestCases
+```
+
+---
+
+# 获取pkms的方式：
+
+```java
+方式1
+PackageManager pm = mContext.getPackageManager();
+
+方式2
+PackageManager mPm;
+mPm = (PackageManager)getSystemService("package");
+
+方式3
+IPackageManager mPm;
+mPm = IPackageManager.Stub.asInterface(ServiceManager.getService("package"));
+
+方式4
+IPackageManager mPM;
+mPM = AppGlobals.getPackageManager();
+
+方式5
+IPackageManager mPM = ActivityThread.getPackageManager();
+
+方式6 (system server进程使用)
+PackageManagerInternal pm = LocalServices.getService(PackageManagerInternal.class);
+```
+
+---
+
+
+
+```java
+
+```
+
+```java
+
+```
+
+```java
+
+```
+
+
+```java
+
+```
+
+```java
+
+```
+
+---
+
+
+# 结束语
+
+<img src="../Images/end_001.png">

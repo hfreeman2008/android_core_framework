@@ -87,6 +87,11 @@
 
 ---
 
+## P15: 系统开发之浅谈PackageManagerService
+[系统开发之浅谈PackageManagerService.md](./P15_系统开发之浅谈PackageManagerService/系统开发之浅谈PackageManagerService.md)
+
+---
+
 备注：这一系统文章参考源码以android 11和13为主，还有部分是其他的android 版本。
 
 ---

@@ -87,6 +87,12 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+---
+
+## Part 15: System Development about Talking PackageManagerService
+[系统开发之浅谈PackageManagerService.md](./P15_系统开发之浅谈PackageManagerService/系统开发之浅谈PackageManagerService.md)
+
+
 Note: 
 
 The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.

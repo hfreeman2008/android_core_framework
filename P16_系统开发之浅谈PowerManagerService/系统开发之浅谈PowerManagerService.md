@@ -130,20 +130,144 @@ dumpInternal(PrintWriter pw)
 dumpProto(FileDescriptor fd) 
 ```
 
+---
+
+# 日志开关：
+
+```java
+private static final boolean DEBUG = true;//false;
+private static final boolean DEBUG_SPEW = DEBUG && true;
+```
+
+---
 
 
+# 读取配置参数--readConfigurationLocked：
 
+```java
+mDecoupleHalAutoSuspendModeFromDisplayConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_powerDecoupleAutoSuspendModeFromDisplay);
+mDecoupleHalInteractiveModeFromDisplayConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_powerDecoupleInteractiveModeFromDisplay);
+mWakeUpWhenPluggedOrUnpluggedConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_unplugTurnsOnScreen);  ----是否插拔亮屏
+mWakeUpWhenPluggedOrUnpluggedInTheaterModeConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_allowTheaterModeWakeFromUnplug);
+mSuspendWhenScreenOffDueToProximityConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_suspendWhenScreenOffDueToProximity);
+mAttentiveTimeoutConfig = resources.getInteger(
+        com.android.internal.R.integer.config_attentiveTimeout);
+mAttentiveWarningDurationConfig = resources.getInteger(
+        com.android.internal.R.integer.config_attentiveWarningDuration);  
+mDreamsSupportedConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_dreamsSupported);  ----dreams是否支持
+mDreamsEnabledByDefaultConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_dreamsEnabledByDefault);
+mDreamsActivatedOnSleepByDefaultConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_dreamsActivatedOnSleepByDefault);
+mDreamsActivatedOnDockByDefaultConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_dreamsActivatedOnDockByDefault);
+mDreamsEnabledOnBatteryConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_dreamsEnabledOnBattery);
+mDreamsBatteryLevelMinimumWhenPoweredConfig = resources.getInteger(
+        com.android.internal.R.integer.config_dreamsBatteryLevelMinimumWhenPowered);
+mDreamsBatteryLevelMinimumWhenNotPoweredConfig = resources.getInteger(
+        com.android.internal.R.integer.config_dreamsBatteryLevelMinimumWhenNotPowered);
+mDreamsBatteryLevelDrainCutoffConfig = resources.getInteger(
+        com.android.internal.R.integer.config_dreamsBatteryLevelDrainCutoff);
+mDozeAfterScreenOff = resources.getBoolean(
+        com.android.internal.R.bool.config_dozeAfterScreenOffByDefault);
+mMinimumScreenOffTimeoutConfig = resources.getInteger(
+        com.android.internal.R.integer.config_minimumScreenOffTimeout); ----息屏最小时间
+mMaximumScreenDimDurationConfig = resources.getInteger(
+        com.android.internal.R.integer.config_maximumScreenDimDuration);
+mMaximumScreenDimRatioConfig = resources.getFraction(
+        com.android.internal.R.fraction.config_maximumScreenDimRatio, 1, 1);
+mSupportsDoubleTapWakeConfig = resources.getBoolean(
+        com.android.internal.R.bool.config_supportDoubleTapWake);  ----是否支持双击亮屏
+```
+
+---
+
+# 内容监听:
+
+```java
+mSettingsObserver = new SettingsObserver(mHandler);
+
+// Register for settings changes.
+resolver.registerContentObserver(Settings.Secure.getUriFor(
+        Settings.Secure.SCREENSAVER_ENABLED),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.Secure.getUriFor(
+        Settings.Secure.SCREENSAVER_ACTIVATE_ON_SLEEP),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.Secure.getUriFor(
+        Settings.Secure.SCREENSAVER_ACTIVATE_ON_DOCK),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.System.getUriFor(
+        Settings.System.SCREEN_OFF_TIMEOUT),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.Secure.getUriFor(
+        Settings.Secure.SLEEP_TIMEOUT),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.Secure.getUriFor(
+        Settings.Secure.ATTENTIVE_TIMEOUT),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.Global.getUriFor(
+        Settings.Global.STAY_ON_WHILE_PLUGGED_IN),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.System.getUriFor(
+        Settings.System.SCREEN_BRIGHTNESS_MODE),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.System.getUriFor(
+        Settings.System.SCREEN_AUTO_BRIGHTNESS_ADJ),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.Global.getUriFor(
+        Settings.Global.THEATER_MODE_ON),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.Secure.getUriFor(
+        Settings.Secure.DOZE_ALWAYS_ON),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.Secure.getUriFor(
+        Settings.Secure.DOUBLE_TAP_TO_WAKE),
+        false, mSettingsObserver, UserHandle.USER_ALL);
+resolver.registerContentObserver(Settings.Global.getUriFor(
+        Settings.Global.DEVICE_DEMO_MODE),
+        false, mSettingsObserver, UserHandle.USER_SYSTEM);
+```
 
 
 
 ```java
-
+private final class SettingsObserver extends ContentObserver {
+    @Override
+    public void onChange(boolean selfChange, Uri uri) {
+        synchronized (mLock) {
+            handleSettingsChangedLocked();
 ```
 
+
+---
+
+# incrementBootCount---设备启动次数
 
 ```java
-
+private void incrementBootCount() {
+    synchronized (mLock) {
+        int count;
+        try {
+            count = Settings.Global.getInt(
+                    getContext().getContentResolver(), Settings.Global.BOOT_COUNT);
+        } catch (SettingNotFoundException e) {
+            count = 0;
+        }
+        Settings.Global.putInt(
+                getContext().getContentResolver(), Settings.Global.BOOT_COUNT, count + 1);
+    }
+}
 ```
+---
+
 
 
 ```java

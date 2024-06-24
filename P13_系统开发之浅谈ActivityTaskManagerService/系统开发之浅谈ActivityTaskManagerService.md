@@ -24,22 +24,26 @@ ActivityTaskManager mActivityTaskManager;
 mActivityTaskManager = mContext.getSystemService(ActivityTaskManager.class);
 
 方式2
+ActivityTaskManager mActivityTaskManager = (ActivityTaskManager) getSystemService(Context.ACTIVITY_TASK_SERVICE);
+
+
+方式3
 IActivityTaskManager mActivityTaskManager;
 mActivityTaskManager = ActivityTaskManager.getService();
 
-方式3
+方式4
 IBinder b = ServiceManager.getService(Context.ACTIVITY_TASK_SERVICE);
 IActivityTaskManager mActivityTaskManager = IActivityTaskManager.Stub.asInterface(b);
 
 
-方式4(system server进程使用)
+方式5(system server进程使用)
 ActivityTaskManagerInternal mActivityTaskManagerService;
 mActivityTaskManagerService = LocalServices.getService(ActivityTaskManagerInternal.class);
 ```
 
 ---
 
-# ActivityTaskManagerService调用流程
+# ActivityTaskManagerService 调用流程
 
 <img src="atms_whole.png">
 

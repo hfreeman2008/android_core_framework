@@ -9,8 +9,9 @@ The log is a key technology for system problem analysis, and it is not an exagge
 
 ---
 
+![alt text](image.png)
 
-<img src="log_jie_gao.png">
+<img src="log_jie_gao_english.png">
 
 ---
 
@@ -30,7 +31,7 @@ Let's take a look at the decomposition below。
 
 ---
 
-# log Common classifications
+# log common classifications
 
 ## system
 --------- beginning of system

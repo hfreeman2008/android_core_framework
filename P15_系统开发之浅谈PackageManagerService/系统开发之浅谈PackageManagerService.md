@@ -165,6 +165,16 @@ t.traceEnd();
 
 # PackageManagerService类图
 
+<img src="pkms_class.png">
+
+图三 PackageManagerService类图
+
+图三，我们可以看到PackageManagerService就是管理应用，包括应用安装，删除，更新，应用的位置，应用的权限管理，截图，dex等各个方面的一个综合管理体。
+
+---
+
+
+
 ```java
 
 ```

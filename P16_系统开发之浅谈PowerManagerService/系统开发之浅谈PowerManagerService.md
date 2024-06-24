@@ -85,12 +85,40 @@ registerService(Context.POWER_SERVICE, PowerManager.class,
 
 ---
 
+# PowerManagerService 类图
+
+<img src="PowerManagerService_class.png">
+图三 PowerManagerService类图
+
+
+
+
+---
 
 
 ```java
 
 ```
 
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
 
 
 ```java

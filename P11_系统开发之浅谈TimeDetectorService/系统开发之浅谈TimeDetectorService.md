@@ -30,6 +30,9 @@
 TimeDetector mTimeDetector = mContext.getSystemService(TimeDetector.class);
 
 方式2
+TimeDetector timeDetector = (TimeDetector) getSystemService(Context.TIME_DETECTOR_SERVICE);
+
+方式3
 ITimeDetectorService mITimeDetectorService = ITimeDetectorService.Stub.asInterface(
         ServiceManager.getServiceOrThrow(Context.TIME_DETECTOR_SERVICE));
 ```

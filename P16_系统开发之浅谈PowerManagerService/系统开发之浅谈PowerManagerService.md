@@ -95,10 +95,45 @@ registerService(Context.POWER_SERVICE, PowerManager.class,
 
 ---
 
+# handler消息
 
+有一个handler:
 ```java
-
+Handler mHandler;
 ```
+
+消息列表：
+```java
+// Message: Sent when a user activity timeout occurs to update the power state.
+private static final int MSG_USER_ACTIVITY_TIMEOUT = 1;
+// Message: Sent when the device enters or exits a dreaming or dozing state.
+private static final int MSG_SANDMAN = 2;
+// Message: Sent when the screen brightness boost expires.
+private static final int MSG_SCREEN_BRIGHTNESS_BOOST_TIMEOUT = 3;
+// Message: Polling to look for long held wake locks.
+private static final int MSG_CHECK_FOR_LONG_WAKELOCKS = 4;
+// Message: Sent when an attentive timeout occurs to update the power state.
+private static final int MSG_ATTENTIVE_TIMEOUT = 5;
+```
+
+---
+
+# dump信息
+
+命令：
+```java
+adb shell dumpsys power
+```
+相关方法：
+```java
+dumpInternal(PrintWriter pw)
+dumpProto(FileDescriptor fd) 
+```
+
+
+
+
+
 
 
 ```java

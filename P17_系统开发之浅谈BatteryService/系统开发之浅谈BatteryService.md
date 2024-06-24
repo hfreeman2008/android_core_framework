@@ -126,6 +126,17 @@ private static final boolean DEBUG = false;
 
 ---
 
+# battery相关的三个服务
+
+```java
+battery: []
+batteryproperties: [android.os.IBatteryPropertiesRegistrar]
+batterystats: [com.android.internal.app.IBatteryStats]
+```
+
+
+---
+
 # publishBinderService--battery
 
 

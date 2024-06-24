@@ -25,7 +25,7 @@ BatteryManager mBatteryManager = mContext.getSystemService(BatteryManager.class)
 方式3
 IBatteryStats mBatteryStats = IBatteryStats.Stub.asInterface(ServiceManager.getService(BatteryStats.SERVICE_NAME));
 
-方式3 (system server进程使用)
+方式4 (system server进程使用)
 BatteryManagerInternal batteryManagerInternal = LocalServices.getService(BatteryManagerInternal.class);
 ```
 
@@ -123,6 +123,7 @@ Current Battery Service state:
 ```java
 private static final boolean DEBUG = false;
 ```
+
 ---
 
 # publishBinderService--battery
@@ -146,6 +147,51 @@ BinderService mBinderService;
 BatteryManager batteryManager =(BatteryManager) context.getSystemService(Context.BATTERY_SERVICE);
 ```
 
+---
+
+# publishBinderService--batteryproperties
+
+```java
+BatteryPropertiesRegistrar mBatteryPropertiesRegistrar;
+
+private final class BatteryPropertiesRegistrar extends IBatteryPropertiesRegistrar.Stub {
+......    
+}
+
+public void onStart() {
+    mBatteryPropertiesRegistrar = new BatteryPropertiesRegistrar();
+    publishBinderService("batteryproperties", mBatteryPropertiesRegistrar);
+}
+```
+
+读取服务的方法：
+
+```java
+IBatteryPropertiesRegistrar registrar = IBatteryPropertiesRegistrar.Stub.asInterface(
+        ServiceManager.getService("batteryproperties"));
+```
+
+---
+
+# LocalService--BatteryManagerInternal
+
+
+```java
+private final class LocalService extends BatteryManagerInternal {
+}
+
+public void onStart() {
+    publishLocalService(BatteryManagerInternal.class, new LocalService());
+}
+```
+
+system_server读取服务：
+```java
+BatteryManagerInternal batteryManagerInternal = LocalServices.getService(BatteryManagerInternal.class);
+```
+
+---
+
 
 ```java
 
@@ -156,10 +202,15 @@ BatteryManager batteryManager =(BatteryManager) context.getSystemService(Context
 
 ```
 
+
 ```java
 
 ```
 
+
+```java
+
+```
 
 # 电源架构
 

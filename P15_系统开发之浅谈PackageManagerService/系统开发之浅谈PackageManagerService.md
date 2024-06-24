@@ -255,6 +255,14 @@ public static boolean DEBUG_APP_DATA = false;
 
 ---
 
+# android开发浅谈之PackageManagerService(pkms)
+
+[android开发浅谈之PackageManagerService(pkms)](https://blog.csdn.net/hfreeman2008/article/details/118160530)
+
+https://blog.csdn.net/hfreeman2008/article/details/118160530
+
+---
+
 
 # 结束语
 

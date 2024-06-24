@@ -1,6 +1,7 @@
 # P17_系统开发之浅谈BatteryService
 
-<img src="../flower/flower_right_0003.png">
+<img src="../flower/flower_p17.png">
+
 
 ---
 

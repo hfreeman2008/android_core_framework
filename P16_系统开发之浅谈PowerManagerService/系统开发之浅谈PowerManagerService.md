@@ -1,6 +1,6 @@
 # P16_系统开发之浅谈PowerManagerService
 
-<img src="../flower/flower_u_white_001.png">
+<img src="../flower/flower_white_001.png">
 
 
 ---

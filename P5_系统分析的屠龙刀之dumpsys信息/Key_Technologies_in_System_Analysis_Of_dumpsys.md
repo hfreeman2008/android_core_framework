@@ -1,4 +1,4 @@
-# P5: 系统分析的屠龙刀之dumpsys信息
+# P5: Key Technologies in System Analysis - dumpsys
 
 The most commonly used analysis of Android issues is logs。
 
@@ -21,7 +21,7 @@ As an Android system development engineer, you can only say that you have starte
 
 ---
 
-# dumpsys 命令
+# dumpsys
 
 View the complete list of system services：
 
@@ -30,19 +30,24 @@ adb shell dumpsys -l
 ```
 
 ---
-# 关键的dumpsys信息
-## dumpsys meminfo
-这个命令，我们针对分析设备的memory，特别有用
+# key dumpsys command
 
-查看所有应用的内存信息：
+## dumpsys meminfo
+
+This command is particularly useful for analyzing device memory.
+
+Viewing device memory information：
+
 ```java
 adb shell dumpsys meminfo
 ```
 
-查看设备对应应用com.android.pkgname的内存信息：
+View the memory information of the device about application com.android.pkgname：
+
 ```java
 adb shell dumpsys meminfo com.android.pkgname
 ```
+
 ---
 
 ## dumpsys cpuinfo

@@ -32,7 +32,7 @@ Of course, these can also be understood as some essential technical skills for a
 ---
 
 ## Part 4: Key Technologies in System Analysis - Log
-[系统分析的屠龙刀之log日志.md](./P4_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
+[Key_Technologies_in_System_Analysis_Of_log.md](./P4_系统分析的屠龙刀之log日志/Key_Technologies_in_System_Analysis_Of_log.md)
 
 ---
 

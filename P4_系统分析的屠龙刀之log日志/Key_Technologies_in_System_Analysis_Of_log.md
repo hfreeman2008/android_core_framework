@@ -196,9 +196,10 @@ From this, we know that most of the main logs are printed and outputed by the ap
 
 ## crash
 --------- beginning of crash
-这个crash日志，是平常我们常见的问题处理之一，需要重点关注。
 
-- 第一种:native crash
+This crash log is one of the common problems we deal with and requires special attention.
+
+- 1:native crash
 
 ```java
 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0 in tid 3374 (com.android.nfc), pid 3374 (com.android.nfc)
@@ -221,7 +222,7 @@ F DEBUG   :       #09 pc 000000000012da14  /apex/com.android.art/lib64/libart.so
 F DEBUG   :       #10 pc 000000000017c858  /system/app/NfcNci/NfcNci.apk (offset 0x1000) (com.android.nfc.NfcService$NfcServiceHandler.handleMessage+1092)
 ```
 
-- 第二种：app 应用crash
+- 2：app crash
 ```java
 E AndroidRuntime: Process: com.dream.recorder, PID: 3691
 E AndroidRuntime: java.lang.IllegalArgumentException: supportsCameraApi:2365: Unknown camera ID 0
@@ -250,29 +251,34 @@ E AndroidRuntime:         at android.hardware.camera2.CameraManager.getCameraCha
 
 ## radio
 --------- beginning of radio
+
 ```java
 Rlog.w(LOG_TAG, "------------");
 ```
-此部分日志,也就是通信模块相关的日志，譬如RIL
-留白，因为本人没有什么有效的经验分享。
+
+This part of the log, which is related to the communication module, such as RIL.
+
+Leave blank because I do not have any effective experience sharing.
 
 ---
 
 ## kernel
 
-### 查看kernel日志命令：
+### view kernel log：
 
 ```java
 adb shell cat /proc/kmsg > kernel.log
 adb shell dmesg > kernel_001.log
 ```
 
-此部分留白，因为本人没有做过驱动，没有什么有效的经验分享。
+Leave blank because I do not have any effective experience sharing.
 
 ---
 
-## anr日志
-anr日志文件：
+## anr
+
+anr log file：
+
 ```java
 /data/anr/traces.txt
 adb pull /data/anr/ ./anr
@@ -280,8 +286,10 @@ adb pull /data/anr/ ./anr
 
 ---
 
-## tombstones日志
-tombstones日志文件：
+## tombstones
+
+tombstones log file：
+
 ```java
 /data/tombstones/tombstone_X
 adb pull /data/tombstones ./tombstones
@@ -289,7 +297,8 @@ adb pull /data/tombstones ./tombstones
 
 ---
 
-## dropbox日志：
+## dropbox：
+
 ```java
 /data/system/dropbox/
 adb pull /data/system/dropbox/ ./dropbox
@@ -297,13 +306,14 @@ adb pull /data/system/dropbox/ ./dropbox
 
 ---
 
-## 日志缓存位置：
+## Log cache location：
 dev/log
 
 
 ---
 
-## bugreport日志
+## bugreport
+
 ```java
 adb bugreport > bugreport.txt
 adb shell bugreport > bugreport.txt
@@ -311,7 +321,8 @@ adb shell bugreport > bugreport.txt
 
 ---
 
-## bootprof--mtk平台开机启动时间日志
+## bootprof--mtk platform startup time log
+
 ```java
 adb shell cat /proc/bootprof
 adb pull /proc/bootprof  ./bootprof
@@ -319,20 +330,14 @@ adb pull /proc/bootprof  ./bootprof
 
 ---
 
-# logcat相关的命令
+# logcat command
 
 ```java
-//清除日志
 adb logcat -c
-//打印所有类型的日志
 adb logcat -b all
-//打印main类型的日志
 adb logcat -b main
-//打印system类型的日志
 adb logcat -b system
-//打印events类型的日志
 adb logcat -b events
-//打印radio类型的日志
 adb logcat -b radio
 
 ```

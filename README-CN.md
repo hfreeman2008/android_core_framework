@@ -135,8 +135,9 @@ pms,内存，cpu,......
 
 工作十年+后的我(2024)：
 <div align=center>
-<img src=".\Images\2024年工作时的照片.png">
+<img src=".\Images\2024_hexiaoming.png">
 <div align=left>
+
 
 android开发是个杀猪刀，入行要考虑清楚。
 

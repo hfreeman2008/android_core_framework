@@ -192,16 +192,103 @@ BatteryManagerInternal batteryManagerInternal = LocalServices.getService(Battery
 
 ---
 
+# 电源连接类型
+```java
+private int mPlugType;
+
+mPlugType = BatteryManager.BATTERY_PLUGGED_AC;
+mPlugType = BatteryManager.BATTERY_PLUGGED_USB;
+mPlugType = BatteryManager.BATTERY_PLUGGED_WIRELESS;
+mPlugType = BATTERY_PLUGGED_NONE;
+```
+
+---
+
+# processValuesLocked日志
+
+```java
+BatteryService: Processing new values: info={.chargerAcOnline = false, .chargerUsbOnline = true, .chargerWirelessOnline = false, .maxChargingCurrent = 500000, .maxChargingVoltage = 5000000, .batteryStatus = CHARGING, .batteryHealth = GOOD, .batteryPresent = true, .batteryLevel = 100, .batteryVoltage = 4399, .batteryTemperature = 280, .batteryCurrent = 138, .batteryCycleCount = 6, .batteryFullCharge = 3666000, .batteryChargeCounter = 3482700, .batteryTechnology = Li-ion}, mBatteryLevelCritical=false, mPlugType=2, mOemChargerType=-1, mChargingCurrent=125122, mBoardTemperature=348, mUsbChargingVoltage =0
+```
+
+```java
+processValuesLocked方法
+if (DEBUG) {
+    Slog.d(TAG, "Processing new values: "
+    + "info=" + mHealthInfo
+    + ", mBatteryLevelCritical=" + mBatteryLevelCritical
+    + ", mPlugType=" + mPlugType);
+}
+```
+
+---
+
+# 是否是低电量模式
+
+```java
+private boolean mBatteryLevelLow;
+
+if (!mBatteryLevelLow) {
+    // Should we now switch in to low battery mode?
+    //如果没有连接电池,并且当前的电量少于低电量值(20)
+    if (mPlugType == BATTERY_PLUGGED_NONE
+            && mBatteryProps.batteryLevel <= mLowBatteryWarningLevel) {
+        mBatteryLevelLow = true;
+    }
+```
+
+低电量提醒：
+```java
+mLowBatteryWarningLevel = mContext.getResources().getInteger(
+        com.android.internal.R.integer.config_lowBatteryWarningLevel);
+        
+mLowBatteryWarningLevel = Settings.Global.getInt(resolver,
+        Settings.Global.LOW_POWER_MODE_TRIGGER_LEVEL, defWarnLevel);
+```
+
+frameworks\base\core\res\res\values\config.xml
+```xml
+<!-- Display low battery warning when battery level dips to this value -->
+<integer name="config_lowBatteryWarningLevel">20</integer>
+```
+
+
+
+```java
+adb shell settings get global low_power_mode_trigger_level
+```
+
+---
+
+# 关闭低电量提醒
+
+
+```java
+private int mLowBatteryCloseWarningLevel;
+
+mLowBatteryCloseWarningLevel = mLowBatteryWarningLevel + mContext.getResources().getInteger(
+        com.android.internal.R.integer.config_lowBatteryCloseWarningBump);
+```
+
+```java
+<!-- Close low battery warning when battery level reaches the lowBatteryWarningLevel
+     plus this -->
+<integer name="config_lowBatteryCloseWarningBump">5</integer>
+```
+
+---
+
 
 ```java
 
 ```
 
-
 ```java
 
 ```
 
+```java
+
+```
 
 ```java
 

@@ -163,6 +163,18 @@ mPackageManager = mSystemContext.getPackageManager();
 t.traceEnd();
 ```
 
+
+
+
+
+(8)在PackageManagerService.main方法中注册package:
+```java
+ServiceManager.addService("package", m);
+final PackageManagerNative pmn = m.new PackageManagerNative();
+ServiceManager.addService("package_native", pmn);
+```
+
+
 ---
 
 
@@ -285,6 +297,19 @@ private PackageManagerInternal mPackageManagerInternal;
 mPackageManagerInternal = LocalServices.getService(PackageManagerInternal.class);
 mPmInternal.getSetupWizardPackageName()
 ```
+
+---
+
+# 注册package服务
+
+在PackageManagerService.main方法中注册package:
+
+```java
+ServiceManager.addService("package", m);
+final PackageManagerNative pmn = m.new PackageManagerNative();
+ServiceManager.addService("package_native", pmn);
+```
+
 
 ---
 

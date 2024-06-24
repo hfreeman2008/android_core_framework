@@ -549,13 +549,19 @@ WindowManagerInternal mWindowManagerInternal = LocalServices.getService(WindowMa
 ---
 
 
-
+# LocalService--WindowManagerPolicy
 
 ```java
+WindowManagerPolicy mPolicy;
 
+LocalServices.addService(WindowManagerPolicy.class, mPolicy);
 ```
 
+system server进程读取 WindowManagerPolicy
 
+```java
+WindowManagerPolicy windowManagerPolicy = LocalServices.getService(WindowManagerPolicy.class);
+```
 
 ---
 

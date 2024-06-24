@@ -523,6 +523,18 @@ private void processValuesLocked(boolean force) {
 # HealthHalCallback回调处理电量
 
 ```java
+private HealthHalCallback mHealthHalCallback;
+
+private void registerHealthCallback() {
+    traceBegin("HealthInitWrapper");
+    mHealthServiceWrapper = new HealthServiceWrapper();
+    mHealthHalCallback = new HealthHalCallback();
+    // IHealth is lazily retrieved.
+        mHealthServiceWrapper.init(mHealthHalCallback,
+                new HealthServiceWrapper.IServiceManagerSupplier() {},
+                new HealthServiceWrapper.IHealthSupplier() {});
+}
+
 private final class HealthHalCallback extends IHealthInfoCallback.Stub
         implements HealthServiceWrapper.Callback {
     @Override public void healthInfoChanged(android.hardware.health.V2_0.HealthInfo props) {
@@ -542,7 +554,9 @@ private final class HealthHalCallback extends IHealthInfoCallback.Stub
         BatteryService.this.update(props);
     }
     
-update(android.hardware.health.V2_1.HealthInfo info)
+update(android.hardware.health.V2_1.HealthInfo info){
+    processValuesLocked(false);
+}
 
 ```
 

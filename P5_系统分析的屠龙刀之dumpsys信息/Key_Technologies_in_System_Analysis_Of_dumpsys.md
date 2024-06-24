@@ -249,14 +249,15 @@ SimpleMappingStrategy
 
 ---
 
-# dumpsys命令的方法实现
+# implementation of commands dumpsys
 
-我以一个比较简单的系统服务DiskStatsService为例，说明其实是系统服务实现Binder接口中的方法dump。
+I will take a relatively simple system service--DiskStatsService, as an example. Method dump in the Binder interface implemented by system services.
 
 <img src="dumpsys_implement.png">
 
 
-IBinder类：
+IBinder：
+
 ```java
 public interface IBinder {
     /**
@@ -282,7 +283,7 @@ public interface IBinder {
 
 
 
-Binder类：
+Binder：
 
 ```java
 public class Binder implements IBinder {
@@ -334,7 +335,7 @@ public class Binder implements IBinder {
 }
 ```
 
-DiskStatsService类：
+DiskStatsService：
 
 ```java
 public class DiskStatsService extends Binder {
@@ -349,7 +350,7 @@ public class DiskStatsService extends Binder {
 
 ---
 
-# 参考资料
+# Reference
 [dumpsys](https://developer.android.google.cn/studio/command-line/dumpsys)
 
 https://developer.android.google.cn/studio/command-line/dumpsys
@@ -357,6 +358,6 @@ https://developer.android.google.cn/studio/command-line/dumpsys
 
 ---
 
-# 结束语
+# Conclusion
 
 <img src="../Images/end_001.png">

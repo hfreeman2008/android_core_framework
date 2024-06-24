@@ -94,6 +94,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## Part 16: System Development about Talking PowerManagerService
+[系统开发之浅谈PowerManagerService.md](./P15_系统开发之浅谈PowerManagerService/系统开发之浅谈PowerManagerService.md)
+
+---
+
 Note: 
 
 The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.

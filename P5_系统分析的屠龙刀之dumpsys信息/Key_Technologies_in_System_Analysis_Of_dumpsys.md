@@ -116,28 +116,30 @@ adb shell "dumpsys | grep -i -A 4 'mCurrentFocus'"
 ---
 
 ## dumpsys window
-对于系统来说，wms的dumpsys命令是我们查看系统信息的重要指令
+
+For the system, the dumpsys command of WMS is an important instruction for us to view system information
 
 ```java
 adb shell dumpsys window
 ```
 
-dumpsys window 主要包括如下几个方面：
+dumpsys window mainly including the following aspects：
 ```java
 WINDOW MANAGER LAST ANR (dumpsys window lastanr)
-WINDOW MANAGER POLICY STATE (dumpsys window policy)//策略信息
-WINDOW MANAGER ANIMATOR STATE (dumpsys window animator)//窗口动画
+WINDOW MANAGER POLICY STATE (dumpsys window policy)//policy
+WINDOW MANAGER ANIMATOR STATE (dumpsys window animator)//animator
 WINDOW MANAGER SESSIONS (dumpsys window sessions)
 WINDOW MANAGER DISPLAY CONTENTS (dumpsys window displays)
 WINDOW MANAGER TOKENS (dumpsys window tokens)
-WINDOW MANAGER WINDOWS (dumpsys window windows)//windows信息
+WINDOW MANAGER WINDOWS (dumpsys window windows)//windows
 WINDOW MANAGER TRACE (dumpsys window trace)
 WINDOW MANAGER LOGGING (dumpsys window logging)
 WINDOW MANAGER HIGH REFRESH RATE BLACKLIST (dumpsys window refresh)
 WINDOW MANAGER CONSTANTS (dumpsys window constants)
 ```
 
-查看设备分辨率
+view device resolution:
+
 ```java
 adb shell "dumpsys window | grep init"
 ```
@@ -146,23 +148,26 @@ adb shell "dumpsys window | grep init"
 
 ## dumpsys settings
 
-读取SettingsProvider数据库中的数据
+reading data from the SettingsProvider database
+
 ```java
 adb shell dumpsys settings
 ```
 
-这个命令，是我们开发时确认SettingsProvider数据库的字段的一个常用命令。
+This command is a commonly used for us to confirm the fields in the SettingsProvider database during development。
 
 
 ---
 
 ## dumpsys input_method
-查看输入法信息：
+
+View input method information：
+
 ```java
 adb shell dumpsys input_method
 ```
 
-一些关键的关于输入法的信息：
+Some key information about input methods：
 
 ```java
 Current Input Method Manager state:
@@ -182,7 +187,9 @@ Current Input Method Manager state:
 ---
 
 ## dumpsys battery
-查看电池信息
+
+View battery information
+
 ```java
 adb shell dumpsys battery
 adb shell dumpsys batterystats
@@ -213,12 +220,15 @@ Current Battery Service state:
 
 ## dumpsys display
 
-查看display相关：
+View display information：
+
 ```java
 adb shell dumpsys display
 ```
 
-查看亮度值mBrightness：
+View brightness values :
+
+mBrightness：
 ```java
 BrightnessObserver
     mBrightness: 102
@@ -226,7 +236,8 @@ BrightnessObserver
 
 
 
-自动调节亮度的相关信息：
+Information related to automatic brightness adjustment：
+
 ```java
 SimpleMappingStrategy
   mSpline=MonotoneCubicSpline{[(0.0, 0.011453409: 0.0019675908), (10.0, 0.031129315: 0.0022426946), (30.0, 0.08148529: 0.0028148363), (60.0, 0.17484152: 0.0034001395), (100.0, 0.3223777: 0.00396333), (150.0, 0.53429043: 0.0036997495), (210.0, 0.7239651: 0.0033023162), (212.0175, 0.73091215: 0.003443372), (255.0, 0.8789162: 0.0034433564)]}

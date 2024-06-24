@@ -569,6 +569,7 @@ private void processValuesLocked(boolean force) {
 <img src="../Images/power_whole.png">
 
 
+<img src="BatteryService整个架构.png">
 
 
 ---
@@ -587,7 +588,7 @@ https://www.jianshu.com/p/2efd7fc669e5
 https://blog.csdn.net/weixin_42754390/article/details/124268534
 
 
-
+---
 
 # 结束语
 

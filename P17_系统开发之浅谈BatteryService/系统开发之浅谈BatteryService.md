@@ -51,23 +51,7 @@ mSystemServiceManager.startService(BatteryService.class);
 t.traceEnd();
 ```
 
----
 
-# 注册BatteryService服务：
-SystemServiceRegistry.java
-
-```java
-registerService(Context.BATTERY_SERVICE, BatteryManager.class,
-        new CachedServiceFetcher<BatteryManager>() {
-    @Override
-    public BatteryManager createService(ContextImpl ctx) throws ServiceNotFoundException {
-        IBatteryStats stats = IBatteryStats.Stub.asInterface(
-                ServiceManager.getServiceOrThrow(BatteryStats.SERVICE_NAME));
-        IBatteryPropertiesRegistrar registrar = IBatteryPropertiesRegistrar.Stub
-                .asInterface(ServiceManager.getServiceOrThrow("batteryproperties"));
-        return new BatteryManager(ctx, stats, registrar);
-    }});
-```
 
 ---
 
@@ -181,6 +165,25 @@ public void onStart() {
 IBatteryPropertiesRegistrar registrar = IBatteryPropertiesRegistrar.Stub.asInterface(
         ServiceManager.getService("batteryproperties"));
 ```
+
+---
+
+# 注册BatteryService服务：
+SystemServiceRegistry.java
+
+```java
+registerService(Context.BATTERY_SERVICE, BatteryManager.class,
+        new CachedServiceFetcher<BatteryManager>() {
+    @Override
+    public BatteryManager createService(ContextImpl ctx) throws ServiceNotFoundException {
+        IBatteryStats stats = IBatteryStats.Stub.asInterface(
+                ServiceManager.getServiceOrThrow(BatteryStats.SERVICE_NAME));
+        IBatteryPropertiesRegistrar registrar = IBatteryPropertiesRegistrar.Stub
+                .asInterface(ServiceManager.getServiceOrThrow("batteryproperties"));
+        return new BatteryManager(ctx, stats, registrar);
+    }});
+```
+
 
 ---
 

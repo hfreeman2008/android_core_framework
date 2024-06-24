@@ -36,12 +36,44 @@ PowerManagerService调用流程和其他的服务完全是一样的，这部分�
 
 ---
 
+# 启动BatteryService服务：
+SystemServer.java
+
 
 ```java
-
+t.traceBegin("StartBatteryService");
+// Tracks the battery level.  Requires LightService.
+mSystemServiceManager.startService(BatteryService.class);
+t.traceEnd();
 ```
 
 ---
+
+# 注册BatteryService服务：
+SystemServiceRegistry.java
+
+```java
+registerService(Context.BATTERY_SERVICE, BatteryManager.class,
+        new CachedServiceFetcher<BatteryManager>() {
+    @Override
+    public BatteryManager createService(ContextImpl ctx) throws ServiceNotFoundException {
+        IBatteryStats stats = IBatteryStats.Stub.asInterface(
+                ServiceManager.getServiceOrThrow(BatteryStats.SERVICE_NAME));
+        IBatteryPropertiesRegistrar registrar = IBatteryPropertiesRegistrar.Stub
+                .asInterface(ServiceManager.getServiceOrThrow("batteryproperties"));
+        return new BatteryManager(ctx, stats, registrar);
+    }});
+```
+
+---
+
+# BatteryService 类图
+
+<img src="BatteryService_class.png">
+图三 BatteryService类图
+
+---
+
 
 ```java
 

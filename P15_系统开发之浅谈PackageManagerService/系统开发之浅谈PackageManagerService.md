@@ -267,6 +267,29 @@ https://blog.csdn.net/hfreeman2008/article/details/118160530
 ---
 
 
+# LocalService--PackageManagerInternal
+
+```java
+private final PackageManagerInternal mPmInternal;
+
+
+// Expose private service for system components to use.
+mPmInternal = new PackageManagerInternalImpl();
+LocalServices.addService(PackageManagerInternal.class, mPmInternal);
+```
+
+system server进程引用：
+
+```java
+private PackageManagerInternal mPackageManagerInternal;
+mPackageManagerInternal = LocalServices.getService(PackageManagerInternal.class);
+mPmInternal.getSetupWizardPackageName()
+```
+
+---
+
+
+
 # 结束语
 
 <img src="../Images/end_001.png">

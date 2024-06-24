@@ -552,22 +552,12 @@ private void processValuesLocked(boolean force) {
 
 ---
 
-
-
-```java
-
-```
-
-```java
-
-```
-
----
-
-# 电源架构
+# 电源架构一
 
 <img src="../Images/power_whole.png">
 
+
+# 电源架构二
 
 <img src="BatteryService整个架构.png">
 

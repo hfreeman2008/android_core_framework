@@ -266,6 +266,73 @@ private void incrementBootCount() {
     }
 }
 ```
+
+```java
+adb shell settings get global boot_count
+```
+
+
+---
+
+# publishBinderService--Context.POWER_SERVICE
+
+```java
+private final class BinderService extends IPowerManager.Stub {
+......
+}
+
+
+private final BinderService mBinderService;
+
+mBinderService = new BinderService();
+
+BinderService getBinderServiceInstance() {
+    return mBinderService;
+}
+
+public void onStart() {
+    publishBinderService(Context.POWER_SERVICE, mBinderService, /* allowIsolated= */ false,
+            DUMP_FLAG_PRIORITY_DEFAULT | DUMP_FLAG_PRIORITY_CRITICAL);
+
+```
+
+读取服务的方法：
+```java
+PowerManager powerManager = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+```
+
+
+---
+
+# LocalService--PowerManagerInternal
+
+
+```java
+private final class LocalService extends PowerManagerInternal {
+    ......    
+}
+
+
+private final LocalService mLocalService;
+
+mLocalService = new LocalService();
+
+LocalService getLocalServiceInstance() {
+    return mLocalService;
+}
+
+public void onStart() {
+    publishLocalService(PowerManagerInternal.class, mLocalService);
+}
+
+```
+
+system_server读取服务：
+```java
+private PowerManagerInternal mLocalPowerManager;
+mLocalPowerManager = LocalServices.getService(PowerManagerInternal.class);
+```
+
 ---
 
 
@@ -278,7 +345,6 @@ private void incrementBootCount() {
 ```java
 
 ```
-
 
 ```java
 

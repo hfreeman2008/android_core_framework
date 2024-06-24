@@ -567,13 +567,13 @@ private void processValuesLocked(boolean force) {
 
 # 参考
 
-[Android电池管理系统](https://www.jianshu.com/p/2efd7fc669e5)
+(1).[Android电池管理系统](https://www.jianshu.com/p/2efd7fc669e5)
 
 https://www.jianshu.com/p/2efd7fc669e5
 
 
 
-[Android 电池管理(BatteryService) 详解](https://blog.csdn.net/weixin_42754390/article/details/124268534)
+(2)[Android 电池管理(BatteryService) 详解](https://blog.csdn.net/weixin_42754390/article/details/124268534)
 
 https://blog.csdn.net/weixin_42754390/article/details/124268534
 

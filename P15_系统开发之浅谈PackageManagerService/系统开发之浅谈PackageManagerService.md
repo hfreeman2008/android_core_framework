@@ -51,6 +51,8 @@ PackageManagerInternal pm = LocalServices.getService(PackageManagerInternal.clas
 # PackageManagerService调用流程
 
 
+<img src="pkms_whole.png">
+
 
 图一 PackageManagerService调用流程
 

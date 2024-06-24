@@ -51,8 +51,11 @@ adb shell dumpsys meminfo com.android.pkgname
 ---
 
 ## dumpsys cpuinfo
-这个命令，我们针对分析设备的cpu，特别有用
-查看cpu信息
+
+This command is particularly useful for analyzing the CPU of the device
+
+View CPU information
+
 ```java
 adb shell dumpsys cpuinfo
 ```

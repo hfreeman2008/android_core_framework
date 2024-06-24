@@ -346,29 +346,39 @@ adb logcat -b radio
 
 ---
 
-# 如何合理的添加日志
-要想回答这个问题，我们需要先回想一下，我们什么时候需要日志？
+# How to add logs reasonably
+
+To answer this question, we need to first recall when we need logs?
 
 ---
 
-## 我们什么时候需要日志？
-如果碰到问题，测试的同事从开发那边听的最多的一句话，有没有日志。
-通过这句话，我们知道，碰到问题，我们希望日志中有相关的异常或错误信息，从而方便开发者来定位问题。
+## When do we need logs?
+If encountering problems, is there a log of the most frequently heard sentence by testing colleagues from the development side.
 
-所以，日志一定是要记录异常和错误的信息，这个是最重要的内容。
+Through this sentence, we know that when encountering problems, we hope to have relevant exception or error information in the log,.
+
+so that developers can easily locate the problem.
+
+So, logs must record information about exceptions and errors, which is the most important content.
 
 ---
 
-## 日志的目的是什么?
-日志,我们可以比喻成一台记录历史的史官如实写下的史书，开发者可以通过阅读日志，就像阅读史书一样，了解过去的历史。
-而我们关注的重点主要在：
-- 异常和错误的信息
-- 关键的信息
+## What is the purpose of logging?
 
-所以合理的添加日志，也应该主要是这二个方面：
-- 异常和错误的信息
-- 关键的信息  
-这部分包括关键的业务，关键动作，关键状态等等。
+A log can be likened to a historical book written truthfully by a historian who records history
+
+Developers can learn about past history by reading logs, just like reading history books.
+
+And our main focus is on:
+
+- Abnormal and erroneous information
+- Key information
+
+So adding logs reasonably should mainly focus on these two aspects:
+
+- Abnormal and erroneous information
+- Key information 
+This section includes critical business, critical actions, critical states, and so on.
 
 ---
 

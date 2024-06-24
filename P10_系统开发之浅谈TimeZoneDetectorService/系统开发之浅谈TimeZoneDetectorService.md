@@ -115,7 +115,7 @@ public boolean isAutoDetectionSupported() {
 
 ---
 
-# TimeZoneDetectorService的作用：
+# TimeZoneDetectorService 的作用：
 
 TimeZoneDetectorService类主要是用来更新时区的。
 
@@ -126,6 +126,12 @@ TimeZoneDetectorService类主要是用来更新时区的。
 ```java
 方式1
 TimeZoneDetector timeZoneDetector = getActivity().getSystemService(TimeZoneDetector.class);
+
+
+方式2
+ITimeZoneDetectorService mITimeZoneDetectorService;
+mITimeZoneDetectorService = ITimeZoneDetectorService.Stub.asInterface(ServiceManager.getServiceOrThrow(Context.TIME_ZONE_DETECTOR_SERVICE));
+
 ```
 
 ---

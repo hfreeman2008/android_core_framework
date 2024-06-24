@@ -63,9 +63,11 @@ adb shell dumpsys cpuinfo
 ---
 
 ## dumpsys package
-这个命令，我们针对分析设备的所有应用信息，特别有用
 
-查看应用包信息
+This command is particularly useful for analyzing all application information of the device
+
+View application package information
+
 ```java
 adb shell dumpsys package
 adb shell dumpsys package com.android.pkgname

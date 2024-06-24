@@ -519,7 +519,8 @@ private void processValuesLocked(boolean force) {
 
 
 ---
-# processValuesLocked实时处理电量
+
+# HealthHalCallback回调处理电量
 
 ```java
 private final class HealthHalCallback extends IHealthInfoCallback.Stub
@@ -532,15 +533,17 @@ private final class HealthHalCallback extends IHealthInfoCallback.Stub
         propsLatest.batteryCapacityLevel = BatteryCapacityLevel.UNSUPPORTED;
         propsLatest.batteryChargeTimeToFullNowSeconds =
             Constants.BATTERY_CHARGE_TIME_TO_FULL_NOW_SECONDS_UNSUPPORTED;
-
+        //更新电池状态
         BatteryService.this.update(propsLatest);
     }
 
     @Override public void healthInfoChanged_2_1(android.hardware.health.V2_1.HealthInfo props) {
+        //更新电池状态
         BatteryService.this.update(props);
     }
     
 update(android.hardware.health.V2_1.HealthInfo info)
+
 ```
 
 ```java

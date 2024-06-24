@@ -9,7 +9,6 @@ The log is a key technology for system problem analysis, and it is not an exagge
 
 ---
 
-![alt text](image.png)
 
 <img src="log_jie_gao_english.png">
 

@@ -250,17 +250,81 @@ https://www.jianshu.com/p/6114071d8879
 
 ---
 
+# jni
+
+```java
+static native boolean vibratorExists();
+static native void vibratorInit();
+static native void vibratorOn(long milliseconds);
+static native void vibratorOff();
+static native boolean vibratorSupportsAmplitudeControl();
+static native void vibratorSetAmplitude(int amplitude);
+static native int[] vibratorGetSupportedEffects();
+static native long vibratorPerformEffect(long effect, long strength, Vibration vibration,
+        boolean withCallback);
+static native void vibratorPerformComposedEffect(
+        VibrationEffect.Composition.PrimitiveEffect[] effect, Vibration vibration);
+static native boolean vibratorSupportsExternalControl();
+static native void vibratorSetExternalControl(boolean enabled);
+static native long vibratorGetCapabilities();
+static native void vibratorAlwaysOnEnable(long id, long effect, long strength);
+static native void vibratorAlwaysOnDisable(long id);
+```
+
+
+
+frameworks\base\services\core\jni\com_android_server_VibratorService.cpp
+
+```java
+static void vibratorOn(JNIEnv* /* env */, jclass /* clazz */, jlong timeout_ms)
+{
+    if (auto hal = getHal<aidl::IVibrator>()) {
+        auto status = hal->call(&aidl::IVibrator::on, timeout_ms, nullptr);
+        if (!status.isOk()) {
+            ALOGE("vibratorOn command failed: %s", status.toString8().string());
+        }
+    } else {
+        Status retStatus = halCall(&V1_0::IVibrator::on, timeout_ms).withDefault(Status::UNKNOWN_ERROR);
+        if (retStatus != Status::OK) {
+            ALOGE("vibratorOn command failed (%" PRIu32 ").", static_cast<uint32_t>(retStatus));
+        }
+    }
+}
+
+static void vibratorOff(JNIEnv* /* env */, jclass /* clazz */)
+{
+    if (auto hal = getHal<aidl::IVibrator>()) {
+        auto status = hal->call(&aidl::IVibrator::off);
+        if (!status.isOk()) {
+            ALOGE("vibratorOff command failed: %s", status.toString8().string());
+        }
+    } else {
+        Status retStatus = halCall(&V1_0::IVibrator::off).withDefault(Status::UNKNOWN_ERROR);
+        if (retStatus != Status::OK) {
+            ALOGE("vibratorOff command failed (%" PRIu32 ").", static_cast<uint32_t>(retStatus));
+        }
+    }
+}
+```
+
+---
+
+
+
 
 ```java
 
 ```
 
+
 ```java
 
 ```
 
 
+```java
 
+```
 
 ---
 

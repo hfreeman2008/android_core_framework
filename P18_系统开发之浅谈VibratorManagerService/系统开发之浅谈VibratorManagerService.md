@@ -246,6 +246,8 @@ Slog.d(TAG, "Turning vibrator on for " + millis + " ms" +
 
 # jni
 
+VibratorManagerService的native方法
+
 ```java
 static native boolean vibratorExists();
 static native void vibratorInit();
@@ -265,7 +267,7 @@ static native void vibratorAlwaysOnEnable(long id, long effect, long strength);
 static native void vibratorAlwaysOnDisable(long id);
 ```
 
-
+对应于jni代码：
 
 frameworks\base\services\core\jni\com_android_server_VibratorService.cpp
 

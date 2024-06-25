@@ -11,7 +11,7 @@ vibrator管理震动，这个服务比较简单，我们可以参考这个服务
 
 ---
 
-# 获取VibratorManagerService的方式
+# 获取 VibratorManagerService 的方式
 
 ```java
 方式1
@@ -27,7 +27,11 @@ IVibratorManagerService mService = IVibratorManagerService.Stub.asInterface(
 
 ---
 
-# VibratorManagerService调用流程
+# VibratorManagerService 调用流程
+
+<img src="VibratorManagerService_whole.png">
+
+
 
 
 

@@ -32,15 +32,89 @@ IVibratorManagerService mService = IVibratorManagerService.Stub.asInterface(
 <img src="VibratorManagerService_whole.png">
 
 
+图一 VibratorManagerService调用流程
+
+以getVibratorIds()为例，查看VibratorManagerService调用流程：
+
+(1)app应用中调用getVibratorIds:
+```java
+VibratorManager vibratorManager = mContext.getSystemService(VibratorManager.class);
+int[] vibratorIds = vibratorManager.getVibratorIds();
+```
 
 
-
-
-
+(2)VibratorManager.java定义getVibratorIds
 
 ```java
-
+/**
+ * List all available vibrator ids, returning a possible empty list.
+ *
+ * @return An array containing the ids of the vibrators available on the device.
+ */
+@NonNull
+public abstract int[] getVibratorIds();
 ```
+
+
+(3)VibratorManager的子类SystemVibratorManager实现getVibratorIds
+```java
+public int[] getVibratorIds() {
+    synchronized (mLock) {
+        if (mVibratorIds != null) {
+            return mVibratorIds;
+        }
+        try {
+            if (mService == null) {
+                Log.w(TAG, "Failed to retrieve vibrator ids; no vibrator manager service.");
+            } else {
+                return mVibratorIds = mService.getVibratorIds();
+            }
+        } catch (RemoteException e) {
+            e.rethrowFromSystemServer();
+        }
+        return new int[0];
+    }
+}
+```
+
+(4)IVibratorManagerService.aidl定义getVibratorIds
+```java
+int[] getVibratorIds();
+VibratorInfo getVibratorInfo(int vibratorId);
+boolean isVibrating(int vibratorId);
+boolean registerVibratorStateListener(int vibratorId, in IVibratorStateListener listener);
+boolean unregisterVibratorStateListener(int vibratorId, in IVibratorStateListener listener);
+boolean setAlwaysOnEffect(int uid, String opPkg, int alwaysOnId,
+        in CombinedVibration vibration, in VibrationAttributes attributes);
+void vibrate(int uid, String opPkg, in CombinedVibration vibration,
+        in VibrationAttributes attributes, String reason, IBinder token);
+void cancelVibrate(int usageFilter, IBinder token);
+```
+
+(5)VibratorManagerService调用getVibratorIds
+```java
+@Override // Binder call
+public int[] getVibratorIds() {
+    return Arrays.copyOf(mVibratorIds, mVibratorIds.length);
+}
+```
+
+---
+
+
+# 启动 VibratorManagerService 服务：
+
+SystemServer.java
+```java
+t.traceBegin("StartVibratorManagerService");
+mSystemServiceManager.startService(VibratorManagerService.Lifecycle.class);
+t.traceEnd();
+```
+
+
+---
+
+
 
 ```java
 

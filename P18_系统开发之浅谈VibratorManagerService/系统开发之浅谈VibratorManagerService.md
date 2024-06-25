@@ -240,13 +240,7 @@ Slog.d(TAG, "Turning vibrator on for " + millis + " ms" +
 }
 ```
 
----
 
-# 参考资料
-
-[Android Vibrator](https://www.jianshu.com/p/6114071d8879)
-
-https://www.jianshu.com/p/6114071d8879
 
 ---
 
@@ -426,7 +420,20 @@ static int vibra_open(const hw_module_t* module, const char* id __unused,
 当我们写节点的时候就会调用到enable_store函数，并调用注册驱动的enable函数
 
 
+---
 
+# VibratorManagerService 垂直框架
+
+<img src="VibratorManagerService_whole_002.png">
+
+
+---
+
+# 参考资料
+
+[Android Vibrator](https://www.jianshu.com/p/6114071d8879)
+
+https://www.jianshu.com/p/6114071d8879
 
 ---
 

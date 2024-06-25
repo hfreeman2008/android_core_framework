@@ -251,6 +251,9 @@ Slog.d(TAG, "Turning vibrator on for " + millis + " ms" +
 
 ```
 
+
+![alt text](image.png)
+
 ---
 
 

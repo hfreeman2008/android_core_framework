@@ -140,7 +140,107 @@ Dumping vibrator manager service to text...
 
 ---
 
+# 日志开关
 
+```java
+private static final boolean DEBUG = false;
+```
+
+---
+
+# 相机界面屏蔽所有震动提醒
+
+在doVibratorOn方法中添加一个白名单，以避免震动
+
+
+```java
+// add begin
+// Module Vibrator
+//add black activity list for vibrator
+import android.app.Activity;
+import android.content.ComponentName;
+//  add end
+
+
+// add begin
+// Module Vibrator
+// add black activity list for vibrator
+private String getTopActivityName() {
+String topActivityName = "";
+//get top activity name
+ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
+if(am != null
+&& am.getRunningTasks(1) != null
+&& am.getRunningTasks(1).size() > 0
+&& am.getRunningTasks(1).get(0) != null) {
+ComponentName comp = am.getRunningTasks(1).get(0).topActivity;
+if(comp != null) {
+    topActivityName = comp.getClassName();
+}
+}
+return topActivityName;
+}
+
+private String getTopActivityPkgName() {
+    String topPkgName = "";
+    //get top activity package name
+    ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
+    if(am != null
+    && am.getRunningTasks(1) != null
+    && am.getRunningTasks(1).size() > 0
+    && am.getRunningTasks(1).get(0) != null) {
+        ComponentName comp = am.getRunningTasks(1).get(0).topActivity;
+    if(comp != null) {
+        topPkgName = comp.getPackageName();
+    }
+    }
+    return topPkgName;
+}
+
+private String topActivityPkgNameTemp = "";
+private String topActivityNameTemp = "";
+
+private boolean isVibratorBlackActivity() {
+    boolean result = false;
+    topActivityPkgNameTemp = getTopActivityPkgName();
+    topActivityNameTemp = getTopActivityName();
+    if (DEBUG) {
+        Slog.d(TAG, "topActivityPkgNameTemp:" + topActivityPkgNameTemp);
+        Slog.d(TAG, "topActivityNameTemp:" + topActivityNameTemp);
+    }
+    if("com.android.camera".equals(topActivityPkgNameTemp)
+    && "com.android.camera.CameraActivity".equals(topActivityNameTemp)){
+        Slog.d(TAG, "Turning off vibrator when current activity in black list");
+        result = true;
+    }
+    return result;
+}
+//  add end
+
+
+private void doVibratorOn(long millis, int amplitude, int uid, AudioAttributes attrs) {
+Trace.traceBegin(Trace.TRACE_TAG_VIBRATOR, "doVibratorOn");
+try {
+synchronized (mInputDeviceVibrators) {
+if (amplitude == VibrationEffect.DEFAULT_AMPLITUDE) {
+amplitude = mDefaultVibrationAmplitude;
+}
+
+//  add begin
+// Module Vibrator
+// add black activity list for vibrator
+if(isVibratorBlackActivity()){
+    return;
+}
+//  add end
+
+if (DEBUG) {
+Slog.d(TAG, "Turning vibrator on for " + millis + " ms" +
+" with amplitude " + amplitude + ".");
+}
+```
+
+---
 
 
 ```java
@@ -150,8 +250,6 @@ Dumping vibrator manager service to text...
 ```java
 
 ```
-
-
 
 ---
 

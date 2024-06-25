@@ -309,22 +309,124 @@ static void vibratorOff(JNIEnv* /* env */, jclass /* clazz */)
 
 ---
 
+# HIDL层
 
+以马达的On和off为例，会调用到HAL层的on和off方法。
 
+hardware\interfaces\vibrator\1.0\default\Vibrator.cpp
 
 ```java
+// Methods from ::android::hardware::vibrator::V1_0::IVibrator follow.
+Return<Status> Vibrator::on(uint32_t timeout_ms) {
+    int32_t ret = mDevice->vibrator_on(mDevice, timeout_ms);
+    if (ret != 0) {
+        ALOGE("on command failed : %s", strerror(-ret));
+        return Status::UNKNOWN_ERROR;
+    }
+    return Status::OK;
+}
+
+Return<Status> Vibrator::off()  {
+    int32_t ret = mDevice->vibrator_off(mDevice);
+    if (ret != 0) {
+        ALOGE("off command failed : %s", strerror(-ret));
+        return Status::UNKNOWN_ERROR;
+    }
+    return Status::OK;
+}
 
 ```
 
+HIDL层是较新的安卓版本才引入的，是连接HAL层和JNI层的桥梁
+
+---
+
+# HAL层
+
+hardware\libhardware\modules\vibrator\vibrator.c
 
 ```java
+static const char THE_DEVICE[] = "/sys/class/timed_output/vibrator/enable";
+
+static int sendit(unsigned int timeout_ms)
+{
+    char value[TIMEOUT_STR_LEN]; /* large enough for millions of years */
+
+    snprintf(value, sizeof(value), "%u", timeout_ms);
+    return write_value(THE_DEVICE, value);
+}
+
+static int vibra_on(vibrator_device_t* vibradev __unused, unsigned int timeout_ms)
+{
+    /* constant on, up to maximum allowed time */
+    return sendit(timeout_ms);
+}
+
+static int vibra_off(vibrator_device_t* vibradev __unused)
+{
+    return sendit(0);
+}
+
+......
+
+static int vibra_open(const hw_module_t* module, const char* id __unused,
+                      hw_device_t** device __unused) {
+    bool use_led;
+
+    if (vibra_exists()) {
+        ALOGD("Vibrator using timed_output");
+        use_led = false;
+    } else if (vibra_led_exists()) {
+        ALOGD("Vibrator using LED trigger");
+        use_led = true;
+    } else {
+        ALOGE("Vibrator device does not exist. Cannot start vibrator");
+        return -ENODEV;
+    }
+
+    vibrator_device_t *vibradev = calloc(1, sizeof(vibrator_device_t));
+
+    if (!vibradev) {
+        ALOGE("Can not allocate memory for the vibrator device");
+        return -ENOMEM;
+    }
+
+    vibradev->common.tag = HARDWARE_DEVICE_TAG;
+    vibradev->common.module = (hw_module_t *) module;
+    vibradev->common.version = HARDWARE_DEVICE_API_VERSION(1,0);
+    vibradev->common.close = vibra_close;
+
+    if (use_led) {
+        vibradev->vibrator_on = vibra_led_on;
+        vibradev->vibrator_off = vibra_led_off;
+    } else {
+        vibradev->vibrator_on = vibra_on;
+        vibradev->vibrator_off = vibra_off;
+    }
+
+    *device = (hw_device_t *) vibradev;
+
+    return 0;
+}
 
 ```
 
+其实开启和关闭马达的工作很简单，就是往节点"/sys/class/timed_output/vibrator/enable"写入震动时间，所以可以想得到驱动层只需要提供一个节点供上层操作就好。
 
-```java
+---
 
-```
+# 驱动层
+
+马达的驱动是基于kernel提供的timed_output框架完成的
+
+代码路径：kernel-4.4\drivers\staging\android\timed_output.c
+
+提供接口给驱动在"/sys/class/timed_output/"路径下面建立自己的节点，并提供节点的device attribute的操作接口。
+
+当我们写节点的时候就会调用到enable_store函数，并调用注册驱动的enable函数
+
+
+
 
 ---
 

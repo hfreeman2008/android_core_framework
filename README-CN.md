@@ -100,7 +100,10 @@
 ## P17: 系统开发之浅谈BatteryService
 [系统开发之浅谈BatteryService.md](./P17_系统开发之浅谈BatteryService/系统开发之浅谈BatteryService.md)
 
+---
 
+## P18: 系统开发之浅谈VibratorManagerService
+[系统开发之浅谈VibratorManagerService.md](./P18_系统开发之浅谈VibratorManagerService/系统开发之浅谈VibratorManagerService.md)
 ---
 
 备注：这一系统文章参考源码以android 11和13为主，还有部分是其他的android 版本。

@@ -114,6 +114,33 @@ t.traceEnd();
 
 ---
 
+# VibratorManagerService 类图
+
+<img src="VibratorManagerService_class.png">
+
+图三 VibratorManagerService类图
+
+---
+
+# handler消息
+
+有一个handler:
+```java
+private final Handler mHandler;
+```
+
+---
+
+# dump信息
+```java
+
+Dumping vibrator manager service to proto...
+Dumping vibrator manager service to text...
+```
+
+---
+
+
 
 
 ```java

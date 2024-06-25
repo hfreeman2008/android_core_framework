@@ -242,6 +242,14 @@ Slog.d(TAG, "Turning vibrator on for " + millis + " ms" +
 
 ---
 
+# 参考资料
+
+[Android Vibrator](https://www.jianshu.com/p/6114071d8879)
+
+https://www.jianshu.com/p/6114071d8879
+
+---
+
 
 ```java
 
@@ -252,7 +260,7 @@ Slog.d(TAG, "Turning vibrator on for " + millis + " ms" +
 ```
 
 
-![alt text](image.png)
+
 
 ---
 

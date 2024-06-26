@@ -483,7 +483,7 @@ AudioManagerInternal audioManager =LocalServices.getService(AudioManagerInternal
 
     /** Minimum volume index values for audio streams */
     private static int[] MIN_STREAM_VOLUME = new int[] {
-        1,  // STREAM_VOICE_CALL
+        1,  // STREAM_VOICE_CALL  所以我们可以看到打电话时，声音的最小值为1，怎么也不能调整到0
         0,  // STREAM_SYSTEM
         0,  // STREAM_RING
         0,  // STREAM_MUSIC
@@ -497,17 +497,217 @@ AudioManagerInternal audioManager =LocalServices.getService(AudioManagerInternal
     };
 ```
 
+
 ---
 
+# 读取默认声音值：
+
+```java
+readSettings()
+ int defaultIndex = (device == AudioSystem.DEVICE_OUT_DEFAULT) ?getDefaultMaximumVolume() : -1;
+
+
+//Set default volume
+private int getDefaultMaximumVolume(){
+    String volume = android.os.SystemProperties.get("ro.pt.default_volume_set","false");
+    Slog.d(TAG, "getDefaultMaximumVolume: volume = "+volume);
+    if(!"false".equals(volume)){
+        String[] volumeIndex = volume.split(",");
+        Slog.d(TAG, "getDefaultMaximumVolume: volumeIndex = "+volumeIndex[mStreamType]);
+        return Integer.valueOf(volumeIndex[mStreamType]);
+    }
+    return AudioSystem.DEFAULT_STREAM_VOLUME[mStreamType];
+}
+// END.
+```
+
+我们默认设置系统属性ro.pt.default_volume_set就可以。
+
+```java
+/** Maximum volume index values for audio streams */
+private static int[] MAX_STREAM_VOLUME = new int[] {
+    5,  // STREAM_VOICE_CALL
+    7,  // STREAM_SYSTEM
+    7,  // STREAM_RING
+    15, // STREAM_MUSIC
+    7,  // STREAM_ALARM
+    7,  // STREAM_NOTIFICATION
+    15, // STREAM_BLUETOOTH_SCO
+    7,  // STREAM_SYSTEM_ENFORCED
+    15, // STREAM_DTMF
+    15, // STREAM_TTS
+    15  // STREAM_ACCESSIBILITY
+};
+```
+
+---
+
+# 调整声音的方法
+
+adjustStreamVolume
+
+```java
+private void adjustStreamVolume(int streamType, int direction, int flags,
+        String callingPackage, String caller, int uid) {
+```
+
+有几个着急的参数：
+streamType----声音类型
+direction--------音量是增加还是减少
+
+这是调节音量时，弹出音量达大的确认提示框
+
+```java
+else if ((direction == AudioManager.ADJUST_RAISE) &&
+                    !checkSafeMediaVolume(streamTypeAlias, aliasIndex + step, device)) {
+                Log.e(TAG, "adjustStreamVolume() safe volume index = " + oldIndex);
+                mVolumeController.postDisplaySafeVolumeWarning(flags);
+```
+
+setStreamVolume---设置音量
+setStreamVolumeInt
+
+```java
+sendMsg(mAudioHandler,
+        MSG_SET_DEVICE_VOLUME,
+        SENDMSG_QUEUE,
+        device,
+        0,
+        streamState,
+        0);
+```
+
+
+---
+
+# 一个正常的音量加的调用流程：
+
+```java
+WindowManager: interceptKeyBeforeQueueing keycode=24 interactive=true keyguardActive=false policyFlags=22000000scanKeyCode=115 mDeviceMode=0 isLockScreenShow=false
+WindowManager: interceptKeyBeforeQueueing keycode=24scanKeyCode=115
+WindowManager: interceptHytKeyDown keycode=115
+WindowManager: interceptKeyTi keyCode=24 down=true repeatCount=0 keyguardOn=false canceled=false
+MediaSessionService: dispatchVolumeKeyEvent, pkg=com.android.settings, opPkg=com.android.settings, pid=2902, uid=1000, asSystem=true, event=KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_VOLUME_UP, scanCode=115, metaState=0, flags=0x8, repeatCount=0, eventTime=55696364, downTime=55696364, deviceId=3, source=0x101, displayId=-1 }, stream=-2147483648, musicOnly=false
+MediaSessionService: Adjusting suggestedStream=-2147483648 by 1. flags=4113, preferSuggestedStream=false, session=null
+AS.AudioService: adjustSuggestedStreamVolume() stream=-2147483648, flags=4113, caller=android, volControlStream=-1, userSelect=false
+AS.AudioService: adjustSuggestedStreamVolume() stream=-2147483648, flags=4113, caller=android, volControlStream=-1, userSelect=false
+AS.AudioService: getActiveStreamType: Forcing DEFAULT_VOL_STREAM_NO_PLAYBACK(3) b/c default
+AS.AudioService: Volume controller suppressed adjustment
+AS.AudioService: adjustStreamVolume() stream=3, dir=0, flags=4097, caller=android
+vol.Events: writeEvent active_stream_changed STREAM_MUSIC
+AS.AudioService: forceVolumeControlStream(3)
+vol.Events: writeEvent key STREAM_MUSIC 10
+vol.Events: writeEvent show_dialog volume_changed keyguard=false
+AS.AudioService: Volume controller visible: true
+```
+
+AudioService相关的调用：
+
+```java
+adjustSuggestedStreamVolume----adjustStreamVolume--forceVolumeControlStream--notifyVolumeControllerVisible
+```
+
+AS.AudioService: Volume controller visible: true   日志对应：
+
+```java
+public void notifyVolumeControllerVisible(final IVolumeController controller, boolean visible) {
+    enforceVolumeController("notify about volume controller visibility");
+    mVolumeController.setVisible(visible);
+    if (DEBUG_VOL) Log.d(TAG, "Volume controller visible: " + visible);
+}
+```
+
+---
+
+# 常用与声音的方法：
+
+```java
+getStreamVolume
+getStreamMaxVolume
+getStreamMinVolume
+getLastAudibleStreamVolume
+getUiSoundsStreamType
+
+setStreamVolume()
+setStreamVolumeInt()
+    
+public void adjustSuggestedStreamVolume()
+public void adjustStreamVolume()
+```
+
+---
+
+# 确定增加声音时，是否要弹出声音提示框的标志位
+
+```java
+mSafeMediaVolumeState = new Integer(Settings.Global.getInt(mContentResolver,Settings.Global.AUDIO_SAFE_VOLUME_STATE,SAFE_MEDIA_VOLUME_NOT_CONFIGURED));
+```
+
+```java
+adb shell "settings get global audio_safe_volume_state"
+3
+```
+
+不显示提示框
+
+```java
+private static final int SAFE_MEDIA_VOLUME_NOT_CONFIGURED = 0;
+private static final int SAFE_MEDIA_VOLUME_DISABLED = 1;
+private static final int SAFE_MEDIA_VOLUME_INACTIVE = 2;  // confirmed
+private static final int SAFE_MEDIA_VOLUME_ACTIVE = 3;  // unconfirmed
+```
+
+对此上面这个值的改变处理逻辑：
+
+```java
+private static final int MSG_PERSIST_SAFE_VOLUME_STATE = 18;
+case MSG_PERSIST_SAFE_VOLUME_STATE:
+```
+
+连续按增加声音键，会发送消息：
+
+```java
+MSG_CONFIGURE_SAFE_MEDIA_VOLUME
+```
+
+checkSafeMediaVolume
+确定增加声音时，是否要弹出声音提示框
+
+onConfigureSafeVolume
+
+```java
+boolean safeMediaVolumeEnabled =
+        SystemProperties.getBoolean("audio.safemedia.force", false)
+        || mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_safe_media_volume_enabled);
+```
+
+配置增加音量时的提示框，是否显示：
+```java
+<!-- Whether safe headphone volume is enabled or not (country specific). -->
+<bool name="config_safe_media_volume_enabled">true</bool>
+```
+
+
+```java
+safeMediaVolumeIndex
+setSafeMediaVolumeEnabled
+enforceSafeMediaVolume
+disableSafeMediaVolume
+```
+
+---
+
+# 调节声音时，是否弹出音量过大的提示框的音量阈值：
 
 ```java
 
 ```
 
+
 ```java
 
 ```
-
 
 ```java
 

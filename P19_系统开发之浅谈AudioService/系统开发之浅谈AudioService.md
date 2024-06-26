@@ -701,33 +701,139 @@ disableSafeMediaVolume
 # 调节声音时，是否弹出音量过大的提示框的音量阈值：
 
 ```java
+// mSafeMediaVolumeIndex is the cached value of config_safe_media_volume_index property
+private int mSafeMediaVolumeIndex;
 
+......
+
+mSafeMediaVolumeIndex = mContext.getResources().getInteger(
+        com.android.internal.R.integer.config_safe_media_volume_index) * 10;
+
+......
+
+private int safeMediaVolumeIndex(int device) {
+    if ((device & mSafeMediaVolumeDevices) == 0) {
+        return MAX_STREAM_VOLUME[AudioSystem.STREAM_MUSIC];
+    }
+    if (device == AudioSystem.DEVICE_OUT_USB_HEADSET) {
+        return mSafeUsbMediaVolumeIndex;
+    } else {
+        return mSafeMediaVolumeIndex;
+    }
+}
+```
+
+如果是(device & mSafeMediaVolumeDevices) == 0，则由MAX_STREAM_VOLUME[AudioSystem.STREAM_MUSIC]决定：
+
+```java
+/** Maximum volume index values for audio streams */
+private static int[] MAX_STREAM_VOLUME = new int[] {
+    15, // STREAM_MUSIC
+```
+
+安全多媒体音量设备：
+
+```java
+// mSafeMediaVolumeDevices lists the devices for which safe media volume is enforced,
+private final int mSafeMediaVolumeDevices = AudioSystem.DEVICE_OUT_WIRED_HEADSET |
+                                            AudioSystem.DEVICE_OUT_WIRED_HEADPHONE |
+                                            AudioSystem.DEVICE_OUT_USB_HEADSET;
+```
+
+如果是AudioSystem.DEVICE_OUT_USB_HEADSET，则由getSafeUsbMediaVolumeIndex决定：
+
+```java
+private int getSafeUsbMediaVolumeIndex()
+{
+    // determine UI volume index corresponding to the wanted safe gain in dBFS
+    int min = MIN_STREAM_VOLUME[AudioSystem.STREAM_MUSIC];
+    int max = MAX_STREAM_VOLUME[AudioSystem.STREAM_MUSIC];
+
+    while (Math.abs(max-min) > 1) {
+        int index = (max + min) / 2;
+        float gainDB = AudioSystem.getStreamVolumeDB(
+                AudioSystem.STREAM_MUSIC, index, AudioSystem.DEVICE_OUT_USB_HEADSET);
+        if (Float.isNaN(gainDB)) {
+            //keep last min in case of read error
+            break;
+        } else if (gainDB == SAFE_VOLUME_GAIN_DBFS) {
+            min = index;
+            break;
+        } else if (gainDB < SAFE_VOLUME_GAIN_DBFS) {
+            min = index;
+        } else {
+            max = index;
+        }
+    }
+    return min * 10;
+}
+```
+
+一般是由配置文件确定：
+```xml
+<!-- Safe headphone volume index. When music stream volume is below this index
+the SPL on headphone output is compliant to EN 60950 requirements for portable music
+players. -->
+<integer name="config_safe_media_volume_index">10</integer>
+```
+
+---
+
+# 声音提示框类
+
+frameworks\base\packages\SystemUI\src\com\android\systemui\volume\SafetyWarningDialog.java
+
+三个响应操作的接口
+```java
+onKeyUp
+onKeyDown
+onClick
 ```
 
 
 ```java
-
+public void onClick(DialogInterface dialog, int which) {
+    mAudioManager.disableSafeMediaVolume();
+}
 ```
+
+---
+
+# 配置是否固定声音，不让声音改变音量：
 
 ```java
+private final boolean mUseFixedVolume;
 
+mUseFixedVolume = mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_useFixedVolume);
 ```
 
+
+```xml
+<!-- Flag indicating that the media framework should not allow changes or mute on any
+        stream or master volumes. -->
+<bool name="config_useFixedVolume">false</bool>
+```
+
+---
+
+# 配置是否有拍照声音
 
 ```java
-
+private boolean readCameraSoundForced() {
+    return SystemProperties.getBoolean("audio.camerasound.force", false) ||
+            mContext.getResources().getBoolean(
+                    com.android.internal.R.bool.config_camera_sound_forced);
+}
 ```
 
 
-```java
-
+```xml
+<!-- Whether camera shutter sound is forced or not  (country specific). -->
+<bool name="config_camera_sound_forced">false</bool>
 ```
 
-
-```java
-
-```
-
+---
 
 ```java
 

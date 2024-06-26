@@ -835,15 +835,166 @@ private boolean readCameraSoundForced() {
 
 ---
 
+# 音效文件的路径：
+
+frameworks\base\services\core\java\com\android\server\audio\SoundEffectsHelper.java
+```java
+/* Sound effect file names  */
+private static final String SOUND_EFFECTS_PATH = "/media/audio/ui/";
+```
+
+frameworks\base\media\java\android\media\MediaActionSound.java
+
+```java
+private static final String[] SOUND_DIRS = {
+    "/product/media/audio/ui/",
+    "/system/media/audio/ui/",
+};
+```
+
+---
+
+# 加载触摸声音资源
+
+frameworks\base\services\core\java\com\android\server\audio\SoundEffectsHelper.java
+```java
+loadTouchSoundAssets()
+```
+
+音效资源配置文件：
+frameworks/base/core/res/res/xml/audio_assets.xml
+```xml
+<audio_assets version="1.0">
+    <group name="touch_sounds">
+        <asset id="FX_KEY_CLICK" file="Effect_Tick.ogg"/>
+        <asset id="FX_FOCUS_NAVIGATION_UP" file="Effect_Tick.ogg"/>
+        <asset id="FX_FOCUS_NAVIGATION_DOWN" file="Effect_Tick.ogg"/>
+        <asset id="FX_FOCUS_NAVIGATION_LEFT" file="Effect_Tick.ogg"/>
+        <asset id="FX_FOCUS_NAVIGATION_RIGHT" file="Effect_Tick.ogg"/>
+        <asset id="FX_KEYPRESS_STANDARD" file="KeypressStandard.ogg"/>
+        <asset id="FX_KEYPRESS_SPACEBAR" file="KeypressSpacebar.ogg"/>
+        <asset id="FX_KEYPRESS_DELETE" file="KeypressDelete.ogg"/>
+        <asset id="FX_KEYPRESS_RETURN" file="KeypressReturn.ogg"/>
+        <asset id="FX_KEYPRESS_INVALID" file="KeypressInvalid.ogg"/>
+    </group>
+</audio_assets>
+```
+
+---
+
+# 与声音有关的系统属性：
+
+```java
+int maxCallVolume = SystemProperties.getInt("ro.config.vc_call_vol_steps", -1);
+int defaultCallVolume = SystemProperties.getInt("ro.config.vc_call_vol_default", -1);
+int maxMusicVolume = SystemProperties.getInt("ro.config.media_vol_steps", -1);
+int defaultMusicVolume = SystemProperties.getInt("ro.config.media_vol_default", -1);
+int maxAlarmVolume = SystemProperties.getInt("ro.config.alarm_vol_steps", -1);
+int defaultAlarmVolume = SystemProperties.getInt("ro.config.alarm_vol_default", -1);
+int maxSystemVolume = SystemProperties.getInt("ro.config.system_vol_steps", -1);
+int defaultSystemVolume = SystemProperties.getInt("ro.config.system_vol_default", -1);
+mMonitorRotation = SystemProperties.getBoolean("ro.audio.monitorRotation", false);
+SystemProperties.getBoolean("audio.safemedia.bypass", false)
+SystemProperties.getBoolean("audio.safemedia.force", false)
+SystemProperties.getBoolean("audio.safemedia.bypass", false)
+SystemProperties.getBoolean("audio.camerasound.force", false) 
+```
+
+---
+
+# SettingsObserver--内容监听类：
+
+```java
+private class SettingsObserver extends ContentObserver {
+
+    SettingsObserver() {
+        super(new Handler());
+        mContentResolver.registerContentObserver(Settings.Global.getUriFor(
+                Settings.Global.ZEN_MODE), false, this);
+        mContentResolver.registerContentObserver(Settings.Global.getUriFor(
+                Settings.Global.ZEN_MODE_CONFIG_ETAG), false, this);
+        mContentResolver.registerContentObserver(Settings.System.getUriFor(
+            Settings.System.MODE_RINGER_STREAMS_AFFECTED), false, this);
+        mContentResolver.registerContentObserver(Settings.Global.getUriFor(
+            Settings.Global.DOCK_AUDIO_MEDIA_ENABLED), false, this);
+        mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                Settings.System.MASTER_MONO), false, this);
+        mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                Settings.System.MASTER_BALANCE), false, this);
+
+        mEncodedSurroundMode = Settings.Global.getInt(
+                mContentResolver, Settings.Global.ENCODED_SURROUND_OUTPUT,
+                Settings.Global.ENCODED_SURROUND_OUTPUT_AUTO);
+        mContentResolver.registerContentObserver(Settings.Global.getUriFor(
+                Settings.Global.ENCODED_SURROUND_OUTPUT), false, this);
+
+        mEnabledSurroundFormats = Settings.Global.getString(
+                mContentResolver, Settings.Global.ENCODED_SURROUND_OUTPUT_ENABLED_FORMATS);
+        mContentResolver.registerContentObserver(Settings.Global.getUriFor(
+                Settings.Global.ENCODED_SURROUND_OUTPUT_ENABLED_FORMATS), false, this);
+
+        mContentResolver.registerContentObserver(Settings.Secure.getUriFor(
+                Settings.Secure.VOICE_INTERACTION_SERVICE), false, this);
+        mContentResolver.registerContentObserver(mUriSilentStatus, false, this);
+    }
+```
+
+---
+
+# 监听广播
+
+```java
+class AudioServiceBroadcastReceiver extends BroadcastReceiver;
+
+// Register for device connection intent broadcasts.
+IntentFilter intentFilter =
+        new IntentFilter(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED);
+intentFilter.addAction(BluetoothHeadset.ACTION_ACTIVE_DEVICE_CHANGED);
+intentFilter.addAction(Intent.ACTION_DOCK_EVENT);
+intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+intentFilter.addAction(Intent.ACTION_USER_SWITCHED);
+intentFilter.addAction(Intent.ACTION_USER_BACKGROUND);
+intentFilter.addAction(Intent.ACTION_USER_FOREGROUND);
+intentFilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+intentFilter.addAction(Intent.ACTION_PACKAGES_SUSPENDED);
+
+intentFilter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+mMonitorRotation = SystemProperties.getBoolean("ro.audio.monitorRotation", false);
+if (mMonitorRotation) {
+    RotationHelper.init(mContext, mAudioHandler);
+}
+
+intentFilter.addAction(AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION);
+intentFilter.addAction(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION);
+
+context.registerReceiverAsUser(mReceiver, UserHandle.ALL, intentFilter, null, null);
+```
+
+---
+
+# 相关文件
+
+```java
+frameworks\base\packages\SystemUI\src\com\android\systemui\volume\VolumeDialogControllerImpl.java
+frameworks\base\packages\SystemUI\src\com\android\systemui\volume\VolumeDialogImpl.java
+frameworks\base\media\java\android\media\IAudioService.aidl
+frameworks\base\media\java\android\media\IAudioService.aidl
+frameworks\base\media\java\android\media\AudioManager.java
+frameworks\base\services\core\java\com\android\server\audio\SoundEffectsHelper.java
+frameworks\base\packages\SystemUI\src\com\android\systemui\volume\SafetyWarningDialog.java
+```
+
+---
+
 ```java
 
 ```
 
-
 ```java
 
 ```
-
 
 ```java
 

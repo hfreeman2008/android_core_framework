@@ -345,7 +345,178 @@ private static final int MSG_REINIT_VOLUMES = 32;
 
 ---
 
+# dump信息
 
+命令：
+```java
+adb shell dumpsys audio
+```
+
+
+```java
+Audio event log: audio services lifecycle
+06-04 20:03:29:785 AudioService()
+
+Message handler (watch for unhandled messages):
+  Handler (com.android.server.audio.AudioService$AudioHandler) {6dfb37a} @ 51717218
+    Looper (AudioService, tid 104) {4ac72b}
+      (Total messages: 0, polling=true, quitting=false)
+
+MediaFocusControl dump time: 上午10:25:13
+
+Audio Focus stack entries (last is top of stack):
+
+No external focus policy
+
+ Notify on duck:  true
+
+ In ring or call: false
+
+Audio event log: focus commands as seen by MediaFocusControl
+Multi Audio Focus enabled :false
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Muted Internally: false
+   Min: 1
+   Max: 5
+   streamVolume:3
+   Current: 40000000 (default): 3
+   Devices: earpiece
+- STREAM_SYSTEM:
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 7
+   streamVolume:5
+   Current: 40000000 (default): 5
+   Devices: speaker
+```
+
+---
+
+# 日志开关
+
+```java
+/** Debug audio mode */
+protected static final boolean DEBUG_MODE = false;
+
+/** Debug audio policy feature */
+protected static final boolean DEBUG_AP = false;
+
+/** Debug volumes */
+protected static final boolean DEBUG_VOL = true;//false;
+
+/** debug calls to devices APIs */
+protected static final boolean DEBUG_DEVICES = false;
+
+/** debug SCO modes */
+protected static final boolean DEBUG_SCO = true;
+```
+
+---
+
+# Lifecycle--publishBinderService
+
+
+```java
+public static final class Lifecycle extends SystemService {
+    private AudioService mService;
+
+    public Lifecycle(Context context) {
+        super(context);
+        mService = new AudioService(context);
+    }
+
+    @Override
+    public void onStart() {
+        publishBinderService(Context.AUDIO_SERVICE, mService);
+    }
+
+    @Override
+    public void onBootPhase(int phase) {
+        if (phase == SystemService.PHASE_ACTIVITY_MANAGER_READY) {
+            mService.systemReady();
+        }
+    }
+}
+```
+
+其他进程读取服务的方法：
+
+```java
+AudioManager manager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+```
+
+---
+
+# LocalServices--AudioServiceInternal
+
+```java
+LocalServices.addService(AudioManagerInternal.class, new AudioServiceInternal());
+```
+
+system server进程使用:
+```java
+AudioManagerInternal audioManager =LocalServices.getService(AudioManagerInternal.class);
+```
+
+---
+
+# 各种类型音量的最大值和最小值
+```java
+   /** Maximum volume index values for audio streams */
+    private static int[] MAX_STREAM_VOLUME = new int[] {
+        5,  // STREAM_VOICE_CALL
+        7,  // STREAM_SYSTEM
+        7,  // STREAM_RING
+        15, // STREAM_MUSIC
+        7,  // STREAM_ALARM
+        7,  // STREAM_NOTIFICATION
+        15, // STREAM_BLUETOOTH_SCO
+        7,  // STREAM_SYSTEM_ENFORCED
+        15, // STREAM_DTMF
+        15, // STREAM_TTS
+        15  // STREAM_ACCESSIBILITY
+    };
+
+    /** Minimum volume index values for audio streams */
+    private static int[] MIN_STREAM_VOLUME = new int[] {
+        1,  // STREAM_VOICE_CALL
+        0,  // STREAM_SYSTEM
+        0,  // STREAM_RING
+        0,  // STREAM_MUSIC
+        0,  // STREAM_ALARM
+        0,  // STREAM_NOTIFICATION
+        0,  // STREAM_BLUETOOTH_SCO
+        0,  // STREAM_SYSTEM_ENFORCED
+        0,  // STREAM_DTMF
+        0,  // STREAM_TTS
+        0   // STREAM_ACCESSIBILITY
+    };
+```
+
+---
+
+
+```java
+
+```
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
 
 
 ```java

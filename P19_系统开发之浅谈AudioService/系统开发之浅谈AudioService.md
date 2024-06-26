@@ -988,17 +988,12 @@ frameworks\base\packages\SystemUI\src\com\android\systemui\volume\SafetyWarningD
 
 ---
 
-```java
+# 参考资料
 
-```
+[AudioService音量服务](https://www.jianshu.com/p/c1dc8b4a7fba)
 
-```java
+https://www.jianshu.com/p/c1dc8b4a7fba
 
-```
-
-```java
-
-```
 
 ---
 

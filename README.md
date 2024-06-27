@@ -122,7 +122,7 @@ The reference code for articles is mainly Android 11 and 13, and there are also 
 ---
 
 # Plan
-pms,memory，cpu,......
+memory，cpu,......
 
 
 ---

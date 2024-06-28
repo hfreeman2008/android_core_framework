@@ -1,6 +1,6 @@
 # P21: 系统开发之浅谈InputMethodManagerService
 
-<img src="../flower/flower_p20.png">
+<img src="../flower/flower_p21.png">
 
 ---
 
@@ -242,3 +242,4 @@ https://blog.csdn.net/hfreeman2008/article/details/117963600
 # 结束语
 
 <img src="../Images/end_001.png">
+

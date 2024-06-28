@@ -117,6 +117,12 @@
 
 ---
 
+## P21: 系统开发之浅谈InputMethodManagerService
+[系统开发之浅谈InputMethodManagerService.md](./P21_系统开发之浅谈InputMethodManagerService/系统开发之浅谈InputMethodManagerService.md)
+
+---
+
+
 备注：这一系统文章参考源码以android 11和13为主，还有部分是其他的android 版本。
 
 ---

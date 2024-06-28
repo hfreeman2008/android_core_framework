@@ -48,21 +48,124 @@ frameworks\base\core\java\android\app\Notification.java
 创建一个notification,Notification.Builder就是我们常用的方式：
 
 ```java
-
-```
 Notification noti = new Notification.Builder(mContext)
          .setContentTitle(&quot;New mail from &quot; + sender.toString())
          .setContentText(subject)
          .setSmallIcon(R.drawable.new_mail)
         .setLargeIcon(aBitmap)
         .build();
-
+```
 
 ---
 
 # NotificationManagerService 调用流程
 
+<img src="NotificationManagerService_whole.png">
 
+
+以getActiveNotifications为例：
+(1)app中调用getActiveNotifications：
+```java
+NotificationManager notificationManager = getNotificationManager(context);
+StatusBarNotification[] activeNotifications = notificationManager.getActiveNotifications();
+```
+
+(2)NotificationManager.java中调用getActiveNotifications：
+
+```java
+public StatusBarNotification[] getActiveNotifications() {
+    final INotificationManager service = getService();
+    final String pkg = mContext.getPackageName();
+    try {
+        final ParceledListSlice<StatusBarNotification> parceledList
+                = service.getAppActiveNotifications(pkg, mContext.getUserId());
+        if (parceledList != null) {
+            final List<StatusBarNotification> list = parceledList.getList();
+            return list.toArray(new StatusBarNotification[list.size()]);
+        }
+    } catch (RemoteException e) {
+        throw e.rethrowFromSystemServer();
+    }
+    return new StatusBarNotification[0];
+}
+```
+
+(3)INotificationManager.aidl中定义getActiveNotifications：
+```java
+StatusBarNotification[] getActiveNotifications(String callingPkg);
+```
+
+(4)NotificationManagerService.java中实现getActiveNotifications：
+```java
+/**
+ * @deprecated Use {@link #getActiveNotificationsWithAttribution(String, String)} instead.
+ */
+@Deprecated
+@Override
+public StatusBarNotification[] getActiveNotifications(String callingPkg) {
+    return getActiveNotificationsWithAttribution(callingPkg, null);
+}
+
+/**
+ * System-only API for getting a list of current (i.e. not cleared) notifications.
+ *
+ * Requires ACCESS_NOTIFICATIONS which is signature|system.
+ * @returns A list of all the notifications, in natural order.
+ */
+@Override
+public StatusBarNotification[] getActiveNotificationsWithAttribution(String callingPkg,
+        String callingAttributionTag) {
+    // enforce() will ensure the calling uid has the correct permission
+    getContext().enforceCallingOrSelfPermission(
+            android.Manifest.permission.ACCESS_NOTIFICATIONS,
+            "NotificationManagerService.getActiveNotifications");
+
+    ArrayList<StatusBarNotification> tmp = new ArrayList<>();
+    int uid = Binder.getCallingUid();
+
+    ArrayList<Integer> currentUsers = new ArrayList<>();
+    currentUsers.add(UserHandle.USER_ALL);
+    Binder.withCleanCallingIdentity(() -> {
+        for (int user : mUm.getProfileIds(ActivityManager.getCurrentUser(), false)) {
+            currentUsers.add(user);
+        }
+    });
+
+    // noteOp will check to make sure the callingPkg matches the uid
+    if (mAppOps.noteOpNoThrow(AppOpsManager.OP_ACCESS_NOTIFICATIONS, uid, callingPkg,
+            callingAttributionTag, null)
+            == MODE_ALLOWED) {
+        synchronized (mNotificationLock) {
+            final int N = mNotificationList.size();
+            for (int i = 0; i < N; i++) {
+                final StatusBarNotification sbn = mNotificationList.get(i).getSbn();
+                if (currentUsers.contains(sbn.getUserId())) {
+                    tmp.add(sbn);
+                }
+            }
+        }
+    }
+    return tmp.toArray(new StatusBarNotification[tmp.size()]);
+}
+```
+
+(5)启动通知管理服务：
+SystemServer.startOtherServices
+```java
+t.traceBegin("StartNotificationManager");
+mSystemServiceManager.startService(NotificationManagerService.class);
+SystemNotificationChannels.removeDeprecated(context);
+SystemNotificationChannels.createAll(context);
+notification = INotificationManager.Stub.asInterface(
+        ServiceManager.getService(Context.NOTIFICATION_SERVICE));
+t.traceEnd();
+```
+
+---
+
+```java
+
+```
 
 ---
 

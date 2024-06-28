@@ -121,23 +121,109 @@ t.traceEnd();
 
 ---
 
+# InputMethodManagerService类图
+
+<img src="InputMethodManagerService_class.png">
+
+
+---
+
+# 日志开关
 
 ```java
+frameworks\base\services\core\java\com\android\server\inputmethod\InputMethodManagerService.java
+static final boolean DEBUG = true;//false;
 
+frameworks\base\services\core\java\com\android\server\wm\WindowManagerDebugConfig.java
+static final boolean DEBUG_INPUT_METHOD = true;//false;
+
+frameworks\base\core\java\android\view\inputmethod\InputMethodManager.java
+static final boolean DEBUG = false;
+
+frameworks\base\core\java\android\inputmethodservice\InputMethodService.java
+static final boolean DEBUG = false;
+
+frameworks\base\services\core\java\com\android\server\inputmethod\InputMethodUtils.java
+public static final boolean DEBUG = false;
+
+frameworks\base\services\core\java\com\android\server\inputmethod\InputMethodSubtypeSwitchingController.java
+private static final boolean DEBUG = false;
+
+frameworks\base\core\java\android\inputmethodservice\SoftInputWindow.java
+private static final boolean DEBUG = true;//false;
 ```
 
 
-```java
+---
 
+# dump信息
+
+```java
+adb shell dumpsys input_method
 ```
 
 
-```java
+---
 
+# handler和消息
+
+```java
+static final int MSG_SHOW_IM_SUBTYPE_PICKER = 1;
+static final int MSG_SHOW_IM_SUBTYPE_ENABLER = 2;
+static final int MSG_SHOW_IM_CONFIG = 3;
+static final int MSG_UNBIND_INPUT = 1000;
+static final int MSG_BIND_INPUT = 1010;
+static final int MSG_SHOW_SOFT_INPUT = 1020;
+static final int MSG_HIDE_SOFT_INPUT = 1030;
+static final int MSG_HIDE_CURRENT_INPUT_METHOD = 1035;
+static final int MSG_INITIALIZE_IME = 1040;
+static final int MSG_CREATE_SESSION = 1050;
+static final int MSG_REMOVE_IME_SURFACE = 1060;
+static final int MSG_REMOVE_IME_SURFACE_FROM_WINDOW = 1061;
+static final int MSG_START_INPUT = 2000;
+static final int MSG_UNBIND_CLIENT = 3000;
+static final int MSG_BIND_CLIENT = 3010;
+static final int MSG_SET_ACTIVE = 3020;
+static final int MSG_SET_INTERACTIVE = 3030;
+static final int MSG_REPORT_FULLSCREEN_MODE = 3045;
+static final int MSG_REPORT_PRE_RENDERED = 3060;
+static final int MSG_APPLY_IME_VISIBILITY = 3070;
+static final int MSG_HARD_KEYBOARD_SWITCH_CHANGED = 4000;
+static final int MSG_SYSTEM_UNLOCK_USER = 5000;
+static final int MSG_DISPATCH_ON_INPUT_METHOD_LIST_UPDATED = 5010;
+static final int MSG_INLINE_SUGGESTIONS_REQUEST = 6000;
+static final int MSG_NOTIFY_IME_UID_TO_AUDIO_SERVICE = 7000;
 ```
 
-```java
 
+---
+
+# publishBinderService
+
+onStart()方法中：
+```java
+publishBinderService(Context.INPUT_METHOD_SERVICE, mService);
+```
+
+其他进程获取 InputMethodManagerService :
+```java
+InputMethodManager mImm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+```
+
+---
+
+# LocalServices--InputMethodManagerInternal
+
+
+```java
+LocalServices.addService(InputMethodManagerInternal.class,
+        new LocalServiceImpl(mService));
+```
+
+
+在system server进程中：
+```java
+InputMethodManagerInternal mInputMethodManagerInternal = LocalServices.getService(InputMethodManagerInternal.class);
 ```
 
 ---

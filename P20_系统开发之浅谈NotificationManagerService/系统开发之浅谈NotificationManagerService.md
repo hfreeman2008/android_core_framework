@@ -553,12 +553,124 @@ private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
 
 ---
 
+# 灯通知的配置:
+```java
+mUseAttentionLight = resources.getBoolean(R.bool.config_useAttentionLight);
+```
+
+
+```xml
+<!-- Set this true only if the device has separate attention and notification lights. -->
+<bool name="config_useAttentionLight">false</bool>
+```
+
+enqueueNotificationInternal---led的颜色设置
+```java
+boolean isScreenOn = powerManager.isScreenOn();
+if(!isScreenOn) {
+   LightsManager lightManager = getLocalService(LightsManager.class); 
+   Light mNotificationLight = lightManager.getLight(LightsManager.LIGHT_ID_BATTERY);
+   int mNotificationARGB = getContext().getResources().getInteger(
+               com.android.internal.R.color.config_defaultNotificationColor);
+   int mNotificationLedOn = getContext().getResources().getInteger(
+               com.android.internal.R.integer.config_defaultNotificationLedOn);
+   int mNotificationLedOff = getContext().getResources().getInteger(
+               com.android.internal.R.integer.config_defaultNotificationLedOff);
+   mNotificationLight.setColor(mNotificationARGB);
+```
+
+```xml
+<!-- Default color for notification LED. -->
+<color name="config_defaultNotificationColor">#ff0000ff</color>
+<!-- Default LED on time for notification LED in milliseconds. -->
+<integer name="config_defaultNotificationLedOn">500</integer>
+<!-- Default LED off time for notification LED in milliseconds. -->
+<integer name="config_defaultNotificationLedOff">2000</integer>
+```
+
+
+---
+
+# 通知震动
+
 
 ```java
+private long[] mFallbackVibrationPattern;
+mFallbackVibrationPattern = getLongArray(resources,
+        R.array.config_notificationFallbackVibePattern,
+        VIBRATE_PATTERN_MAXLEN,
+        DEFAULT_VIBRATE_PATTERN);
+```
+
+```xml
+<!-- Vibrator pattern to be used as the default for notifications
+     that do not specify vibration but vibrate anyway because the device
+     is in vibrate mode.
+ -->
+<integer-array name="config_notificationFallbackVibePattern">
+    <item>0</item>
+    <item>100</item>
+    <item>150</item>
+    <item>100</item>
+</integer-array>
+```
+
+```java
+buzzBeepBlinkLocked
+playVibration
+```
+
+
+---
+
+
+# 通知服务的白名单
+
+```java
+protected void readDefaultApprovedServices(int userId) {
+    String defaultListenerAccess = getContext().getResources().getString(
+            com.android.internal.R.string.config_defaultListenerAccessPackages);
+......
+
+protected static final String ENABLED_SERVICES_SEPARATOR = ":";
+
+......
 
 ```
 
+```xml
+<!-- Colon separated list of package names that should be granted Notification Listener access -->
+<string name="config_defaultListenerAccessPackages" translatable="false"></string>
+```
+
+所以,可以得出配置config_defaultListenerAccessPackages的方法为:
+
+```xml
+<!-- Colon separated list of package names that should be granted Notification Listener access -->
+<string name="config_defaultListenerAccessPackages" translatable="false">com.android.p1:com.android.p2:com.android.p3</string>
+```
+
+setNotificationListenerAccessGrantedForUser
+
+```java
+String defaultDndAccess = getContext().getResources().getString(
+    com.android.internal.R.string.config_defaultDndAccessPackages);
+```
+
+```xml
+<!-- Colon separated list of package names that should be granted DND access -->
+<string name="config_defaultDndAccessPackages" translatable="false">com.android.camera2</string>
+```
+
+这个配置和上面的config_defaultListenerAccessPackages方法一样
+
+```java
+setNotificationPolicyAccessGranted
+setNotificationPolicyAccessGrantedForUser
+```
+
 ---
+
 
 ```java
 

@@ -160,7 +160,7 @@
 
 工作十年+后的我(2024)：
 <div align=center>
-<img src=".\Images\2024_hexiaoming.png">
+<img src=".\Images\2024_hexiaoming.png" width=500 height=600>
 <div align=left>
 
 

@@ -403,6 +403,162 @@ getContext().registerReceiver(mIntentReceiver, filter);
 
 ---
 
+# 通知策略
+
+关于notification_policy.xml文件:
+
+```java
+find ./ -name "notification_policy.xml"
+./data/system/notification_policy.xml
+```
+
+notification_policy.xml
+```xml
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<notification-policy version="1">
+<zen version="2" user="0">
+<allow calls="true" repeatCallers="false" messages="false" reminders="true" events="true" callsFrom="1" messagesFrom="1" visualScreenOff="true" visualScreenOn="true" />
+<automatic ruleId="EVENTS_DEFAULT_RULE" enabled="false" snoozing="false" name="活动" zen="3" component="android/com.android.server.notification.EventConditionProvider" conditionId="condition://android/event?userId=-10000&amp;calendar=&amp;reply=1" creationTime="1559700784128" id="condition://android/event?userId=-10000&amp;calendar=&amp;reply=1" summary="..." line1="..." line2="..." icon="0" state="0" flags="2" />
+......
+<automatic ruleId="SCHEDULED_DEFAULT_RULE_2" enabled="false" snoozing="false" name="周末" zen="3" component="android/com.android.server.notification.ScheduleConditionProvider" conditionId="condition://android/schedule?days=6.7&amp;start=23.30&amp;end=10.0&amp;exitAtAlarm=false" creationTime="1559700784128" id="condition://android/schedule?days=6.7&amp;start=23.30&amp;end=10.0&amp;exitAtAlarm=false" summary="..." line1="..." line2="..." icon="0" state="0" flags="2" />
+</zen>
+<ranking version="1">
+<package name="android" show_badge="true" uid="1000">
+<channel id="DEVICE_ADMIN" name="设备管理" importance="2" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" show_badge="true" />
+......
+<channel id="ALERTS" name="提醒" importance="3" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" show_badge="true" />
+</package>
+<package name="com.android.contacts" show_badge="true" uid="10006">
+<channel id="miscellaneous" name="未分类" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" show_badge="true" />
+<channel id="DEFAULT_CHANNEL" name="通知" importance="2" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" show_badge="true" />
+</package>
+<package name="com.android.server.telecom" show_badge="true" uid="1000">
+<channel id="TelecomMissedCalls" name="未接电话" importance="3" sound="" usage="5" content_type="0" flags="0" lights="true" vibration_enabled="true" show_badge="true" />
+<channel id="TelecomIncomingCalls" name="来电" importance="5" sound="" usage="5" content_type="0" flags="0" lights="true" />
+</package>
+<package name="com.android.mtp" show_badge="true" uid="10010">
+<channel id="device_notification_channel" name="未分类" importance="2" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" show_badge="true" />
+</package>
+<package name="org.codeaurora.gallery" show_badge="true" uid="10026">
+<channel id="GalleryPackagesMonitorAsync" name="GalleryPackagesMonitorAsync" importance="2" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" show_badge="true" />
+</package>
+<package name="com.android.dialer" show_badge="true" uid="10015">
+<channel id="phone_ongoing_call" name="正在进行的通话" importance="3" usage="5" content_type="0" flags="0" />
+<channel id="phone_incoming_call" name="来电" importance="5" usage="5" content_type="0" flags="0" lights="true" />
+<channel id="phone_missed_call" name="未接电话" importance="3" usage="5" content_type="0" flags="0" lights="true" vibration_enabled="true" show_badge="true" />
+<channel id="phone_default" name="默认" importance="3" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" lights="true" vibration_enabled="true" />
+</package>
+<package name="com.android.systemui" show_badge="true" uid="10028">
+<channel id="ALR" name="提醒" importance="4" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" show_badge="true" />
+......
+<channel id="SCN" name="屏幕截图" importance="2" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" show_badge="true" />
+</package>
+<package name="com.android.phone" show_badge="true" uid="1001">
+<channel id="callForward" name="来电转接" importance="2" sound="content://settings/system/notification_sound" usage="5" content_type="4" flags="0" show_badge="true" />
+......
+<channel id="alert" name="提醒" importance="3" sound="content://settings/system/notification_sound" usage="5" content_type="0" flags="0" show_badge="true" />
+</package>
+</ranking>
+<enabled_listeners>
+</enabled_listeners>
+<enabled_assistants />
+<dnd_apps>
+<service_listing approved="com.android.camera2" user="0" primary="true" />
+</dnd_apps>
+</notification-policy>
+
+```
+
+
+
+```java
+final File systemDir = new File(Environment.getDataDirectory(), "system");
+
+init(Looper.myLooper(),
+    AppGlobals.getPackageManager(), getContext().getPackageManager(),
+    getLocalService(LightsManager.class),
+    new NotificationListeners(AppGlobals.getPackageManager()),
+    new NotificationAssistants(AppGlobals.getPackageManager()),
+    new ConditionProviders(getContext(), mUserProfiles, AppGlobals.getPackageManager()),
+    null, snoozeHelper, new NotificationUsageStats(getContext()),
+    new AtomicFile(new File(systemDir, "notification_policy.xml")),
+    (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE),
+    getGroupHelper());
+```
+
+```java
+mPolicyFile = policyFile;
+......
+// Persistent storage for notification policy
+private AtomicFile mPolicyFile;
+```
+
+```java
+loadPolicyFile-----------加载策略文件
+handleSavePolicyFile------处理策略文件
+```
+
+
+---
+
+# 来电通知声音
+mInCallNotificationUri -----来电通知声音:
+
+```java
+mInCallNotificationUri = Uri.parse("file://" +resources.getString(R.string.config_inCallNotificationSound));
+```
+
+配置来电通知声音:
+
+```xml
+<!-- URI for in call notification sound -->
+<string translatable="false" name="config_inCallNotificationSound">/system/media/audio/ui/InCallNotification.ogg</string>
+```
+
+playInCallNotification-----播放来电通知声音
+```java
+player.play(new Binder(), mInCallNotificationUri,
+        mInCallNotificationAudioAttributes,
+        mInCallNotificationVolume, false);
+```
+
+
+来电通知音量:
+```java
+mInCallNotificationVolume = resources.getFloat(R.dimen.config_inCallNotificationVolume);
+```
+
+来电通知音量配置:
+```xml
+<!-- Volume level of in-call notification tone playback [0..1] -->
+<item name="config_inCallNotificationVolume" format="float" type="dimen">.10</item>
+```
+
+
+判断是否来电:
+```java
+protected boolean mInCall = false;
+```
+
+
+监听广播:ACTION_PHONE_STATE_CHANGED,调用updateNotificationPulse
+```java
+private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
+    public void onReceive(Context context, Intent intent) {
+         else if (action.equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
+                mInCall = TelephonyManager.EXTRA_STATE_OFFHOOK
+                        .equals(intent.getStringExtra(TelephonyManager.EXTRA_STATE));
+                updateNotificationPulse();
+```
+
+---
+
+
+```java
+
+```
+
+---
 
 ```java
 

@@ -163,15 +163,141 @@ t.traceEnd();
 
 ---
 
+# NotificationManagerService 类图
+
+<img src="NotificationManagerService_class.png">
+
+
+---
+
+# 日志开关
+```java
+NotificationManagerService.java
+public static final boolean DBG = true;//Log.isLoggable(TAG, Log.DEBUG);
+
+NotificationRecord.java
+static final boolean DBG = true;//Log.isLoggable(TAG, Log.DEBUG);
+```
+
+---
+
+# dump信息
+adb shell dumpsys notification
+
+```java
+DUMP OF SERVICE notification:
+Current Notification Manager state:
+  Notification List:
+    NotificationRecord(0x0dfbaffe: pkg=android user=UserHandle{-1} id=26 tag=null importance=4 key=-1|android|26|null|1000: Notification(channel=DEVELOPER_IMPORTANT shortcut=null contentView=null vibrate=null sound=null tick defaults=0x0 flags=0x2 color=0x00000000 vis=PUBLIC))
+      uid=1000 userId=-1
+      opPkg=android
+      icon=Icon(typ=RESOURCE pkg=android id=0x0108081f)
+      flags=0x2
+      originalFlags=0x2
+      pri=0
+      key=-1|android|26|null|1000
+      seen=true
+      groupKey=-1|android|26|null|1000
+      notification=
+            fullscreenIntent=null
+            contentIntent=PendingIntent{3d835f: PendingIntentRecord{970f496 android startActivity}}
+            deleteIntent=null
+            number=0
+            groupAlertBehavior=0
+            when=0
+            tickerText=...
+            contentView=null
+            bigContentView=null
+            headsUpContentView=null
+            color=0x00000000
+            timeout=unknown
+            extras={
+                android.title=String [length=11]
+                android.reduced.images=Boolean (true)
+                android.text=String [length=13]
+                android.appInfo=ApplicationInfo (ApplicationInfo{2b211ac android})
+                android.tv.EXTENSIONS=Bundle (Bundle[{channel_id=usbdevicemanager.adb.tv, suppressShowOverApps=false, flags=1}])
+            }
+      publicNotification=
+            None
+      stats=SingleNotificationStats{posttimeElapsedMs=59501689, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=1, airtimeMs=5639, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=5636, posttimeToFirstVisibleExpansionMs=818, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=4, isNoisy=true}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=HIGH
+      mImportanceExplanation=app
+      mIsAppImportanceLocked=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0000:gsmry=1:nsk:rnk=0x0000
+      mRankingTimeMs=1706767655811
+      mCreationTimeMs=1706767655811
+      mVisibleSinceMs=1706767656832
+      mUpdateTimeMs=1706767655811
+      mInterruptionTimeMs=1706767656833
+      mSuppressedVisualEffects= 0
+      mSound= content://settings/system/notification_sound
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=false
+      mColorized=false
+      mAllowBubble=false
+      isBubble=false
+      mIsInterruptive=true
+      effectiveNotificationChannel=NotificationChannel{mId='DEVELOPER_IMPORTANT', mName=重要开发者消息, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+      mAdjustments=[]
+      shortcut=null found valid? false
+
+......
+  
+  mUseAttentionLight=false
+  mHasLight=false
+  mNotificationPulseEnabled=true
+  mSoundNotificationKey=null
+  mVibrateNotificationKey=null
+  mDisableNotificationEffects=true
+  mCallState=CALL_STATE_IDLE
+  mSystemReady=true
+  mMaxPackageEnqueueRate=5.0
+  hideSilentStatusBar=false
+  mArchive=Archive (0 notifications)
+
+  Snoozed notifications:
+
+ Pending snoozed notifications
+
+  Ranking Config:
+    mSignalExtractors.length = 11
+      NotificationChannelExtractor
+      NotificationAdjustmentExtractor
+      BubbleExtractor
+      ValidateNotificationPeople
+      PriorityExtractor
+      ZenModeExtractor
+      ImportanceExtractor
+      NotificationIntrusivenessExtractor
+      VisibilityExtractor
+      BadgeExtractor
+      CriticalNotificationExtractor
+
+
+```
+
+---
+
+# 日志
+
+
 ```java
 
 ```
 
 ---
 
-```java
-
-```
 
 
 ```java

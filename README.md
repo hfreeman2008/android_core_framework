@@ -190,3 +190,5 @@ Android development is a pig killing knife, so it's important to consider it car
 
 [readme]: https://github.com/hfreeman2008/android_core_framework/blob/main/README.md
 [readme-cn]: https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md
+
+

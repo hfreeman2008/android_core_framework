@@ -168,7 +168,7 @@ In college(2008)：
 After working for more than ten years(2024):
 
 <div align=center>
-<img src=".\Images\2024年工作时的照片.png">
+<img src=".\Images\2024_hexiaoming.png">
 <div align=left>
 
 Android development is a pig killing knife, so it's important to consider it carefully when entering the industry.

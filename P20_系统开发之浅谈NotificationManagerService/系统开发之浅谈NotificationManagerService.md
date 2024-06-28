@@ -670,20 +670,39 @@ setNotificationPolicyAccessGrantedForUser
 ```
 
 ---
-
-
-```java
-
-```
+# 播放声音
+机器配置通知书提示音，但是通知没有通知提示音问题如何分析
+(1)播放通知提示音的流程为：
 
 ```java
+com.android.server.notification.NotificationManagerService.playSound(NotificationManagerService.java:8131)
+com.android.server.notification.NotificationManagerService.buzzBeepBlinkLocked(NotificationManagerService.java:7913)
+com.android.server.notification.NotificationManagerService$PostNotificationRunnable.run(NotificationManagerService.java:7530)
+android.os.Handler.handleCallback(Handler.java:942)
+android.os.Handler.dispatchMessage(Handler.java:99)
+android.os.Looper.loopOnce(Looper.java:201)
+android.os.Looper.loop(Looper.java:288)
+com.android.server.SystemServer.run(SystemServer.java:987)
+com.android.server.SystemServer.main(SystemServer.java:664)
+java.lang.reflect.Method.invoke(Native Method)
+com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:569)
+com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1002)
+```
+(2)和通知播放提示音相关的关键方法有：
 
+```java
+playSound
+buzzBeepBlinkLocked
+NotificationManagerService$PostNotificationRunnable.run
+//关闭通知提示效果,包括提示音
+disableNotificationEffects(NotificationRecord record) 
+shouldMuteNotificationLocked(final NotificationRecord record) 
 ```
 
-
-
-
-
+(3)和通知播放提示音相关的关键方法变量有：
+```java
+mDisableNotificationEffects
+```
 
 
 ---

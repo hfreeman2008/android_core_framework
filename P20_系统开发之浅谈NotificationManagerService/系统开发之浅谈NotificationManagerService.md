@@ -10,7 +10,7 @@
 
 ---
 
-# 获取通知管理服务：
+# 获取 NotificationManagerService 
 
 ```java
 方式1
@@ -351,6 +351,43 @@ private static final int MESSAGE_RANKING_SORT = 1001;
 
 
 ---
+
+# publishBinderService
+onStart()方法中：
+
+```java
+publishBinderService(Context.NOTIFICATION_SERVICE, mService, /* allowIsolated= */ false,
+        DUMP_FLAG_PRIORITY_CRITICAL | DUMP_FLAG_PRIORITY_NORMAL);
+......
+
+final IBinder mService = new INotificationManager.Stub() {
+    ......
+}
+```
+
+其他进程获取 NotificationManagerService :
+```java
+NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+```
+
+---
+
+# publishLocalService--NotificationManagerInternal
+
+```java
+publishLocalService(NotificationManagerInternal.class, mInternalService);
+
+private final NotificationManagerInternal mInternalService = new NotificationManagerInternal() {
+    ......
+}
+```
+
+在system server进程中：
+```java
+NotificationManagerInternal nm = LocalServices.getService(NotificationManagerInternal.class);
+```
+
+
 
 
 # 添加一个功能连接电源,播放音乐

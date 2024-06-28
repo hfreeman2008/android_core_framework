@@ -289,20 +289,119 @@ Current Notification Manager state:
 
 ---
 
-# 日志
+# 相关日志
 
+## 通知排队
+```java
+NotificationService: enqueueNotificationInternal: pkg=com.debug.loggerui id=365001 notification=Notification(channel=com.debug.loggerui.notification shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x8 color=0x00000000 vis=PRIVATE)
+```
+
+对应代码：
+NotificationManagerService.enqueueNotificationInternal
 
 ```java
+void enqueueNotificationInternal(final String pkg, final String opPkg, final int callingUid,
+        final int callingPid, final String tag, final int id, final Notification notification,
+        int incomingUserId, boolean postSilently) {
+    if (DBG) {
+        Slog.v(TAG, "enqueueNotificationInternal: pkg=" + pkg + " id=" + id
+                + " notification=" + notification);
+    }
+}
+```
 
+## 通知显示
+```java
+NotificationService: Marking notification as visible 0|com.debug.loggerui|365001|null|10041
+```
+
+对应代码：
+NotificationManagerService.onNotificationVisibilityChanged
+```java
+public void onNotificationVisibilityChanged(NotificationVisibility[] newlyVisibleKeys,
+        NotificationVisibility[] noLongerVisibleKeys) {
+     if (DBG) Slog.d(TAG, "Marking notification as visible " + nv.key);
+}
 ```
 
 ---
 
-
+# handler和消息
 
 ```java
+protected class WorkerHandler extends Handler
+private WorkerHandler mHandler;
 
+class RankingHandlerWorker extends Handler implements RankingHandler
+
+......
+// message codes
+static final int MESSAGE_DURATION_REACHED = 2;
+// 3: removed to a different handler
+static final int MESSAGE_SEND_RANKING_UPDATE = 4;
+static final int MESSAGE_LISTENER_HINTS_CHANGED = 5;
+static final int MESSAGE_LISTENER_NOTIFICATION_FILTER_CHANGED = 6;
+static final int MESSAGE_FINISH_TOKEN_TIMEOUT = 7;
+static final int MESSAGE_ON_PACKAGE_CHANGED = 8;
+
+// ranking thread messages
+private static final int MESSAGE_RECONSIDER_RANKING = 1000;
+private static final int MESSAGE_RANKING_SORT = 1001;
 ```
+
+
+---
+
+
+# 添加一个功能连接电源,播放音乐
+
+```java
+//START<ADD><BUG--111><for charge sound ><hexiaoming><DATE20180927>
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+//END <ADD><BUG--111><for charge sound ><hexiaoming><DATE20180927>
+
+......
+
+private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
+       else if (action.equals(Intent.ACTION_USER_UNLOCKED)) {
+                final int user = intent.getIntExtra(Intent.EXTRA_USER_HANDLE, USER_NULL);
+                mConditionProviders.onUserUnlocked(user);
+                mListeners.onUserUnlocked(user);
+                mAssistants.onUserUnlocked(user);
+                mZenModeHelper.onUserUnlocked(user);
+            }
+            //START<ADD><BUG--111><for charge sound ><hexiaoming><DATE20180927>
+            else if (action.equals(Intent.ACTION_POWER_CONNECTED)||action.equals(Intent.ACTION_POWER_DISCONNECTED)) {
+                final boolean enabled = Settings.Global.getInt(context.getContentResolver(),
+                        Settings.Global.CHARGING_SOUNDS_ENABLED, 1) != 0;
+                final String soundPath = Settings.Global.getString(context.getContentResolver(),
+                        Settings.Global.WIRELESS_CHARGING_STARTED_SOUND);
+                if (enabled && soundPath != null) {
+                    final Uri soundUri = Uri.parse("file://" + soundPath);
+                    if (soundUri != null) {
+                        final Ringtone sfx = RingtoneManager.getRingtone(context, soundUri);
+                        if (sfx != null) {
+                            sfx.setStreamType(AudioManager.STREAM_SYSTEM);
+                            sfx.play();
+                        }
+                    }
+                }
+            }
+                //END <ADD><BUG--111><for charge sound ><hexiaoming><DATE20180927>
+
+......
+
+//START<ADD><BUG--111><for charge sound ><hexiaoming><DATE20180927>
+filter.addAction(Intent.ACTION_POWER_CONNECTED);
+filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+//END<ADD><BUG--111><for charge sound ><hexiaoming><DATE20180927>
+getContext().registerReceiver(mIntentReceiver, filter);
+```
+
+也就是说,如果我们要添加一些通知性质的功能,可以直接监听对应的广播,在这个类中实现.
+
+---
 
 
 ```java

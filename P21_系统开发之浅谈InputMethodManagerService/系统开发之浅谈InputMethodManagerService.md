@@ -383,9 +383,27 @@ mSwitchingDialog.show();
 
 ---
 
+# input_method布局文件
+
+frameworks\base\core\java\android\inputmethodservice\InputMethodService.java
 
 ```java
+mThemeAttrs = obtainStyledAttributes(android.R.styleable.InputMethodService);
+mRootView = mInflater.inflate(com.android.internal.R.layout.input_method, null);
+```
 
+资源文件：
+
+```java
+frameworks\base\core\res\res\layout\input_method.xml
+frameworks\base\core\res\res\layout\input_method_switch_dialog_title.xml
+frameworks\base\core\res\res\layout\input_method_switch_item.xml
+frameworks\base\core\res\res\anim\input_method_enter.xml
+frameworks\base\core\res\res\anim\input_method_exit.xml
+frameworks\base\core\res\res\anim\input_method_extract_enter.xml
+frameworks\base\core\res\res\anim\input_method_extract_exit.xml
+frameworks\base\core\res\res\anim\input_method_fancy_enter.xml
+frameworks\base\core\res\res\anim\input_method_fancy_exit.xml
 ```
 
 

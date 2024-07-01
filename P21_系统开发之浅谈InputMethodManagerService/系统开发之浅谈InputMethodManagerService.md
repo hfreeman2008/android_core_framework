@@ -232,9 +232,16 @@ InputMethodManagerInternal mInputMethodManagerInternal = LocalServices.getServic
 
 # android开发浅谈之 InputMethodManagerService
 
-[android开发浅谈之InputMethodManagerService](https://blog.csdn.net/hfreeman2008/article/details/117963600)
+1.[android开发浅谈之InputMethodManagerService](https://blog.csdn.net/hfreeman2008/article/details/117963600)
 
 https://blog.csdn.net/hfreeman2008/article/details/117963600
+
+
+
+2.[InputMethodManager](https://developer.android.google.cn/reference/android/view/inputmethod/InputMethodManager)
+
+https://developer.android.google.cn/reference/android/view/inputmethod/InputMethodManager
+
 
 
 ---

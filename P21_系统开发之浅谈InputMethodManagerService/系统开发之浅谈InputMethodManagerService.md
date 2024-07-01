@@ -293,6 +293,103 @@ adb shell settings get secure accessibility_soft_keyboard_mode
 ---
 
 
+# showInputMethodMenu---------显示输入法菜单
+
+```java
+mDialogBuilder = new AlertDialog.Builder(settingsContext);
+mDialogBuilder.setOnCancelListener(new OnCancelListener() {
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        hideInputMethodMenu();
+    }
+});
+
+final Context dialogContext = mDialogBuilder.getContext();
+final TypedArray a = dialogContext.obtainStyledAttributes(null,
+        com.android.internal.R.styleable.DialogPreference,
+        com.android.internal.R.attr.alertDialogStyle, 0);
+final Drawable dialogIcon = a.getDrawable(
+        com.android.internal.R.styleable.DialogPreference_dialogIcon);
+a.recycle();
+
+mDialogBuilder.setIcon(dialogIcon);
+
+final LayoutInflater inflater = dialogContext.getSystemService(LayoutInflater.class);
+final View tv = inflater.inflate(
+        com.android.internal.R.layout.input_method_switch_dialog_title, null);
+mDialogBuilder.setCustomTitle(tv);
+
+// Setup layout for a toggle switch of the hardware keyboard
+mSwitchingDialogTitleView = tv;
+mSwitchingDialogTitleView
+        .findViewById(com.android.internal.R.id.hard_keyboard_section)
+        .setVisibility(mWindowManagerInternal.isHardKeyboardAvailable()
+                ? View.VISIBLE : View.GONE);
+final Switch hardKeySwitch = (Switch) mSwitchingDialogTitleView.findViewById(
+        com.android.internal.R.id.hard_keyboard_switch);
+hardKeySwitch.setChecked(mShowImeWithHardKeyboard);
+hardKeySwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mSettings.setShowImeWithHardKeyboard(isChecked);
+        // Ensure that the input method dialog is dismissed when changing
+        // the hardware keyboard state.
+        hideInputMethodMenu();
+    }
+});
+
+final ImeSubtypeListAdapter adapter = new ImeSubtypeListAdapter(dialogContext,
+        com.android.internal.R.layout.input_method_switch_item, imList, checkedItem);
+final OnClickListener choiceListener = new OnClickListener() {
+    @Override
+    public void onClick(final DialogInterface dialog, final int which) {
+        synchronized (mMethodMap) {
+            if (mIms == null || mIms.length <= which || mSubtypeIds == null
+                    || mSubtypeIds.length <= which) {
+                return;
+            }
+            final InputMethodInfo im = mIms[which];
+            int subtypeId = mSubtypeIds[which];
+            adapter.mCheckedItem = which;
+            adapter.notifyDataSetChanged();
+            hideInputMethodMenu();
+            if (im != null) {
+                if (subtypeId < 0 || subtypeId >= im.getSubtypeCount()) {
+                    subtypeId = NOT_A_SUBTYPE_ID;
+                }
+                setInputMethodLocked(im.getId(), subtypeId);
+            }
+        }
+    }
+};
+mDialogBuilder.setSingleChoiceItems(adapter, checkedItem, choiceListener);
+
+mSwitchingDialog = mDialogBuilder.create();
+mSwitchingDialog.setCanceledOnTouchOutside(true);
+final Window w = mSwitchingDialog.getWindow();
+final WindowManager.LayoutParams attrs = w.getAttributes();
+w.setType(TYPE_INPUT_METHOD_DIALOG);
+// Use an alternate token for the dialog for that window manager can group the token
+// with other IME windows based on type vs. grouping based on whichever token happens
+// to get selected by the system later on.
+attrs.token = mSwitchingDialogToken;
+attrs.privateFlags |= PRIVATE_FLAG_SHOW_FOR_ALL_USERS;
+attrs.setTitle("Select input method");
+w.setAttributes(attrs);
+updateSystemUi(mCurToken, mImeWindowVis, mBackDisposition);
+mSwitchingDialog.show();
+```
+
+
+---
+
+
+```java
+
+```
+
+
+---
 
 # android开发浅谈之 InputMethodManagerService
 

@@ -261,6 +261,38 @@ ime <command>:
 ---
 
 
+# 相关Settings字段
+
+
+```java
+Settings.Secure.DEFAULT_INPUT_METHOD
+Settings.Secure.ENABLED_INPUT_METHODS
+Settings.Secure.SELECTED_INPUT_METHOD_SUBTYPE
+Settings.Secure.SHOW_IME_WITH_HARD_KEYBOARD
+Settings.Secure.ACCESSIBILITY_SOFT_KEYBOARD_MODE
+```
+
+```shell
+adb shell settings get secure default_input_method
+adb shell settings get secure enabled_input_methods
+adb shell settings get secure selected_input_method_subtype
+adb shell settings get secure show_ime_with_hard_keyboard
+adb shell settings get secure accessibility_soft_keyboard_mode
+
+adb shell settings get secure default_input_method
+com.sohu.inputmethod.sogou.oem/.SogouIME
+
+adb shell settings get secure enabled_input_methods
+com.android.inputmethod.latin/.LatinIME:com.sohu.inputmethod.sogou.oem/.SogouIME
+
+adb shell settings get secure selected_input_method_subtype
+adb shell settings get secure show_ime_with_hard_keyboard
+adb shell settings get secure accessibility_soft_keyboard_mode
+```
+
+---
+
+
 
 # android开发浅谈之 InputMethodManagerService
 

@@ -228,6 +228,38 @@ InputMethodManagerInternal mInputMethodManagerInternal = LocalServices.getServic
 
 ---
 
+# ime命令
+
+```java
+adb shell ime list
+adb shell ime list -a
+adb shell ime list -s
+```
+
+```java
+adb shell ime
+ime <command>:
+  list [-a] [-s]
+    prints all enabled input methods.
+      -a: see all input methods
+      -s: only a single summary line of each
+  enable [--user <USER_ID>] <ID>
+    allows the given input method ID to be used.
+      --user <USER_ID>: Specify which user to enable. Assumes the current user if not specified.
+  disable [--user <USER_ID>] <ID>
+    disallows the given input method ID to be used.
+      --user <USER_ID>: Specify which user to disable. Assumes the current user if not specified.
+  set [--user <USER_ID>] <ID>
+    switches to the given input method ID.
+      --user <USER_ID>: Specify which user to enable. Assumes the current user if not specified.
+  reset [--user <USER_ID>]
+    reset currently selected/enabled IMEs to the default ones as if the device is initially booted w
+    ith the current locale.
+      --user <USER_ID>: Specify which user to reset. Assumes the current user if not specified.
+```
+
+---
+
 
 
 # android开发浅谈之 InputMethodManagerService

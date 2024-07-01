@@ -177,6 +177,11 @@ public void suggestNetworkTime(@NonNull NetworkTimeSuggestion timeSignal) {
 
 # Dump信息：
 
+```java
+adb shell dumpsys time_detector
+```
+
+
 dump信息可以看出，更新时间的方式主要有：
 
 ```java

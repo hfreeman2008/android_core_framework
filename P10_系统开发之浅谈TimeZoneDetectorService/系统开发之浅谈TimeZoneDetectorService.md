@@ -376,6 +376,15 @@ registerService(Context.TIME_ZONE_DETECTOR_SERVICE, TimeZoneDetector.class,
 
 ---
 
+# Dump信息：
+
+```java
+adb shell dumpsys time_zone_detector
+```
+
+---
+
+
 # 参考资料
 
 1.[Android系统开发之TimeZoneDetectorService浅析--上](https://blog.csdn.net/hfreeman2008/article/details/135871074)

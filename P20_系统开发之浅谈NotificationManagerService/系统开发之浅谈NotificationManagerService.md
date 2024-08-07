@@ -707,7 +707,9 @@ setNotificationPolicyAccessGrantedForUser
 ```
 
 ---
+
 # 播放声音
+
 机器配置通知书提示音，但是通知没有通知提示音问题如何分析
 (1)播放通知提示音的流程为：
 
@@ -739,6 +741,53 @@ shouldMuteNotificationLocked(final NotificationRecord record)
 (3)和通知播放提示音相关的关键方法变量有：
 ```java
 mDisableNotificationEffects
+```
+
+
+---
+
+# 通知消息排列顺序没有按时间排列
+
+
+notication的列表数据，根据时间戳倒序排序
+packages/apps/SystemUI/src/com/android/systemui/scui/NotificationFragment.java
+
+```java
++import java.util.Comparator;
+
+    public List<notification> getNotificationData() {
+        // NotificationEntry entry = getActiveNotificationUnfiltered(key);
+        List<NotificationEntry> entries = new ArrayList<>();
+        List<notification> mList = new ArrayList<notification>();
+        // entries.addAll(getVisibleNotifications());
+        entries.addAll(mPendingNotifications.values());
+        for (NotificationEntry entry : entries) {
+            
+            notification notification = new notification();
+            notification.icon = entry.getSbn().getNotification().getSmallIcon();
+            notification.key = entry.getSbn().getKey();
+            if (entry.getSbn().getNotification().extras.get("android.title") != null) {
+                notification.title = entry.getSbn().getNotification().extras.get("android.title").toString();
+            } else {
+                try {
+                    if (mContext != null) {
+                        notification.title = (mContext.getPackageManager()).getApplicationLabel((mContext.getPackageManager()).getApplicationInfo(entry.getSbn().getPackageName(), 0)).toString();
+                    }
+                } catch (NameNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (entry.getSbn().getNotification().extras.get("android.text") != null) {
+                notification.text = entry.getSbn().getNotification().extras.get("android.text").toString();
+            }
+            notification.time = entry.getSbn().getPostTime();
+            // notification.title = entry.getSbn().getNotification().extras.get("android.title").toString();
+            // notification.text = entry.getSbn().getNotification().extras.get("android.text").toString();
+            mList.add(notification);
+        }
+        +mList.sort(Comparator.comparingLong(notification::getTime).reversed());
+        return mList;
+    }
 ```
 
 

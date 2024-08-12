@@ -1,4 +1,4 @@
-# P21: 系统开发之浅谈LightsService
+# P22: 系统开发之浅谈LightsService
 
 <img src="../flower/flower_p22.png">
 
@@ -529,6 +529,9 @@ frameworks/base/core/res/res/values/config.xml
 1.LightsService 灯光控制
 https://blog.csdn.net/u012932409/article/details/108345928
 
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p22-系统开发之浅谈lightsservice)
 
 ---
 

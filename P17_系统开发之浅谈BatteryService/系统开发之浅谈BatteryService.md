@@ -5,6 +5,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # BatteryService 类的作用：
 
 该服务继承SystemService，主要用于管理 电池的充电状态，充电百分比，监视当前电量的状态,并根据当前的电量状态进行相应的逻辑操作.
@@ -608,6 +612,10 @@ https://www.jianshu.com/p/2efd7fc669e5
 
 https://blog.csdn.net/weixin_42754390/article/details/124268534
 
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p17_系统开发之浅谈batteryservice)
 
 ---
 

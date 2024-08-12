@@ -4,6 +4,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # AudioService 类的作用
 
 AudioService 主要用于管理 负责管理应用程序和系统的音频资源。在操作系统中分配、控制和处理音频资源，以提供高质量、可靠和灵活的音频服务。
@@ -994,6 +998,10 @@ frameworks\base\packages\SystemUI\src\com\android\systemui\volume\SafetyWarningD
 
 https://www.jianshu.com/p/c1dc8b4a7fba
 
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p19_系统开发之浅谈audioservice)
 
 ---
 

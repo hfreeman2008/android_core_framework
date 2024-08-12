@@ -6,6 +6,10 @@ Android Profile是性能分析工具traceview的升级版本，功能更强大�
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # Android Profile主要作用
 - Cpu 问题分析
 - Memory问题分析
@@ -190,6 +194,12 @@ https://blog.csdn.net/hfreeman2008/article/details/53557655
 
 
 ---
+
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p7-系统分析的屠龙刀之profile)
+
+---
+
 
 # 结束语
 

@@ -4,6 +4,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # 问题描述：
 客户有一个关闭通话功能的需求，根据MTK的配置方法关闭了大概8个宏开关后，实现通话功能，但是导致插好sim卡开机后，时间和时区不能更新的问题。
 
@@ -395,7 +399,13 @@ https://blog.csdn.net/hfreeman2008/article/details/135871074
 
 https://blog.csdn.net/hfreeman2008/article/details/135895224
 
+
 ---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p10-系统开发之浅谈timezonedetectorservice)
+
+---
+
 
 # 结束语
 

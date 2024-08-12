@@ -6,6 +6,12 @@ android问题的分析，大家使用最多的是日志。
 <img src="..\Images\log_sword.png">
 
 ---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
+
 一个android系统工程，你只有掌握了dumpsys工具，你才能说自己已经开始摸到系统的脉搏了。
 <img src="mai_bo.png">
 
@@ -322,6 +328,10 @@ public class DiskStatsService extends Binder {
 
 https://developer.android.google.cn/studio/command-line/dumpsys
 
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p5-系统分析的屠龙刀之dumpsys信息)
 
 ---
 

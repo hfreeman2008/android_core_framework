@@ -220,18 +220,55 @@ LocalDisplayAdapter.java
 
 # JNI
 
+com_android_server_lights_LightsService.cpp
+
+jni调用本地接口:
 
 ```java
-
+static native void setLight_native(int light, int color, int mode,
+        int onMS, int offMS, int brightnessMode);
 ```
 
-```shell
+frameworks/base/services/core/jni/com_android_server_lights_LightsService.cpp
 
+```java
+static void setLight_native(
+        JNIEnv* /* env */,
+        jobject /* clazz */,
+        jint light,
+        jint colorARGB,
+        jint flashMode,
+        jint onMS,
+        jint offMS,
+        jint brightnessMode) {
+
+    if (!validate(light, flashMode, brightnessMode)) {
+```
+
+
+
+```java
+static const JNINativeMethod method_table[] = {
+    { "setLight_native", "(IIIIII)V", (void*)setLight_native },
+};
+
+int register_android_server_LightsService(JNIEnv *env) {
+    return jniRegisterNativeMethods(env, "com/android/server/lights/LightsService",
+            method_table, NELEM(method_table));
+}
 ```
 
 ---
 
 
+```java
+
+```
+
+
+```java
+
+```
 
 
 ---

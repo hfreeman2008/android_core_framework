@@ -4,6 +4,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # PowerManagerService 类的作用：
 
 主要是处理与电源有关的逻辑,包括手机亮度管理,手机锁屏,节能锁屏,手机低电量模式,手机睡眠,手机双击亮屏.
@@ -509,6 +513,10 @@ PowerManagerService在Framework层本质为策略控制方案，其作用为：
 
 <img src="../Images/power_whole.png">
 
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p16_系统开发之浅谈powermanagerservice)
 
 ---
 

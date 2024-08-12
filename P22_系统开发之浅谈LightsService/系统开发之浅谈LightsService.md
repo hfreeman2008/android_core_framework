@@ -260,14 +260,41 @@ int register_android_server_LightsService(JNIEnv *env) {
 
 ---
 
+# HAL
+
 
 ```java
+hardware\qcom\display\liblight
+hardware/qcom/display/liblight/lights.c
 
+hardware/interfaces/light
 ```
 
-
+高通项目如何定位hal源码：
 ```java
+adb shell ps -Z | findstr -i light
+u:r:hal_light_default:s0       system          806      1 12347756  2652 0                   0 S android.hardware.lights-service.qti
 
+out/target/product/bengal/vendor/bin/hw/android.hardware.lights-service.qti
+
+搜索：
+android.hardware.lights-service.qti
+高通项目：
+device\qcom\vendor-common\lights\Android.bp
+
+device\qcom\vendor-common\lights\
+  目录文件不多：
+Android.bp
+android.hardware.lights-qti.rc
+android.hardware.lights-qti.xml
+Lights.cpp
+Lights.h
+main.cpp
+
+
+搜索关键的：
+hw_get_module (LIGHTS_HARDWARE_MODULE_ID
+可以定位到lib库
 ```
 
 

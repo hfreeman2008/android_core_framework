@@ -357,16 +357,18 @@ static int set_rgb_led_timer_trigger(enum rgb_led led, int onMS, int offMS)
 ```
 
 
+---
+
+# kernel
+
+```java
+kernel\drivers\leds
+kernel/msm-4.9/drivers/leds
+kernel/msm-4.19/drivers/leds/leds-aw2016.c
+```
 
 
 ---
-
-
-
-
-```java
-
-```
 
 ```java
 

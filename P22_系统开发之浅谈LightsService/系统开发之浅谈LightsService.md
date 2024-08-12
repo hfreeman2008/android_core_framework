@@ -442,12 +442,86 @@ echo 255 > /sys/class/leds/wled/brightness
 
 屏幕亮度查看命令：
 
-```java
+```shell
 adb root
 cat /sys/class/leds/wled/brightness
 ```
 
+---
 
+## leds brightness(led亮度)
+
+LED灯--充电时，充电指示灯太刺眼，影响体验，减少LED灯的亮度：
+kernel/msm-4.9/drivers/leds/leds-qpnp.c
+```c
+    /* START<fix><demand 188 ><for leds brightness ><201901014>> */
+    switch(led->id){
+    case QPNP_ID_RGB_RED:
+    case QPNP_ID_RGB_GREEN:
+    case QPNP_ID_RGB_BLUE:
+    led->cdev.brightness = value >> 3;
+    break;
+    }
+    /* end<fix><demand 188 ><for leds brightness ><201901014>> */
+```
+
+
+
+---
+
+## 充电指示灯显示，充电到90%显示绿灯
+frameworks / base/services/core/java/com/android/server/BatteryService.java
+
+```java
+public void updateLightsLocked() {
+    final int level = mHealthInfo.batteryLevel;
+    final int status = mHealthInfo.batteryStatus;
+    //fix by for H56E
+    +int level_green = (Feature_XTHINK_LED_TURN_GREEN_PERCENT_NINETY == true) ? 90 : 100;
+    //fix end
+    if (level < mLowBatteryWarningLevel) {
+        if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
+            // Solid red when battery is charging
+            mBatteryLight.setColor(mBatteryLowARGB);
+        } else {
+            // Flash red when battery is low and not charging
+            mBatteryLight.setFlashing(mBatteryLowARGB, Light.LIGHT_FLASH_TIMED,
+                    mBatteryLedOn, mBatteryLedOff);
+        }
+    } else if (status == BatteryManager.BATTERY_STATUS_CHARGING
+            || status == BatteryManager.BATTERY_STATUS_FULL) {
+/*modified begain,when battery capacity is 100%,the green led always on */
+        //if (status == BatteryManager.BATTERY_STATUS_FULL || level >= 90) {
+        +if (status == BatteryManager.BATTERY_STATUS_FULL || level >= level_green) {
+        /*modified end,when battery capacity is 100%,the green led always on*/
+            // Solid green when full or charging and nearly full
+            mBatteryLight.setColor(mBatteryFullARGB);
+```
+
+
+---
+
+## 电量低于15%之后，下拉通知栏手电筒图标可点击且无灯光
+
+kernel-4.9 / arch/arm64/configs/x011_k61v1_64_bsp_debug_defconfig
+kernel-4.9 / arch/arm64/configs/x011_k61v1_64_bsp_defconfig
+
+```makefile
+-CONFIG_MTK_FLASHLIGHT_PT_STRICT=y
++CONFIG_MTK_FLASHLIGHT_PT_STRICT=n
+```
+
+---
+
+## 灭屏下来未接来电、收到未读消息，第三方（如微信、QQ、Skype等来新消息）信号灯不亮
+frameworks/base/core/res/res/values/config.xml
+
+```xml
+<!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
+<bool name="config_intrusiveNotificationLed">true</bool>
+```
+
+---
 
 ```java
 
@@ -464,8 +538,16 @@ cat /sys/class/leds/wled/brightness
 ```
 
 
----
+```java
 
+```
+
+
+
+
+```java
+
+```
 
 
 ---

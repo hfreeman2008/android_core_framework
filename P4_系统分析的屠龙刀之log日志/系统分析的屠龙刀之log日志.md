@@ -5,6 +5,10 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+
+---
 
 <img src="log_jie_gao.png">
 
@@ -358,6 +362,10 @@ Watchdog|crash|die|block|kill|F DEBUG|AndroidRuntime|anr|Application is not resp
 - 异常和错误的信息
 - 关键的信息  
 这部分包括关键的业务，关键动作，关键状态等等。
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p4-系统分析的屠龙刀之log日志)
 
 ---
 

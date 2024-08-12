@@ -3,6 +3,11 @@
 <img src="../flower/flows_atms_001.png">
 
 ---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # ActivityTaskManagerService 类的作用：
 ActivityTaskManagerService 类的作用就是管理activity，和activity的容器（task,stack,displays）
 
@@ -792,6 +797,10 @@ registerService(Context.ACTIVITY_TASK_SERVICE, ActivityTaskManager.class,
                 ctx.getOuterContext(), ctx.mMainThread.getHandler());
     }});
 ```
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p13_系统开发之浅谈activitytaskmanagerservice)
 
 ---
 

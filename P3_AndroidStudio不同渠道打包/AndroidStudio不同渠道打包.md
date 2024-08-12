@@ -8,6 +8,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # 实现效果
 ## 生成二个不同包名的apk，并且应用图标和应用名称实现动态替换
 <img src=".\Image\logo_and_name.PNG">
@@ -335,6 +339,10 @@ Android实现多渠道打包，动态替换包名、Icon、图片等资源的方
 # 附Demo的源码
 
 DemoDiffPkg2.zip
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#专题三-androidstudio不同渠道打包)
 
 ---
 

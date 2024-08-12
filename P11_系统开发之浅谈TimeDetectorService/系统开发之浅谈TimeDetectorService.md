@@ -5,6 +5,11 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
+
 # TimeDetectorService 时间识别服务是做什么的
 
 简单来说，TimeDetectorService 时间识别服务是用来更新设备时间的。
@@ -297,6 +302,9 @@ registerService(Context.TIME_DETECTOR_SERVICE, TimeDetector.class,
             }});
 ```
 
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p11-系统开发之浅谈timedetectorservice)
 
 ---
 

@@ -325,6 +325,10 @@ adb logcat -b events
 //打印radio类型的日志
 adb logcat -b radio
 
+查看死机，crsh，anr，等日志：
+Watchdog|crash|die|block|kill|F DEBUG|AndroidRuntime|anr|Application is not responding|fatal
+Watchdog|crash|die|block|kill|F DEBUG|AndroidRuntime|anr|Application is not responding|fatal|GOODBYE
+
 ```
 
 

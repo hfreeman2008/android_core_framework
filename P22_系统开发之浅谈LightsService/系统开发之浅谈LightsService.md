@@ -300,6 +300,63 @@ hw_get_module (LIGHTS_HARDWARE_MODULE_ID
 
 ---
 
+# liblight库
+
+高通：
+```java
+./out/target/product/bengal/vendor/lib64/hw/lights.bengal.so
+./out/target/product/bengal/vendor/lib/hw/lights.bengal.so
+
+hardware/qcom/display/liblight/lights.c
+
+hardware/qcom/display/liblight/ 目录文件：
+Android.mk
+lights.c
+NOTICE
+```
+
+lights.c
+
+- 节点信息：
+```java
+char const*const LCD_FILE
+        = "/sys/class/leds/lcd-backlight/brightness";
+
+char const*const LCD_FILE2
+        = "/sys/class/backlight/panel0-backlight/brightness";
+
+char const*const BUTTON_FILE
+        = "/sys/class/leds/button-backlight/brightness";
+
+char const*const PERSISTENCE_FILE
+        = "/sys/class/graphics/fb0/msm_fb_persist_mode";
+
+
+echo 0 >  /sys/class/leds/blue0/brightness
+```
+
+
+- 关键方法
+
+```java
+static struct hw_module_methods_t lights_module_methods = {
+    .open =  open_lights,
+};
+
+write_str
+
+写节点亮度：
+set_rgb_led_brightness
+snprintf(file, sizeof(file), "/sys/class/leds/%s/brightness", led_names[led]);
+
+写节点闪烁
+static int set_rgb_led_timer_trigger(enum rgb_led led, int onMS, int offMS)
+    snprintf(file_on, sizeof(file_on), "/sys/class/leds/%s/trigger", led_names[led]);
+    snprintf(file_off, sizeof(file_off), "/sys/class/leds/%s/delay_off", led_names[led]);
+    snprintf(file_on, sizeof(file_on), "/sys/class/leds/%s/delay_on", led_names[led]);
+```
+
+
 
 
 ---
@@ -307,7 +364,13 @@ hw_get_module (LIGHTS_HARDWARE_MODULE_ID
 
 
 
+```java
 
+```
+
+```java
+
+```
 
 
 

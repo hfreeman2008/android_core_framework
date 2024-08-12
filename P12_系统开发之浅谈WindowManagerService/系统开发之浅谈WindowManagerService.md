@@ -4,6 +4,12 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+
+---
+
+
 # WindowManagerService 类的作用：
 
 wms是窗口的管理者，负责窗口的启动，添加，删除和更新，窗口动画，窗口的大小和层级，还有壁纸，水印，输入系统的中转站，Surface管理等各个方面的一个综合管理体。
@@ -565,6 +571,10 @@ WindowManagerPolicy windowManagerPolicy = LocalServices.getService(WindowManager
 
 ---
 
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p12_系统开发之浅谈windowmanagerservice)
+
+---
 
 
 # 结束语

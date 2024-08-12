@@ -428,7 +428,7 @@ https://developer.android.google.cn/reference/android/view/inputmethod/InputMeth
 
 ---
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#android开发浅谈之-inputmethodmanagerservice)
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p21-系统开发之浅谈inputmethodmanagerservice)
 
 
 ---

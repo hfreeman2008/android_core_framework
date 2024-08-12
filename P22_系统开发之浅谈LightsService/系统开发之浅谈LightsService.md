@@ -404,10 +404,34 @@ config ZOPT2201
      module will be called zopt2201.
 ```
 
+
+kernel\msm-4.19\drivers\iio\light\zopt2201.c
+
+```c
+static struct i2c_driver zopt2201_driver = {
+    .driver = {
+        .name   = ZOPT2201_DRV_NAME,
+    },
+    .probe  = zopt2201_probe, //注意这个文件
+    .id_table = zopt2201_id,
+};
+
+static int zopt2201_probe(struct i2c_client *client,
+              const struct i2c_device_id *id)
+{
+    ......
+}
+```
+
+
+
+
 ---
 
 
+```java
 
+```
 
 
 

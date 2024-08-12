@@ -377,13 +377,36 @@ light驱动节点：
 
 ![note_3](note_3.png)
 
+red0目录下的节点：
 
+![note_red0](note_red0.png)
+
+
+
+
+查看一个实现文件：
+kernel\msm-4.19\drivers\iio\light\Makefile
+
+```makefile
+obj-$(CONFIG_ZOPT2201)      += zopt2201.o
+```
+
+kernel\msm-4.19\drivers\iio\light\Kconfig
+```makefile
+config ZOPT2201
+    tristate "ZOPT2201 ALS and UV B sensor"
+    depends on I2C
+    help
+     Say Y here if you want to build a driver for the IDT
+     ZOPT2201 ambient light and UV B sensor.
+
+     To compile this driver as a module, choose M here: the
+     module will be called zopt2201.
+```
 
 ---
 
-```java
 
-```
 
 
 

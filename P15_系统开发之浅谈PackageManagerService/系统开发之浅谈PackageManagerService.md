@@ -6,6 +6,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # PackageManagerService 类的作用：
 
 管理应用，包括应用安装，删除，更新，应用的位置，应用的权限管理，截图，dex等。
@@ -314,6 +318,9 @@ ServiceManager.addService("package_native", pmn);
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#android开发浅谈之packagemanagerservicepkms)
+
+---
 
 
 # 结束语

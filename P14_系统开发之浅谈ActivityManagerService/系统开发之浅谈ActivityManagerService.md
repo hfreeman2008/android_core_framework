@@ -5,6 +5,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 
 # ActivityManagerService类的作用：
 四大组件：activity管理，广播管理，SERVICES，CONTENT PROVIDERS，TASK MANAGEMENT,PERMISSIONS，PROCESS INFO，BACKUP AND RESTORE，INSTRUMENTATION，LIFETIME MANAGEMENT，监视anr,cpu,oom,memo空间，电量。
@@ -918,6 +922,11 @@ registerService(Context.ACTIVITY_SERVICE, ActivityManager.class,
         return new ActivityManager(ctx.getOuterContext(), ctx.mMainThread.getHandler());
     }});
 ```
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p14_系统开发之浅谈activitymanagerservice)
+
 ---
 
 

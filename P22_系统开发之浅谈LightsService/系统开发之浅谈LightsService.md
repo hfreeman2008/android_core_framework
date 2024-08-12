@@ -428,6 +428,26 @@ static int zopt2201_probe(struct i2c_client *client,
 
 ---
 
+# FAQ
+
+## 相关的命令
+
+手动调整背光亮度的命令：
+
+```shell
+adb root && adb remount
+adb shell
+echo 255 > /sys/class/leds/wled/brightness
+```
+
+屏幕亮度查看命令：
+
+```java
+adb root
+cat /sys/class/leds/wled/brightness
+```
+
+
 
 ```java
 
@@ -439,7 +459,9 @@ static int zopt2201_probe(struct i2c_client *client,
 
 
 
+```java
 
+```
 
 
 ---

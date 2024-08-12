@@ -122,6 +122,11 @@
 
 ---
 
+## P22: 系统开发之浅谈LightsService
+[系统开发之浅谈LightsService.md](./P22_系统开发之浅谈LightsService/系统开发之浅谈LightsService.md)
+
+---
+
 
 备注：这一系统文章参考源码以android 11和13为主，还有部分是其他的android 版本。
 

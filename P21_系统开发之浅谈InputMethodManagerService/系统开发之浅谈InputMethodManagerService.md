@@ -4,6 +4,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # InputMethodManagerService 作用
 
 输入法的选择,切换,管理,输入法界面的管理,软键盘的显示与管理,输入法全屏显示,输入与位置的关系。
@@ -421,6 +425,10 @@ https://blog.csdn.net/hfreeman2008/article/details/117963600
 
 https://developer.android.google.cn/reference/android/view/inputmethod/InputMethodManager
 
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#android开发浅谈之-inputmethodmanagerservice)
 
 
 ---

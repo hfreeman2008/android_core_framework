@@ -4,6 +4,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # NotificationManagerService 作用
 
 主要是管理通知(notification)，包含通知的增加，删除，更新，播放通知声音，创建一些白名单应用的通知栏，消息等级管理，震动，led灯的管理，通知的策略管理。
@@ -790,6 +794,10 @@ packages/apps/SystemUI/src/com/android/systemui/scui/NotificationFragment.java
     }
 ```
 
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p20-系统开发之浅谈notificationmanagerservice)
 
 ---
 

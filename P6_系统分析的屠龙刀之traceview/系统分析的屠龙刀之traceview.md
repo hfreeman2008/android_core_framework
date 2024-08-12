@@ -9,6 +9,11 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
+
 # 如何使用
 - 通过Android studio自带的traceview查看（Android profiler）
 
@@ -215,6 +220,11 @@ https://xiaozhuanlan.com/topic/7304691258
 
 https://blog.csdn.net/hfreeman2008/article/details/53509489
 
+
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p6-系统分析的屠龙刀之traceview)
 
 ---
 

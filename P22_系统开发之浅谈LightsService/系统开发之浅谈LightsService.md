@@ -2,8 +2,6 @@
 
 <img src="../flower/flower_p22.png">
 
-
-
 ---
 
 # light整体分层架构
@@ -46,16 +44,32 @@ LightsManager lights = LocalServices.getService(LightsManager.class);
 
 ---
 
+# 启动 LightsService 服务：
 
+SystemServer.java
 
+```java
+// Manages LEDs and display backlight so we need it to bring up the display.
+t.traceBegin("StartLightsService");
+mSystemServiceManager.startService(LightsService.class);
+t.traceEnd();
+```
 
 ---
 
-# 日志开关
+# 注册Lights
+SystemServiceRegistry.java
 
 ```java
-
+registerService(Context.LIGHTS_SERVICE, LightsManager.class,
+    new CachedServiceFetcher<LightsManager>() {
+        @Override
+        public LightsManager createService(ContextImpl ctx)
+            throws ServiceNotFoundException {
+            return new LightsManager(ctx);
+        }});
 ```
+
 
 
 ---
@@ -63,64 +77,148 @@ LightsManager lights = LocalServices.getService(LightsManager.class);
 # dump信息
 
 ```java
-adb shell dumpsys input_method
+adb shell dumpsys lights
+ 
+Service: aidl (android.hardware.light.ILights$Stub$Proxy@11deb07)
+Lights:
+  Light id=0 ordinal=0 color=00000000
+  Light id=3 ordinal=0 color=ff00ff00
+  Light id=4 ordinal=0 color=00000000
+  Light id=5 ordinal=0 color=00000000
+Session clients:
 ```
 
 
 ---
 
-# handler和消息
+# 日志开关
 
 ```java
-
-```
-
-
----
-
-# publishBinderService
-
-onStart()方法中：
-```java
-
-```
-
-其他进程获取 InputMethodManagerService :
-```java
-
+static final boolean DEBUG = false;
 ```
 
 ---
 
-# LocalServices--InputMethodManagerInternal
-
+# Lifecycle--publishBinderService
 
 ```java
+final LightsManagerBinderService mManagerService;
+mManagerService = new LightsManagerBinderService();
+publishBinderService(Context.LIGHTS_SERVICE, mManagerService);
 
+private final class LightsManagerBinderService extends ILightsManager.Stub {
+
+    private final class Session {
+        final IBinder mToken;
+        final SparseArray<LightState> mRequests = new SparseArray<>();
+
+        Session(IBinder token) {
+            mToken = token;
+        }
+
+        void setRequest(int lightId, LightState state) {
+        ......
+        }
+    }
+
+    @GuardedBy("LightsService.this")
+    private final List<Session> mSessions = new ArrayList<>();
+
+
+    @Override
+    public List<Light> getLights() {
+        ......
+            return lights;
+        }
+    }
+
+
+    @Override
+    public void setLightStates(IBinder token, int[] lightIds, LightState[] lightStates) {
+       ......
+    }
+
+    @Override
+    public @Nullable LightState getLightState(int lightId) {
+        ......
+            return new LightState(light.getColor());
+    }
+
+    @Override
+    public void openSession(IBinder token) {
+        ......
+    }
+
+    @Override
+    public void closeSession(IBinder token) {
+        ......
+    }
+
+    @Override
+    protected void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        ......
+    }
+
+    private void closeSessionInternal(IBinder token) {
+        ......
+    }
+
+    private void checkRequestIsValid(int[] lightIds) {
+        ......
+    }
+
+
+    private void invalidateLightStatesLocked() {
+       ......
+    }
+
+    private @Nullable Session getSessionLocked(IBinder token) {
+    ......
+    }
+}
 ```
 
+其他进程读取服务的方法：
 
-在system server进程中：
 ```java
-
+LightsManager manager = (LightsManager) mContext.getSystemService(Context.LIGHTS_SERVICE);
 ```
 
 ---
 
-# ime命令
+# publishLocalService
+
 
 ```java
-
+publishLocalService(LightsManager.class, mService);
 ```
 
+system server进程使用:
 ```java
-
+LightsManager lightsManager = getLocalService(LightsManager.class);
 ```
 
 ---
 
 
-# 相关Settings字段
+
+# framework相关文件：
+
+在frameworks中,涉及到LightsManager的类主要有:
+
+```java
+
+frameworks/base/services/core/java/com/android/server/lights/LightsService.java
+frameworks/base/services/core/java/com/android/server/BatteryService.java
+NotificationManagerService.java
+PowerManagerService.java
+LocalDisplayAdapter.java
+```
+
+---
+
+
+# JNI
 
 
 ```java
@@ -145,9 +243,29 @@ onStart()方法中：
 
 
 
+
+
+
+
+
+---
+
+
+
+
+
+
+---
+
+
+
+---
+
+
+
+
 ---
 
 # 结束语
 
 <img src="../Images/end_001.png">
-

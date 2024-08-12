@@ -367,6 +367,17 @@ kernel/msm-4.9/drivers/leds
 kernel/msm-4.19/drivers/leds/leds-aw2016.c
 ```
 
+light驱动节点：
+```java
+/sys/class/leds/
+```
+
+节点文件：
+蓝，绿，红，三个节点：
+
+![note_3](note_3.png)
+
+
 
 ---
 

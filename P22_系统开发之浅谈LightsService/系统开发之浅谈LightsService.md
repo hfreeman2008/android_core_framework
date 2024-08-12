@@ -521,38 +521,13 @@ frameworks/base/core/res/res/values/config.xml
 <bool name="config_intrusiveNotificationLed">true</bool>
 ```
 
----
-
-```java
-
-```
-
-
 
 ---
 
+# 参考资料
 
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-
-
-```java
-
-```
-
-
----
-
-
+1.LightsService 灯光控制
+https://blog.csdn.net/u012932409/article/details/108345928
 
 
 ---

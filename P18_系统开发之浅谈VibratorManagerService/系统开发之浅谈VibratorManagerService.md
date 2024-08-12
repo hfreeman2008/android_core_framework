@@ -5,6 +5,10 @@
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
 # VibratorManagerService 类的作用：
 
 vibrator管理震动，这个服务比较简单，我们可以参考这个服务来自己做一个服务
@@ -439,6 +443,9 @@ https://www.jianshu.com/p/6114071d8879
 
 ---
 
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p18_系统开发之浅谈vibratormanagerservice)
+
+---
 
 # 结束语
 

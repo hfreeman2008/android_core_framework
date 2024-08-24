@@ -479,7 +479,7 @@ https://www.jianshu.com/p/6114071d8879
 
 ---
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p22-系统开发之浅谈VibratorManagerService)
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p23-系统开发之浅谈VibratorManagerService)
 
 ---
 

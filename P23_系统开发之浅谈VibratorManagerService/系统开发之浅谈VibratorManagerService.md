@@ -465,69 +465,13 @@ MODULE_DEVICE_TABLE(of, vibrator_ldo_match_table);
 ![VibratorManagerService垂直框架](VibratorManagerService垂直框架.png)
 
 
-
-
----
-
-# FAQ
-
-## 相关的命令
-
-手动调整背光亮度的命令：
-
-```shell
-adb root && adb remount
-adb shell
-echo 255 > /sys/class/leds/wled/brightness
-```
-
-屏幕亮度查看命令：
-
-```shell
-adb root
-cat /sys/class/leds/wled/brightness
-```
-
----
-
-## leds brightness(led亮度)
-
-LED灯--充电时，充电指示灯太刺眼，影响体验，减少LED灯的亮度：
-kernel/msm-4.9/drivers/leds/leds-qpnp.c
-```c
-    /* START<fix><demand 188 ><for leds brightness ><201901014>> */
-    switch(led->id){
-    case QPNP_ID_RGB_RED:
-    case QPNP_ID_RGB_GREEN:
-    case QPNP_ID_RGB_BLUE:
-    led->cdev.brightness = value >> 3;
-    break;
-    }
-    /* end<fix><demand 188 ><for leds brightness ><201901014>> */
-```
-
-
-
----
-
-
-
-
----
-
-
-
----
-
-
-
-
 ---
 
 # 参考资料
 
-1.VibratorManagerService 灯光控制
-https://blog.csdn.net/u012932409/article/details/108345928
+1.Android Vibrator
+
+https://www.jianshu.com/p/6114071d8879
 
 ---
 

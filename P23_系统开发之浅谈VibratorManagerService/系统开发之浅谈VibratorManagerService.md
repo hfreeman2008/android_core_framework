@@ -40,7 +40,9 @@ IVibratorManagerService mService = IVibratorManagerService.Stub.asInterface(
 
 
 以getVibratorIds()为例，查看VibratorManagerService调用流程：
+
 (1)app应用中调用getVibratorIds:
+
 ```java
 VibratorManager vibratorManager = mContext.getSystemService(VibratorManager.class);
 int[] vibratorIds = vibratorManager.getVibratorIds();
@@ -106,33 +108,29 @@ public int[] getVibratorIds() {
 
 ---
 
-
-
-```java
-
-```
-
-```java
-
-```
-
-
-
-
----
-
 # 启动 VibratorManagerService 服务：
 
 SystemServer.java
 
 ```java
-// Manages LEDs and display backlight so we need it to bring up the display.
 t.traceBegin("StartVibratorManagerService");
-mSystemServiceManager.startService(VibratorManagerService.class);
+mSystemServiceManager.startService(VibratorManagerService.Lifecycle.class);
 t.traceEnd();
 ```
 
+
 ---
+
+
+# VibratorManagerService类图
+
+
+![VibratorManagerService类图](VibratorManagerService类图.png)
+
+
+---
+
+
 
 # 注册Lights
 SystemServiceRegistry.java

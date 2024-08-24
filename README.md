@@ -129,6 +129,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## Part 23: 系统开发之浅谈VibratorManagerService
+[系统开发之浅谈VibratorManagerService.md](./P23_系统开发之浅谈VibratorManagerService/系统开发之浅谈VibratorManagerService.md)
+
+---
+
 Note: 
 
 The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.

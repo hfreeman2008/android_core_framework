@@ -352,166 +352,117 @@ HIDL层是较新的安卓版本才引入的，是连接HAL层和JNI层的桥梁
 
 # HAL
 
+代码路径：hardware\libhardware\modules\vibrator\vibrator.c
 
-```java
-hardware\qcom\display\liblight
-hardware/qcom/display/liblight/lights.c
+```c
+static const char THE_DEVICE[] = "/sys/class/timed_output/vibrator/enable";
 
-hardware/interfaces/light
+static int sendit(unsigned int timeout_ms)
+{
+    char value[TIMEOUT_STR_LEN]; /* large enough for millions of years */
+
+    snprintf(value, sizeof(value), "%u", timeout_ms);
+    return write_value(THE_DEVICE, value);
+}
+
+static int vibra_on(vibrator_device_t* vibradev __unused, unsigned int timeout_ms)
+{
+    /* constant on, up to maximum allowed time */
+    return sendit(timeout_ms);
+}
+
+static int vibra_off(vibrator_device_t* vibradev __unused)
+{
+    return sendit(0);
+}
+
+......
+
+static int vibra_open(const hw_module_t* module, const char* id __unused,
+                      hw_device_t** device __unused) {
+    bool use_led;
+
+    if (vibra_exists()) {
+        ALOGD("Vibrator using timed_output");
+        use_led = false;
+    } else if (vibra_led_exists()) {
+        ALOGD("Vibrator using LED trigger");
+        use_led = true;
+    } else {
+        ALOGE("Vibrator device does not exist. Cannot start vibrator");
+        return -ENODEV;
+    }
+
+    vibrator_device_t *vibradev = calloc(1, sizeof(vibrator_device_t));
+
+    if (!vibradev) {
+        ALOGE("Can not allocate memory for the vibrator device");
+        return -ENOMEM;
+    }
+
+    vibradev->common.tag = HARDWARE_DEVICE_TAG;
+    vibradev->common.module = (hw_module_t *) module;
+    vibradev->common.version = HARDWARE_DEVICE_API_VERSION(1,0);
+    vibradev->common.close = vibra_close;
+
+    if (use_led) {
+        vibradev->vibrator_on = vibra_led_on;
+        vibradev->vibrator_off = vibra_led_off;
+    } else {
+        vibradev->vibrator_on = vibra_on;
+        vibradev->vibrator_off = vibra_off;
+    }
+
+    *device = (hw_device_t *) vibradev;
+
+    return 0;
+}
+
 ```
 
-高通项目如何定位hal源码：
-```java
-adb shell ps -Z | findstr -i light
-u:r:hal_light_default:s0       system          806      1 12347756  2652 0                   0 S android.hardware.lights-service.qti
+其实开启和关闭马达的工作很简单，就是往节点"/sys/class/timed_output/vibrator/enable"写入震动时间，所以可以想得到驱动层只需要提供一个节点供上层操作就好。
 
-out/target/product/bengal/vendor/bin/hw/android.hardware.lights-service.qti
-
-搜索：
-android.hardware.lights-service.qti
-高通项目：
-device\qcom\vendor-common\lights\Android.bp
-
-device\qcom\vendor-common\lights\
-  目录文件不多：
-Android.bp
-android.hardware.lights-qti.rc
-android.hardware.lights-qti.xml
-Lights.cpp
-Lights.h
-main.cpp
-
-
-搜索关键的：
-hw_get_module (LIGHTS_HARDWARE_MODULE_ID
-可以定位到lib库
-```
-
-
----
-
-# liblight库
-
-高通：
-```java
-./out/target/product/bengal/vendor/lib64/hw/lights.bengal.so
-./out/target/product/bengal/vendor/lib/hw/lights.bengal.so
-
-hardware/qcom/display/liblight/lights.c
-
-hardware/qcom/display/liblight/ 目录文件：
-Android.mk
-lights.c
-NOTICE
-```
-
-lights.c
-
-- 节点信息：
-```java
-char const*const LCD_FILE
-        = "/sys/class/leds/lcd-backlight/brightness";
-
-char const*const LCD_FILE2
-        = "/sys/class/backlight/panel0-backlight/brightness";
-
-char const*const BUTTON_FILE
-        = "/sys/class/leds/button-backlight/brightness";
-
-char const*const PERSISTENCE_FILE
-        = "/sys/class/graphics/fb0/msm_fb_persist_mode";
-
-
-echo 0 >  /sys/class/leds/blue0/brightness
-```
-
-
-- 关键方法
-
-```java
-static struct hw_module_methods_t lights_module_methods = {
-    .open =  open_lights,
-};
-
-write_str
-
-写节点亮度：
-set_rgb_led_brightness
-snprintf(file, sizeof(file), "/sys/class/leds/%s/brightness", led_names[led]);
-
-写节点闪烁
-static int set_rgb_led_timer_trigger(enum rgb_led led, int onMS, int offMS)
-    snprintf(file_on, sizeof(file_on), "/sys/class/leds/%s/trigger", led_names[led]);
-    snprintf(file_off, sizeof(file_off), "/sys/class/leds/%s/delay_off", led_names[led]);
-    snprintf(file_on, sizeof(file_on), "/sys/class/leds/%s/delay_on", led_names[led]);
-```
 
 
 ---
 
 # kernel
 
-```java
-kernel\drivers\leds
-kernel/msm-4.9/drivers/leds
-kernel/msm-4.19/drivers/leds/leds-aw2016.c
-```
+马达的驱动是基于kernel提供的timed_output框架完成的
 
-light驱动节点：
-```java
-/sys/class/leds/
-```
+代码路径：kernel-4.4\drivers\staging\android\timed_output.c
 
-节点文件：
-蓝，绿，红，三个节点：
-
-![note_3](note_3.png)
-
-red0目录下的节点：
-
-![note_red0](note_red0.png)
+代码比较简单，提供接口给驱动在"/sys/class/timed_output/"路径下面建立自己的节点，并提供节点的device attribute的操作接口，当我们写节点的时候就会调用到enable_store函数，并调用注册驱动的enable函数
 
 
+# 驱动-vibrator
 
-
-查看一个实现文件：
-kernel\msm-4.19\drivers\iio\light\Makefile
-
-```makefile
-obj-$(CONFIG_ZOPT2201)      += zopt2201.o
-```
-
-kernel\msm-4.19\drivers\iio\light\Kconfig
-```makefile
-config ZOPT2201
-    tristate "ZOPT2201 ALS and UV B sensor"
-    depends on I2C
-    help
-     Say Y here if you want to build a driver for the IDT
-     ZOPT2201 ambient light and UV B sensor.
-
-     To compile this driver as a module, choose M here: the
-     module will be called zopt2201.
-```
-
-
-kernel\msm-4.19\drivers\iio\light\zopt2201.c
+vendor/qcom/proprietary/devicetree-4.19/qcom/sc780-dts/pmi632.dtsi
 
 ```c
-static struct i2c_driver zopt2201_driver = {
-    .driver = {
-        .name   = ZOPT2201_DRV_NAME,
-    },
-    .probe  = zopt2201_probe, //注意这个文件
-    .id_table = zopt2201_id,
+pmi632_vib: qcom,vibrator@5700 {
+    compatible = "qcom,qpnp-vibrator-ldo";
+    reg = <0x5700 0x100>;
+    qcom,vib-ldo-volt-uv = <3000000>;
+    qcom,disable-overdrive;
 };
-
-static int zopt2201_probe(struct i2c_client *client,
-              const struct i2c_device_id *id)
-{
-    ......
-}
 ```
+
+kernel/msm-4.19/drivers/leds/leds-qpnp-vibrator-ldo.c
+
+```c
+static const struct of_device_id vibrator_ldo_match_table[] = {
+    { .compatible = "qcom,qpnp-vibrator-ldo" },
+    { /* sentinel */ },
+};
+MODULE_DEVICE_TABLE(of, vibrator_ldo_match_table);
+```
+
+
+# VibratorManagerService 垂直框架
+
+
+
 
 
 

@@ -282,6 +282,7 @@ static native void vibratorAlwaysOnDisable(long id);
 ```
 
 对应于jni代码：
+
 frameworks\base\services\core\jni\com_android_server_VibratorService.cpp
 
 ```cpp
@@ -321,7 +322,10 @@ static void vibratorOff(JNIEnv* /* env */, jclass /* clazz */)
 
 # HIDL层
 以马达的On和off为例，会调用到HAL层的on和off方法。
-代码路径：hardware\interfaces\vibrator\1.0\default\Vibrator.cpp
+
+代码路径：
+
+hardware\interfaces\vibrator\1.0\default\Vibrator.cpp
 
 ```cpp
 // Methods from ::android::hardware::vibrator::V1_0::IVibrator follow.

@@ -462,7 +462,7 @@ MODULE_DEVICE_TABLE(of, vibrator_ldo_match_table);
 # VibratorManagerService 垂直框架
 
 
-
+![VibratorManagerService垂直框架](VibratorManagerService垂直框架.png)
 
 
 

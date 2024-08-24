@@ -319,6 +319,37 @@ static void vibratorOff(JNIEnv* /* env */, jclass /* clazz */)
 
 ---
 
+# HIDL层
+以马达的On和off为例，会调用到HAL层的on和off方法。
+代码路径：hardware\interfaces\vibrator\1.0\default\Vibrator.cpp
+
+```cpp
+// Methods from ::android::hardware::vibrator::V1_0::IVibrator follow.
+Return<Status> Vibrator::on(uint32_t timeout_ms) {
+    int32_t ret = mDevice->vibrator_on(mDevice, timeout_ms);
+    if (ret != 0) {
+        ALOGE("on command failed : %s", strerror(-ret));
+        return Status::UNKNOWN_ERROR;
+    }
+    return Status::OK;
+}
+
+Return<Status> Vibrator::off()  {
+    int32_t ret = mDevice->vibrator_off(mDevice);
+    if (ret != 0) {
+        ALOGE("off command failed : %s", strerror(-ret));
+        return Status::UNKNOWN_ERROR;
+    }
+    return Status::OK;
+}
+
+```
+
+HIDL层是较新的安卓版本才引入的，是连接HAL层和JNI层的桥梁
+
+
+---
+
 # HAL
 
 

@@ -160,21 +160,6 @@ Dumping vibrator manager service to text...
 private static final boolean DEBUG = false;
 ```
 
----
-
-
-# framework相关文件：
-
-在frameworks中,涉及到LightsManager的类主要有:
-
-```java
-
-frameworks/base/services/core/java/com/android/server/lights/VibratorManagerService.java
-frameworks/base/services/core/java/com/android/server/BatteryService.java
-NotificationManagerService.java
-PowerManagerService.java
-LocalDisplayAdapter.java
-```
 
 ---
 
@@ -275,43 +260,62 @@ Slog.d(TAG, "Turning vibrator on for " + millis + " ms" +
 
 # JNI
 
-com_android_server_lights_VibratorManagerService.cpp
-
-jni调用本地接口:
+VibratorManagerService的native方法
 
 ```java
-static native void setLight_native(int light, int color, int mode,
-        int onMS, int offMS, int brightnessMode);
+static native boolean vibratorExists();
+static native void vibratorInit();
+static native void vibratorOn(long milliseconds);
+static native void vibratorOff();
+static native boolean vibratorSupportsAmplitudeControl();
+static native void vibratorSetAmplitude(int amplitude);
+static native int[] vibratorGetSupportedEffects();
+static native long vibratorPerformEffect(long effect, long strength, Vibration vibration,
+        boolean withCallback);
+static native void vibratorPerformComposedEffect(
+        VibrationEffect.Composition.PrimitiveEffect[] effect, Vibration vibration);
+static native boolean vibratorSupportsExternalControl();
+static native void vibratorSetExternalControl(boolean enabled);
+static native long vibratorGetCapabilities();
+static native void vibratorAlwaysOnEnable(long id, long effect, long strength);
+static native void vibratorAlwaysOnDisable(long id);
 ```
 
-frameworks/base/services/core/jni/com_android_server_lights_VibratorManagerService.cpp
+对应于jni代码：
+frameworks\base\services\core\jni\com_android_server_VibratorService.cpp
 
-```java
-static void setLight_native(
-        JNIEnv* /* env */,
-        jobject /* clazz */,
-        jint light,
-        jint colorARGB,
-        jint flashMode,
-        jint onMS,
-        jint offMS,
-        jint brightnessMode) {
+```cpp
+static void vibratorOn(JNIEnv* /* env */, jclass /* clazz */, jlong timeout_ms)
+{
+    if (auto hal = getHal<aidl::IVibrator>()) {
+        auto status = hal->call(&aidl::IVibrator::on, timeout_ms, nullptr);
+        if (!status.isOk()) {
+            ALOGE("vibratorOn command failed: %s", status.toString8().string());
+        }
+    } else {
+        Status retStatus = halCall(&V1_0::IVibrator::on, timeout_ms).withDefault(Status::UNKNOWN_ERROR);
+        if (retStatus != Status::OK) {
+            ALOGE("vibratorOn command failed (%" PRIu32 ").", static_cast<uint32_t>(retStatus));
+        }
+    }
+}
 
-    if (!validate(light, flashMode, brightnessMode)) {
-```
-
-
-
-```java
-static const JNINativeMethod method_table[] = {
-    { "setLight_native", "(IIIIII)V", (void*)setLight_native },
-};
-
-int register_android_server_VibratorManagerService(JNIEnv *env) {
-    return jniRegisterNativeMethods(env, "com/android/server/lights/VibratorManagerService",
-            method_table, NELEM(method_table));
+static void vibratorOff(JNIEnv* /* env */, jclass /* clazz */)
+{
+    if (auto hal = getHal<aidl::IVibrator>()) {
+        auto status = hal->call(&aidl::IVibrator::off);
+        if (!status.isOk()) {
+            ALOGE("vibratorOff command failed: %s", status.toString8().string());
+        }
+    } else {
+        Status retStatus = halCall(&V1_0::IVibrator::off).withDefault(Status::UNKNOWN_ERROR);
+        if (retStatus != Status::OK) {
+            ALOGE("vibratorOff command failed (%" PRIu32 ").", static_cast<uint32_t>(retStatus));
+        }
+    }
 }
 ```
+
 
 ---
 

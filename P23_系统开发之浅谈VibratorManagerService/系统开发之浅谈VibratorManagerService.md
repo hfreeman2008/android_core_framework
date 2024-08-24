@@ -144,11 +144,24 @@ private final Handler mHandler;
 # dump信息
 
 ```java
-adb shell dumpsys lights
- 
-Dumping vibrator manager service to proto...
+adb shell dumpsys vibrator
 
-Dumping vibrator manager service to text...
+Vibrator Service:
+  mCurrentVibration=null
+  mCurrentExternalVibration=null  mVibratorUnderExternalControl=false
+  mIsVibrating=false
+  mVibratorStateListeners Count=0
+  mLowPowerMode=false
+  mHapticFeedbackIntensity=2
+  mNotificationIntensity=2
+  mRingIntensity=2
+  mSupportedEffects=[]
+
+  Previous ring vibrations:
+  Previous notification vibrations:
+  Previous alarm vibrations:
+  Previous vibrations:
+  Previous external vibrations:
 ```
 
 
@@ -426,7 +439,12 @@ static int vibra_open(const hw_module_t* module, const char* id __unused,
 
 其实开启和关闭马达的工作很简单，就是往节点"/sys/class/timed_output/vibrator/enable"写入震动时间，所以可以想得到驱动层只需要提供一个节点供上层操作就好。
 
+---
 
+# vendor.qti.hardware.vibrator.service
+
+高通平台：
+vendor/qcom/opensource/vibrator/
 
 ---
 

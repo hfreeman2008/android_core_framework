@@ -11,9 +11,7 @@
 
 # VibratorManagerService 作用
 
-VibratorManagerService 灯光服务提供了LCD背光灯、键盘灯、按键灯、警示灯、电池灯、消息通知灯、蓝牙灯、wifi灯等灯光；
-
-常用到的地方为：PowerManager、NotificationManager、BatteryService等
+vibrator管理震动，这个服务比较简单，我们可以参考这个服务来自己做一个服务
 
 
 ---
@@ -22,16 +20,14 @@ VibratorManagerService 灯光服务提供了LCD背光灯、键盘灯、按键灯
 
 ```java
 方式1
-LightsManager manager = (LightsManager) mContext.getSystemService(Context.LIGHTS_SERVICE);
+VibratorManager vibratorManager = mContext.getSystemService(VibratorManager.class);
 
 方式2
-private static IVibratorManagerService sService;
-IBinder b = ServiceManager.getService(Context.LIGHTS_SERVICE);
-sService = IVibratorManagerService.Stub.asInterface(b);
+Vibrator mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-方式3 (system server进程使用)
-LightsManager lightsManager = getLocalService(LightsManager.class);
-LightsManager lights = LocalServices.getService(LightsManager.class);
+方式3
+IVibratorManagerService mService = IVibratorManagerService.Stub.asInterface(
+        ServiceManager.getService(Context.VIBRATOR_MANAGER_SERVICE));
 ```
 
 ---

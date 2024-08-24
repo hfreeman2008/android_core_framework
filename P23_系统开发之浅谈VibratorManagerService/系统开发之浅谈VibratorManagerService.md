@@ -130,21 +130,13 @@ t.traceEnd();
 
 ---
 
+# handler消息
 
-
-# 注册Lights
-SystemServiceRegistry.java
+有一个handler:
 
 ```java
-registerService(Context.LIGHTS_SERVICE, LightsManager.class,
-    new CachedServiceFetcher<LightsManager>() {
-        @Override
-        public LightsManager createService(ContextImpl ctx)
-            throws ServiceNotFoundException {
-            return new LightsManager(ctx);
-        }});
+private final Handler mHandler;
 ```
-
 
 
 ---
@@ -154,13 +146,9 @@ registerService(Context.LIGHTS_SERVICE, LightsManager.class,
 ```java
 adb shell dumpsys lights
  
-Service: aidl (android.hardware.light.ILights$Stub$Proxy@11deb07)
-Lights:
-  Light id=0 ordinal=0 color=00000000
-  Light id=3 ordinal=0 color=ff00ff00
-  Light id=4 ordinal=0 color=00000000
-  Light id=5 ordinal=0 color=00000000
-Session clients:
+Dumping vibrator manager service to proto...
+
+Dumping vibrator manager service to text...
 ```
 
 
@@ -169,39 +157,10 @@ Session clients:
 # 日志开关
 
 ```java
-static final boolean DEBUG = false;
+private static final boolean DEBUG = false;
 ```
 
 ---
-
-# Lifecycle--publishBinderService
-
-```java
-
-```
-
-其他进程读取服务的方法：
-
-```java
-LightsManager manager = (LightsManager) mContext.getSystemService(Context.LIGHTS_SERVICE);
-```
-
----
-
-# publishLocalService
-
-
-```java
-publishLocalService(LightsManager.class, mService);
-```
-
-system server进程使用:
-```java
-LightsManager lightsManager = getLocalService(LightsManager.class);
-```
-
----
-
 
 
 # framework相关文件：
@@ -215,6 +174,100 @@ frameworks/base/services/core/java/com/android/server/BatteryService.java
 NotificationManagerService.java
 PowerManagerService.java
 LocalDisplayAdapter.java
+```
+
+---
+
+# 相机界面屏蔽所有震动提醒
+
+在doVibratorOn方法中添加一个白名单，以避免震动
+
+```java
+// add begin
+// Module Vibrator
+//add black activity list for vibrator
+import android.app.Activity;
+import android.content.ComponentName;
+//  add end
+
+
+// add begin
+// Module Vibrator
+// add black activity list for vibrator
+private String getTopActivityName() {
+String topActivityName = "";
+//get top activity name
+ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
+if(am != null
+&& am.getRunningTasks(1) != null
+&& am.getRunningTasks(1).size() > 0
+&& am.getRunningTasks(1).get(0) != null) {
+ComponentName comp = am.getRunningTasks(1).get(0).topActivity;
+if(comp != null) {
+    topActivityName = comp.getClassName();
+}
+}
+return topActivityName;
+}
+
+private String getTopActivityPkgName() {
+    String topPkgName = "";
+    //get top activity package name
+    ActivityManager am = (ActivityManager) mContext.getSystemService(Activity.ACTIVITY_SERVICE);
+    if(am != null
+    && am.getRunningTasks(1) != null
+    && am.getRunningTasks(1).size() > 0
+    && am.getRunningTasks(1).get(0) != null) {
+        ComponentName comp = am.getRunningTasks(1).get(0).topActivity;
+    if(comp != null) {
+        topPkgName = comp.getPackageName();
+    }
+    }
+    return topPkgName;
+}
+
+private String topActivityPkgNameTemp = "";
+private String topActivityNameTemp = "";
+
+private boolean isVibratorBlackActivity() {
+    boolean result = false;
+    topActivityPkgNameTemp = getTopActivityPkgName();
+    topActivityNameTemp = getTopActivityName();
+    if (DEBUG) {
+        Slog.d(TAG, "topActivityPkgNameTemp:" + topActivityPkgNameTemp);
+        Slog.d(TAG, "topActivityNameTemp:" + topActivityNameTemp);
+    }
+    if("com.android.camera".equals(topActivityPkgNameTemp)
+    && "com.android.camera.CameraActivity".equals(topActivityNameTemp)){
+        Slog.d(TAG, "Turning off vibrator when current activity in black list");
+        result = true;
+    }
+    return result;
+}
+//  add end
+
+
+private void doVibratorOn(long millis, int amplitude, int uid, AudioAttributes attrs) {
+Trace.traceBegin(Trace.TRACE_TAG_VIBRATOR, "doVibratorOn");
+try {
+synchronized (mInputDeviceVibrators) {
+if (amplitude == VibrationEffect.DEFAULT_AMPLITUDE) {
+amplitude = mDefaultVibrationAmplitude;
+}
+
+//  add begin
+// Module Vibrator
+// add black activity list for vibrator
+if(isVibratorBlackActivity()){
+    return;
+}
+//  add end
+
+if (DEBUG) {
+Slog.d(TAG, "Turning vibrator on for " + millis + " ms" +
+" with amplitude " + amplitude + ".");
+}
+
 ```
 
 ---

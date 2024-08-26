@@ -129,10 +129,7 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
-## Part 23: 系统开发之浅谈VibratorManagerService
-[系统开发之浅谈VibratorManagerService.md](./P23_系统开发之浅谈VibratorManagerService/系统开发之浅谈VibratorManagerService.md)
 
----
 
 Note: 
 

@@ -1,17 +1,18 @@
-# P18_系统开发之浅谈VibratorManagerService
+# P18: 系统开发之浅谈VibratorManagerService
 
 <img src="../flower/flower_p18.png">
 
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#参考资料)
 
 ---
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
 
----
-
-# VibratorManagerService 类的作用：
+# VibratorManagerService 作用
 
 vibrator管理震动，这个服务比较简单，我们可以参考这个服务来自己做一个服务
+
 
 ---
 
@@ -33,19 +34,19 @@ IVibratorManagerService mService = IVibratorManagerService.Stub.asInterface(
 
 # VibratorManagerService 调用流程
 
-<img src="VibratorManagerService_whole.png">
-
+![VibratorManagerService_call](VibratorManagerService_call.png)
 
 图一 VibratorManagerService调用流程
+
 
 以getVibratorIds()为例，查看VibratorManagerService调用流程：
 
 (1)app应用中调用getVibratorIds:
+
 ```java
 VibratorManager vibratorManager = mContext.getSystemService(VibratorManager.class);
 int[] vibratorIds = vibratorManager.getVibratorIds();
 ```
-
 
 (2)VibratorManager.java定义getVibratorIds
 
@@ -59,8 +60,8 @@ int[] vibratorIds = vibratorManager.getVibratorIds();
 public abstract int[] getVibratorIds();
 ```
 
-
 (3)VibratorManager的子类SystemVibratorManager实现getVibratorIds
+
 ```java
 public int[] getVibratorIds() {
     synchronized (mLock) {
@@ -82,6 +83,7 @@ public int[] getVibratorIds() {
 ```
 
 (4)IVibratorManagerService.aidl定义getVibratorIds
+
 ```java
 int[] getVibratorIds();
 VibratorInfo getVibratorInfo(int vibratorId);
@@ -95,6 +97,7 @@ void vibrate(int uid, String opPkg, in CombinedVibration vibration,
 void cancelVibrate(int usageFilter, IBinder token);
 ```
 
+
 (5)VibratorManagerService调用getVibratorIds
 ```java
 @Override // Binder call
@@ -105,10 +108,10 @@ public int[] getVibratorIds() {
 
 ---
 
-
 # 启动 VibratorManagerService 服务：
 
 SystemServer.java
+
 ```java
 t.traceBegin("StartVibratorManagerService");
 mSystemServiceManager.startService(VibratorManagerService.Lifecycle.class);
@@ -118,29 +121,49 @@ t.traceEnd();
 
 ---
 
-# VibratorManagerService 类图
 
-<img src="VibratorManagerService_class.png">
+# VibratorManagerService类图
 
-图三 VibratorManagerService类图
+
+![VibratorManagerService类图](VibratorManagerService类图.png)
+
 
 ---
 
 # handler消息
 
 有一个handler:
+
 ```java
 private final Handler mHandler;
 ```
 
+
 ---
 
 # dump信息
-```java
 
-Dumping vibrator manager service to proto...
-Dumping vibrator manager service to text...
+```java
+adb shell dumpsys vibrator
+
+Vibrator Service:
+  mCurrentVibration=null
+  mCurrentExternalVibration=null  mVibratorUnderExternalControl=false
+  mIsVibrating=false
+  mVibratorStateListeners Count=0
+  mLowPowerMode=false
+  mHapticFeedbackIntensity=2
+  mNotificationIntensity=2
+  mRingIntensity=2
+  mSupportedEffects=[]
+
+  Previous ring vibrations:
+  Previous notification vibrations:
+  Previous alarm vibrations:
+  Previous vibrations:
+  Previous external vibrations:
 ```
+
 
 ---
 
@@ -150,12 +173,12 @@ Dumping vibrator manager service to text...
 private static final boolean DEBUG = false;
 ```
 
+
 ---
 
 # 相机界面屏蔽所有震动提醒
 
 在doVibratorOn方法中添加一个白名单，以避免震动
-
 
 ```java
 // add begin
@@ -242,13 +265,13 @@ if (DEBUG) {
 Slog.d(TAG, "Turning vibrator on for " + millis + " ms" +
 " with amplitude " + amplitude + ".");
 }
+
 ```
-
-
 
 ---
 
-# jni
+
+# JNI
 
 VibratorManagerService的native方法
 
@@ -275,7 +298,7 @@ static native void vibratorAlwaysOnDisable(long id);
 
 frameworks\base\services\core\jni\com_android_server_VibratorService.cpp
 
-```java
+```cpp
 static void vibratorOn(JNIEnv* /* env */, jclass /* clazz */, jlong timeout_ms)
 {
     if (auto hal = getHal<aidl::IVibrator>()) {
@@ -307,15 +330,17 @@ static void vibratorOff(JNIEnv* /* env */, jclass /* clazz */)
 }
 ```
 
+
 ---
 
 # HIDL层
-
 以马达的On和off为例，会调用到HAL层的on和off方法。
+
+代码路径：
 
 hardware\interfaces\vibrator\1.0\default\Vibrator.cpp
 
-```java
+```cpp
 // Methods from ::android::hardware::vibrator::V1_0::IVibrator follow.
 Return<Status> Vibrator::on(uint32_t timeout_ms) {
     int32_t ret = mDevice->vibrator_on(mDevice, timeout_ms);
@@ -339,13 +364,14 @@ Return<Status> Vibrator::off()  {
 
 HIDL层是较新的安卓版本才引入的，是连接HAL层和JNI层的桥梁
 
+
 ---
 
-# HAL层
+# HAL
 
-hardware\libhardware\modules\vibrator\vibrator.c
+代码路径：hardware\libhardware\modules\vibrator\vibrator.c
 
-```java
+```c
 static const char THE_DEVICE[] = "/sys/class/timed_output/vibrator/enable";
 
 static int sendit(unsigned int timeout_ms)
@@ -415,35 +441,63 @@ static int vibra_open(const hw_module_t* module, const char* id __unused,
 
 ---
 
-# 驱动层
+# vendor.qti.hardware.vibrator.service
+
+高通平台：
+vendor/qcom/opensource/vibrator/
+
+---
+
+# kernel
 
 马达的驱动是基于kernel提供的timed_output框架完成的
 
 代码路径：kernel-4.4\drivers\staging\android\timed_output.c
 
-提供接口给驱动在"/sys/class/timed_output/"路径下面建立自己的节点，并提供节点的device attribute的操作接口。
-
-当我们写节点的时候就会调用到enable_store函数，并调用注册驱动的enable函数
+代码比较简单，提供接口给驱动在"/sys/class/timed_output/"路径下面建立自己的节点，并提供节点的device attribute的操作接口，当我们写节点的时候就会调用到enable_store函数，并调用注册驱动的enable函数
 
 
----
+# 驱动-vibrator
+
+vendor/qcom/proprietary/devicetree-4.19/qcom/sc780-dts/pmi632.dtsi
+
+```c
+pmi632_vib: qcom,vibrator@5700 {
+    compatible = "qcom,qpnp-vibrator-ldo";
+    reg = <0x5700 0x100>;
+    qcom,vib-ldo-volt-uv = <3000000>;
+    qcom,disable-overdrive;
+};
+```
+
+kernel/msm-4.19/drivers/leds/leds-qpnp-vibrator-ldo.c
+
+```c
+static const struct of_device_id vibrator_ldo_match_table[] = {
+    { .compatible = "qcom,qpnp-vibrator-ldo" },
+    { /* sentinel */ },
+};
+MODULE_DEVICE_TABLE(of, vibrator_ldo_match_table);
+```
+
 
 # VibratorManagerService 垂直框架
 
-<img src="VibratorManagerService_whole_002.png">
+
+![VibratorManagerService垂直框架](VibratorManagerService垂直框架.png)
 
 
 ---
 
 # 参考资料
 
-[Android Vibrator](https://www.jianshu.com/p/6114071d8879)
+1.Android Vibrator
 
 https://www.jianshu.com/p/6114071d8879
 
 ---
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p18_系统开发之浅谈vibratormanagerservice)
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p18-系统开发之浅谈VibratorManagerService)
 
 ---
 

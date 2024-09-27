@@ -177,7 +177,7 @@ I graduated from Shenzhen University in 2011. I have been engaged in Android dev
 
 Most of the time is for mobile phone development, but also for vehicle-mounted, pos machine, law enforcement recorder and other products.
 
-My development experience is focus on the app, framework(Java layers). And familiar with sh scripts, Android compilation, and configuration.
+My development experience is focus on the app, framework(Java,c,c++ layers). And familiar with sh scripts, Android compilation, and configuration.
 
 
 In college(2008)：

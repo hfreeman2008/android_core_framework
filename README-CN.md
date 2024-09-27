@@ -173,7 +173,7 @@
 
 2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发，还做过车载，pos机，执法记录仪等产品。
 
-主要的开发经验在app,framework java层，对于sh脚本，android 编译，配置也比较熟悉。
+主要的开发经验在app,framework java，c,c++层，对于sh脚本，android 编译，配置也比较熟悉。
 
 
 大学时的我(2011)：

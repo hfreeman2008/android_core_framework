@@ -143,6 +143,13 @@ PRODUCT_PACKAGES += \
 
 ---
 
+这个方案非常有用，特别是对于监听系统属性改变来执行什么命令是特别的方便。
+
+rss_hwm_reset也是一个非常经典的样例：
+frameworks\native\cmds\rss_hwm_reset\Android.bp
+
+---
+
 [<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p23-系统开发之如何新建一个system_bin)
 
 ---

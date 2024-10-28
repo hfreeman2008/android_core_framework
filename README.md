@@ -132,6 +132,12 @@ Of course, these can also be understood as some essential technical skills for a
 ## P23: 系统开发之如何新建一个system_bin
 [系统开发之如何新建一个system_bin.md](./P23_系统开发之如何新建一个system_bin/系统开发之如何新建一个system_bin.md)
 
+
+---
+
+## P24: 系统开发之回调接口注册注销
+[系统开发之回调接口注册注销.md](./P24_系统开发之回调接口注册注销/系统开发之回调接口注册注销.md)
+
 ---
 
 

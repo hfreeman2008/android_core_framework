@@ -186,6 +186,229 @@ dumpsys network_management    查看设备网络管理服务信息
 
 ---
 
+# dumpsys native层
+
+dumpsys bin文件：
+
+/system/bin/dumpsys
+
+dumpsys源码：
+
+frameworks/native/cmds/dumpsys
+
+
+
+```sh
+ls frameworks/native/cmds/dumpsys/
+
+Android.bp  dumpsys.cpp  dumpsys.h  main.cpp  MODULE_LICENSE_APACHE2  NOTICE  OWNERS  TEST_MAPPING  tests
+```
+
+main.cpp
+
+```cpp
+int main(int argc, char* const argv[]) {
+    Dumpsys dumpsys(sm.get());
+    //主入口方法
+    return dumpsys.main(argc, argv);
+}
+
+```
+
+dumpsys.cpp
+
+
+
+```cpp
+主入口方法
+int Dumpsys::main(int argc, char* const argv[]) {
+    Vector<String16> services;//各个服务
+    
+    Type type = Type::DUMP;  //默认类型为dump
+    int timeoutArgMs = 10000;//默认时间10s
+    ......
+    const size_t N = services.size();    //服务的数目
+    ......
+    //遍历所有的servie
+    for (size_t i = 0; i < N; i++) {
+        const String16& serviceName = services[i];
+        if (IsSkipped(skippedServices, serviceName)) continue;
+        //开始dumpthread startDumpThread
+        if (startDumpThread(type, serviceName, args) == OK) {
+            bool addSeparator = (N > 1);
+            if (addSeparator) {
+                //写dump 头
+                writeDumpHeader(STDOUT_FILENO, serviceName, priorityFlags);
+            }
+            std::chrono::duration<double> elapsedDuration;
+            size_t bytesWritten = 0;
+            status_t status =
+                writeDump(STDOUT_FILENO, serviceName, std::chrono::milliseconds(timeoutArgMs),
+                          asProto, elapsedDuration, bytesWritten);//写dump
+
+            if (status == TIMED_OUT) {
+                std::cout << std::endl
+                     << "*** SERVICE '" << serviceName << "' DUMP TIMEOUT (" << timeoutArgMs
+                     << "ms) EXPIRED ***" << std::endl
+                     << std::endl;
+            }
+
+            if (addSeparator) {
+                //写dump footer
+                writeDumpFooter(STDOUT_FILENO, serviceName, elapsedDuration);
+            }
+            bool dumpComplete = (status == OK);
+            //结束dump thread
+            stopDumpThread(dumpComplete);
+        }
+    }
+}
+
+```
+
+
+```cpp
+//开始dump thread
+status_t Dumpsys::startDumpThread(Type type, const String16& serviceName,
+                                  const Vector<String16>& args) {
+    sp<IBinder> service = sm_->checkService(serviceName);
+    ......
+    redirectFd_ = unique_fd(sfd[0]);
+    unique_fd remote_end(sfd[1]);
+    sfd[0] = sfd[1] = -1;
+
+    // dump blocks until completion, so spawn a thread..
+    activeThread_ = std::thread([=, remote_end{std::move(remote_end)}]() mutable {
+        status_t err = 0;
+
+        switch (type) {
+        case Type::DUMP:
+            //调用service的dump方法
+            err = service->dump(remote_end.get(), args);
+            break;
+        case Type::PID:
+            //dump 对应pid的信息
+            err = dumpPidToFd(service, remote_end);
+            break;
+        case Type::THREAD:
+            //dump threads的信息
+            err = dumpThreadsToFd(service, remote_end);
+            break;
+        default:
+            std::cerr << "Unknown dump type" << static_cast<int>(type) << std::endl;
+            return;
+        }
+    });
+    return OK;
+}
+
+```
+
+
+```cpp
+//对应dumpsys --help的提示
+static void usage() {
+    fprintf(stderr,
+            "usage: dumpsys\n"
+            "         To dump all services.\n"
+            "or:\n"
+            "       dumpsys [-t TIMEOUT] [--priority LEVEL] [--pid] [--thread] [--help | -l | "
+            "--skip SERVICES "
+            "| SERVICE [ARGS]]\n"
+            "         --help: shows this help\n"
+            "         -l: only list services, do not dump them\n"
+            "         -t TIMEOUT_SEC: TIMEOUT to use in seconds instead of default 10 seconds\n"
+            "         -T TIMEOUT_MS: TIMEOUT to use in milliseconds instead of default 10 seconds\n"
+            "         --pid: dump PID instead of usual dump\n"
+            "         --thread: dump thread usage instead of usual dump\n"
+            "         --proto: filter services that support dumping data in proto format. Dumps\n"
+            "               will be in proto format.\n"
+            "         --priority LEVEL: filter services based on specified priority\n"
+            "               LEVEL must be one of CRITICAL | HIGH | NORMAL\n"
+            "         --skip SERVICES: dumps all services but SERVICES (comma-separated list)\n"
+            "         SERVICE [ARGS]: dumps only service SERVICE, optionally passing ARGS to it\n");
+}
+
+```
+
+
+---
+
+
+# app 层
+
+## Service#dump
+
+frameworks\base\core\java\android\app\Service.java
+
+
+```java
+public abstract class Service extends ContextWrapper implements ComponentCallbacks2,
+        ContentCaptureManager.ContentCaptureClient {
+
+    /**
+     * Print the Service's state into the given stream.  This gets invoked if
+     * you run "adb shell dumpsys activity service &lt;yourservicename&gt;"
+     * (note that for this command to work, the service must be running, and
+     * you must specify a fully-qualified service name).
+     * This is distinct from "dumpsys &lt;servicename&gt;", which only works for
+     * named system services and which invokes the {@link IBinder#dump} method
+     * on the {@link IBinder} interface registered with ServiceManager.
+     *
+     * @param fd The raw file descriptor that the dump is being sent to.
+     * @param writer The PrintWriter to which you should dump your state.  This will be
+     * closed for you after you return.
+     * @param args additional arguments to the dump request.
+     */
+    protected void dump(FileDescriptor fd, PrintWriter writer, String[] args) {
+        writer.println("nothing to dump");
+    }
+
+}
+
+```
+
+从说明可以看出，此接口的触发命令：
+
+```sh
+adb shell dumpsys activity service yourservicename
+```
+
+## 一个demo：
+
+App只需要继承Service后重写dump方法就可以进行dumpsys打印了。
+
+```java
+public class TestService extends Service {
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+    @Override
+    protected void dump(FileDescriptor fd, PrintWriter writer, String[] args) {
+        writer.println("Test dump");
+    }
+}
+
+```
+service启动之后就可以dumpsys activity service指令在命令行打印dump方法内容了。
+
+```sh
+adb shell dumpsys activity service TestService
+SERVICE android.examples.com/.TestService 864e7ea pid=2781
+Client:
+Test dump
+
+```
+
+
+---
+
+
+```java
+
+
+```
 
 
 

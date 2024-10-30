@@ -43,37 +43,85 @@ or:
 
 ---
 
+## (2).常用dumpsys命令：
 
-
-
----
-
----
-
-
-
-
-
-
-
-
-
-
-
----
-
-
-
-
-
-
-
-
-
-```java
-
+```sh
+adb shell dumpsys       输出设备中dumpsys信息
+adb shell dumpsys -l    输出设备中所有的服务名称
 
 ```
+
+
+```sh
+adb shell dumpsys activity -h
+Activity manager dump options:
+  [-a] [-c] [-p PACKAGE] [-h] [WHAT] ...
+  WHAT may be one of:
+    a[ctivities]: activity stack state      //activity堆栈状态
+    r[recents]: recent activities state     //最近activity的状态
+    b[roadcasts] [PACKAGE_NAME] [history [-s]]: broadcast state  //查看广播接收器的信息
+    broadcast-stats [PACKAGE_NAME]: aggregated broadcast statistics
+    i[ntents] [PACKAGE_NAME]: pending intent state  //挂起的intent状态
+    p[rocesses] [PACKAGE_NAME]: process state
+    o[om]: out of memory management
+    perm[issions]: URI permission grant state
+    prov[iders] [COMP_SPEC ...]: content provider state
+    provider [COMP_SPEC]: provider client-side state
+    s[ervices] [COMP_SPEC ...]: service state
+    allowed-associations: current package association restrictions
+    as[sociations]: tracked app associations
+    exit-info [PACKAGE_NAME]: historical process exit information
+    lmk: stats on low memory killer
+    lru: raw LRU process list
+    binder-proxies: stats on binder objects and IPCs
+    settings: currently applied config settings
+    service [COMP_SPEC]: service client-side state
+    package [PACKAGE_NAME]: all state related to given package
+    all: dump all activities
+    top: dump the top activity
+  WHAT may also be a COMP_SPEC to dump activities.
+  COMP_SPEC may be a component name (com.foo/.myApp),
+    a partial substring in a component name, a
+    hex object identifier.
+  -a: include all available server state.
+  -c: include client state.
+  -p: limit output to given package.
+  --checkin: output checkin format, resetting data.
+  --C: output checkin format, not resetting data.
+  --proto: output dump in protocol buffer format.
+  --autofill: dump just the autofill-related state of an activity
+
+```
+
+
+
+
+
+---
+
+---
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
 
 
 ---

@@ -404,82 +404,142 @@ Test dump
 
 ---
 
+# 系统服务层
+
+## 系统服务触发命令：
+
+
+```sh
+adb shell dumpsys servicename
+```
+
+## IBinder#dump
+
+frameworks\base\core\java\android\os\IBinder.java
+
+
+```java
+public interface IBinder {
+    
+    /**
+     * Print the object's state into the given stream.
+     * 
+     * @param fd The raw file descriptor that the dump is being sent to.
+     * @param args additional arguments to the dump request.
+     */
+    public void dump(@NonNull FileDescriptor fd, @Nullable String[] args) throws RemoteException;
+
+}
+```
+
+## Binder#dump
+
+frameworks\base\core\java\android\os\Binder.java
+
+```java
+public class Binder implements IBinder {
+
+    /**
+     * Print the object's state into the given stream.
+     *
+     * @param fd The raw file descriptor that the dump is being sent to.
+     * @param fout The file to which you should dump your state.  This will be
+     * closed for you after you return.
+     * @param args additional arguments to the dump request.
+     */
+    protected void dump(@NonNull FileDescriptor fd, @NonNull PrintWriter fout,
+            @Nullable String[] args) {
+    }
+
+    /**
+     * Implemented to call the more convenient version
+     * {@link #dump(FileDescriptor, PrintWriter, String[])}.
+     */
+    public void dump(@NonNull FileDescriptor fd, @Nullable String[] args) {
+        FileOutputStream fout = new FileOutputStream(fd);
+        PrintWriter pw = new FastPrintWriter(fout);
+        try {
+            doDump(fd, pw, args);
+        } finally {
+            pw.flush();
+        }
+    }
+}
+```
+
+## TimeZoneDetectorService#dump
+
+```java
+public final class TimeZoneDetectorService extends ITimeZoneDetectorService.Stub {
+
+    @Override
+    protected void dump(@NonNull FileDescriptor fd, @NonNull PrintWriter pw,@Nullable String[] args) {
+        ......
+    }
+}
+```
+
+## NotificationManagerService#mService#dump
 
 ```java
 
+public class NotificationManagerService extends SystemService {
+   
+    final IBinder mService = new INotificationManager.Stub() {
+         
+        @Override
+        protected void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
 
+            final DumpFilter filter = DumpFilter.parseFromArguments(args);
+            final long token = Binder.clearCallingIdentity();
+            try { 
+                 dumpImpl(pw, filter);
+            } finally {
+                Binder.restoreCallingIdentity(token);
+            }
+        }
+    }
+}
 ```
 
+## DiskStatsService#dump
 
+```java
+
+public class DiskStatsService extends Binder {
+    
+    @Override
+    protected void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        if (!DumpUtils.checkDumpAndUsageStatsPermission(mContext, TAG, pw)) return;
+            ......
+    }
+}
+```
+
+![DiskStatsService_dump](DiskStatsService_dump.png)
 
 ---
 
+## CameraService::dump
+
+frameworks\av\services\camera\libcameraservice\CameraService.cpp
 
 
-
-
-
-
-
-
-
-
----
-
-
-
-
-
-
-
-
-
-
-
-
----
-
-
-
-
-```java
-
+```cpp
+status_t CameraService::dump(int fd, const Vector<String16>& args) {
+......
+}
 
 ```
-
----
-
-
-
-
-```java
-
-
-
-```
-
-
-
-```java
-
-
-
-```
-
-
-
-
-```java
-
-
-
-```
-
-
 
 ---
 
 # 参考资料
+1.Android 进阶——Framework 核心之dumpsys命令浅析
+
+https://blog.csdn.net/CrazyMo_/article/details/119522548
+
+
 
 
 

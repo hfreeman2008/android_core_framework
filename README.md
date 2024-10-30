@@ -16,115 +16,115 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
-## Part 1：GMS certification based on Android 13
+## P1：GMS certification based on Android 13
 [基于android 13的GMS认证.md](./P1_基于android_13的GMS认证/基于android_13的GMS认证.md)
 
 ---
 
-## Part 2: Optimization of startup speed
+## P2: Optimization of startup speed
 [开机速度优化.md](./P2_开机速度优化/开机速度优化.md)
 
 ---
 
-## Part 3: Android Studio packaged through different channels
+## P3: Android Studio packaged through different channels
 [AndroidStudio不同渠道打包.md](./P3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
 ---
 
-## Part 4: Key Technologies in System Analysis - Log
+## P4: Key Technologies in System Analysis - Log
 [Key_Technologies_in_System_Analysis_Of_log.md](./P4_系统分析的屠龙刀之log日志/Key_Technologies_in_System_Analysis_Of_log.md)
 
 ---
 
-## Part 5: Key Technologies in System Analysis - dumpsys
+## P5: Key Technologies in System Analysis - dumpsys
 [Key_Technologies_in_System_Analysis_Of_dumpsys.md](./P5_系统分析的屠龙刀之dumpsys信息/Key_Technologies_in_System_Analysis_Of_dumpsys.md)
 
 ---
 
-## Part 6: Key Technologies in System Analysis - traceview
+## P6: Key Technologies in System Analysis - traceview
 [系统分析的屠龙刀之traceview.md](./P6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
 ---
 
-## Part 7: Key Technologies in System Analysis -Profile
+## P7: Key Technologies in System Analysis -Profile
 [系统分析的屠龙刀之Profile.md](./P7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
 ---
 
-## Part 8: System Development about Customized System Services
+## P8: System Development about Customized System Services
 [系统开发之自定义系统服务.md](./P8_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
 
 ---
 
-## Part 9: System Development about Preliminary understanding of system services
+## P9: System Development about Preliminary understanding of system services
 [系统开发之系统服务初步了解.md](./P9_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
 
 ---
 
-## Part 10: System Development about Talking TimeZoneDetectorService
+## P10: System Development about Talking TimeZoneDetectorService
 [系统开发之浅谈TimeZoneDetectorService.md](./P10_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
 
 ---
 
-## Part 11: System Development about Talking TimeDetectorService
+## P11: System Development about Talking TimeDetectorService
 [系统开发之浅谈TimeDetectorService.md](./P11_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
 
 ---
 
-## Part 12: System Development about Talking WindowManagerService
+## P12: System Development about Talking WindowManagerService
 [系统开发之浅谈WindowManagerService.md](./P12_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
 
 ---
 
-## Part 13: System Development about Talking ActivityTaskManagerService
+## P13: System Development about Talking ActivityTaskManagerService
 [系统开发之浅谈ActivityTaskManagerService.md](./P13_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
 
 ---
 
 
-## Part 14: System Development about Talking ActivityManagerService
+## P14: System Development about Talking ActivityManagerService
 [系统开发之浅谈ActivityManagerService.md](./P14_系统开发之浅谈ActivityManagerService/系统开发之浅谈ActivityManagerService.md)
 
 ---
 
 
 
-## Part 15: System Development about Talking PackageManagerService
+## P15: System Development about Talking PackageManagerService
 [系统开发之浅谈PackageManagerService.md](./P15_系统开发之浅谈PackageManagerService/系统开发之浅谈PackageManagerService.md)
 
 ---
 
-## Part 16: System Development about Talking PowerManagerService
+## P16: System Development about Talking PowerManagerService
 [系统开发之浅谈PowerManagerService.md](./P16_系统开发之浅谈PowerManagerService/系统开发之浅谈PowerManagerService.md)
 
 ---
 
-## Part 17: System Development about Talking BatteryService
+## P17: System Development about Talking BatteryService
 [系统开发之浅谈BatteryService.md](./P17_系统开发之浅谈BatteryService/系统开发之浅谈BatteryService.md)
 
 ---
 
-## Part 18: System Development about Talking VibratorManagerService
+## P18: System Development about Talking VibratorManagerService
 [系统开发之浅谈VibratorManagerService.md](./P18_系统开发之浅谈VibratorManagerService/系统开发之浅谈VibratorManagerService.md)
 
 ---
 
-## Part 19: System Development about Talking AudioService
+## P19: System Development about Talking AudioService
 [系统开发之浅谈AudioService.md](./P19_系统开发之浅谈AudioService/系统开发之浅谈AudioService.md)
 
 ---
 
-## Part 20: 系统开发之浅谈NotificationManagerService
+## P20: 系统开发之浅谈NotificationManagerService
 [系统开发之浅谈NotificationManagerService.md](./P20_系统开发之浅谈NotificationManagerService/系统开发之浅谈NotificationManagerService.md)
 
 ---
 
-## Part 21: 系统开发之浅谈InputMethodManagerService
+## P21: 系统开发之浅谈InputMethodManagerService
 [系统开发之浅谈InputMethodManagerService.md](./P21_系统开发之浅谈InputMethodManagerService/系统开发之浅谈InputMethodManagerService.md)
 
 ---
 
-## Part 22: 系统开发之浅谈LightsService
+## P22: 系统开发之浅谈LightsService
 [系统开发之浅谈LightsService.md](./P22_系统开发之浅谈LightsService/系统开发之浅谈LightsService.md)
 
 ---
@@ -137,6 +137,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ## P24: 系统开发之回调接口注册注销
 [系统开发之回调接口注册注销.md](./P24_系统开发之回调接口注册注销/系统开发之回调接口注册注销.md)
+
+---
+
+## P25: 系统开发之dumpsys
+[系统开发之dumpsys.md](./P25_系统开发之dumpsys/系统开发之dumpsys.md)
 
 ---
 

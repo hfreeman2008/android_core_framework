@@ -145,6 +145,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## P26: 系统开发之系统属性
+[系统开发之系统属性.md](./P26_系统开发之系统属性/系统开发之系统属性.md)
+
+---
+
 
 Note: 
 

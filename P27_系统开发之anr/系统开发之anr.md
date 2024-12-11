@@ -716,6 +716,15 @@ ANR时间区间：
 当InputDispatcher线程 findFocusedWindowTargetsLocked()过程调用到handleTargetsNotReadyLocked，且满足超时5s的情况则会调用onANRLocked().
 
 
+## 输入事件的发送和接收主要流程：
+
+![输入事件的发送和接收主要流程](输入事件的发送和接收主要流程.png)
+
+
+## 按键事件超时监测整体流程：
+
+![按键事件超时监测整体流程](按键事件超时监测整体流程.png)
+
 
 ---
 

@@ -726,10 +726,49 @@ ANR时间区间：
 ![按键事件超时监测整体流程](按键事件超时监测整体流程.png)
 
 
+## java层事件分发显示anr对话框流程
+
+```java
+AnrHelper.startAnrConsumerIfNeeded(AnrHelper.java)
+AnrHelper.appNotResponding(AnrHelper.java)
+ActivityManagerService.inputDispatchingTimedOut
+ActivityManagerService$LocalService.inputDispatchingTimedOut
+ActivityRecord.keyDispatchingTimedOut(ActivityRecord.java)
+InputManagerCallback.notifyANRInner(InputManagerCallback.java)
+InputManagerCallback.notifyANR(InputManagerCallback.java)
+InputManagerService.notifyANR(InputManagerService.java)
+```
+
+
+## 引爆炸弹
+
+frameworks\native\services\inputflinger\dispatcher\InputDispatcher.cpp
+
+```java
+void InputDispatcher::doNotifyAnrLockedInterruptible(CommandEntry* commandEntry) {
+    sp<IBinder> token =
+            commandEntry->inputChannel ? commandEntry->inputChannel->getConnectionToken() : nullptr;
+    mLock.unlock();
+    const nsecs_t timeoutExtension =
+            //调用java层的native notifyAnr方法
+            mPolicy->notifyAnr(commandEntry->inputApplicationHandle, token, commandEntry->reason);
+    mLock.lock();
+    if (timeoutExtension > 0) {
+        extendAnrTimeoutsLocked(commandEntry->inputApplicationHandle, token, timeoutExtension);
+    } else {
+        // stop waking up for events in this connection, it is already not responding
+        sp<Connection> connection = getConnectionLocked(token);
+        if (connection == nullptr) {
+            return;
+        }
+        cancelEventsForAnrLocked(connection);
+    }
+}
+```
+
 ---
 
 ```java
-
 
 ```
 

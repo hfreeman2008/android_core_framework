@@ -99,6 +99,111 @@ static final int SERVICE_START_FOREGROUND_TIMEOUT = 10*1000;
 
 ---
 
+## 埋炸弹
+
+ActiveServices#scheduleServiceTimeoutLocked
+
+发送引爆消息SERVICE_TIMEOUT_MSG：
+
+frameworks\base\services\core\java\com\android\server\am\ActiveServices.java 
+
+```java
+/**
+ * Note the name of this method should not be confused with the started services concept.
+ * The "start" here means bring up the instance in the client, and this method is called
+ * from bindService() as well.
+ */
+private final void realStartServiceLocked(ServiceRecord r,
+        ProcessRecord app, boolean execInFg) throws RemoteException {
+    .......
+    r.setProcess(app);
+    r.restartTime = r.lastActivity = SystemClock.uptimeMillis();
+    final boolean newService = app.startService(r);
+    //发送delay消息(SERVICE_TIMEOUT_MSG)
+    bumpServiceExecutingLocked(r, execInFg, "create");
+    ......
+    //最终执行服务的onCreate()方法
+    app.thread.scheduleCreateService(r, r.serviceInfo,
+        mAm.compatibilityInfoForPackage(r.serviceInfo.applicationInfo),
+        app.getReportedProcState());
+    ......
+}
+```
+
+```java
+private final void bumpServiceExecutingLocked(ServiceRecord r, boolean fg, String why) {
+    ... 
+    scheduleServiceTimeoutLocked(r.app);
+}
+```
+
+```java
+void scheduleServiceTimeoutLocked(ProcessRecord proc) {
+    if (proc.executingServices.size() == 0 || proc.thread == null) {
+        return;
+    }
+    Message msg = mAm.mHandler.obtainMessage(
+            ActivityManagerService.SERVICE_TIMEOUT_MSG);
+    msg.obj = proc;
+    //当超时后仍没有remove该SERVICE_TIMEOUT_MSG消息，则执行service Timeout流程
+    mAm.mHandler.sendMessageDelayed(msg,
+            proc.execServicesFg ? SERVICE_TIMEOUT : SERVICE_BACKGROUND_TIMEOUT);
+}
+```
+
+
+## 拆炸弹
+
+在system_server进程AS.realStartServiceLocked()调用的过程会埋下一颗炸弹, 超时没有启动完成则会爆炸. 那么什么时候会拆除这颗炸弹的引线呢? 经过Binder等层层调用进入目标进程的主线程handleCreateService()的过程.
+
+(1)ActivityThread.handleCreateService
+
+frameworks\base\core\java\android\app\ActivityThread.java
+
+```java
+private void handleCreateService(CreateServiceData data) {
+        ...
+        java.lang.ClassLoader cl = packageInfo.getClassLoader();
+        Service service = (Service) cl.loadClass(data.info.name).newInstance();
+        ...
+
+        try {
+            //创建ContextImpl对象
+            ContextImpl context = ContextImpl.createAppContext(this, packageInfo);
+            context.setOuterContext(service);
+            //创建Application对象
+            Application app = packageInfo.makeApplication(false, mInstrumentation);
+            service.attach(context, this, data.info.name, data.token, app,
+                    ActivityManagerNative.getDefault());
+            //调用服务onCreate()方法 
+            service.onCreate();
+            //拆除炸弹引线
+            ActivityManagerNative.getDefault().serviceDoneExecuting(
+                    data.token, SERVICE_DONE_EXECUTING_ANON, 0, 0);
+        } 
+    }
+```
+
+(2)ActiveServices.serviceDoneExecutingLocked
+
+该方法的主要工作是当service启动完成，则移除服务超时消息SERVICE_TIMEOUT_MSG:
+
+frameworks\base\services\core\java\com\android\server\am\ActiveServices.java
+
+```java
+private void serviceDoneExecutingLocked(ServiceRecord r, boolean inDestroying,
+            boolean finishing) {
+    ......
+    r.executeNesting--;
+    if (r.executeNesting <= 0) {
+    ......
+    r.app.executingServices.remove(r);
+    if (r.app.executingServices.size() == 0) {
+        //拆炸弹:当前服务所在进程中没有正在执行的service,移除SERVICE_TIMEOUT_MSG消息
+        mAm.mHandler.removeMessages(ActivityManagerService.SERVICE_TIMEOUT_MSG, r.app);
+```
+
+
 
 
 ---

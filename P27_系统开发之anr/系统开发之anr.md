@@ -768,6 +768,12 @@ void InputDispatcher::doNotifyAnrLockedInterruptible(CommandEntry* commandEntry)
 
 ---
 
+# anr对话框显示流程
+
+显示anr对话框的UI
+
+![显示anr对话框的UI](显示anr对话框的UI.png)
+
 ```java
 
 ```

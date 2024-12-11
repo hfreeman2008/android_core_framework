@@ -65,10 +65,50 @@ logcat日志关键字：timeout publishing content providers
 logcat日志关键字：Input event dispatching timed out
 
 
+---
+
+# service超时导致anr
+
+Service Timeout是位于”ActivityManager”线程中的AMS.MainHandler收到 SERVICE_TIMEOUT_MSG 消息时触发。
+
+```java
+/frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+static final int SERVICE_TIMEOUT_MSG = 12;
+```
+
+
+对于Service:
+- 对于前台服务，则超时为 SERVICE_START_FOREGROUND_TIMEOUT = 10s；
+- 一般的服务，超时为SERVICE_TIMEOUT = 20 s;
+- 对于后台服务，则超时为 SERVICE_BACKGROUND_TIMEOUT = 200s
+
+```java
+frameworks/base/services/core/java/com/android/server/am/ActiveServices.java
+// How long we wait for a service to finish executing.
+static final int SERVICE_TIMEOUT = 20*1000;
+
+// How long we wait for a service to finish executing.
+static final int SERVICE_BACKGROUND_TIMEOUT = SERVICE_TIMEOUT * 10;
+
+// How long the startForegroundService() grace period is to get around to
+// calling startForeground() before we ANR + stop it.
+static final int SERVICE_START_FOREGROUND_TIMEOUT = 10*1000;
+```
 
 
 
-```sh
+---
+
+
+
+---
+
+```java
+
+```
+
+
+```java
 
 ```
 

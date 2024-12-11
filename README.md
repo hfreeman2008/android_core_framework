@@ -150,6 +150,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## P27: 系统开发之anr
+[系统开发之anr.md](./P27_系统开发之anr/系统开发之anr.md)
+
+---
+
 
 Note: 
 

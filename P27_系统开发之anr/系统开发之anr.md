@@ -61,26 +61,28 @@
 
 # 参考资料
 
+1.Android ANR分析
 
 https://blog.csdn.net/yxz329130952/article/details/50087731
 
-Android ANR分析
+
+2.理解Android ANR的触发原理
 
 http://gityuan.com/2016/07/02/android-anr/
 
-理解Android ANR的触发原理
+
+3.解读Java进程的Trace文件
 
 http://gityuan.com/2016/11/26/art-trace/
 
-解读Java进程的Trace文件
+4.Native进程之Trace原理
 
 http://gityuan.com/2016/11/27/native-traces/
 
-Native进程之Trace原理
+
+5.Android打印Trace堆栈
 
 http://gityuan.com/2017/07/09/android_debug/
-
-Android打印Trace堆栈
 
 
 

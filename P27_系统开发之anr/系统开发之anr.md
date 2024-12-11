@@ -510,31 +510,166 @@ final void broadcastTimeoutLocked(boolean fromMsg) {
 
 ---
 
+# ContentProvider超时导致anr
+
+ContentProvider Timeout是位于”ActivityManager”线程中的AMS.MainHandler收到 CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG 消息时触发。
+
+frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+
 ```java
+static final int CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG = 57;
+```
+ContentProvider 超时为 CONTENT_PROVIDER_PUBLISH_TIMEOUT = 10s. 这个跟前面的Service和BroadcastQueue完全不同, 由Provider进程启动过程相关.
 
+frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+
+```java
+static final int CONTENT_PROVIDER_PUBLISH_TIMEOUT = 10*1000;
+```
+
+## 埋炸弹
+frameworks\base\services\core\java\com\android\server\am\ActivityManagerService.java
+
+ActivityManagerService#attachApplicationLocked
+
+```java
+private boolean attachApplicationLocked(@NonNull IApplicationThread thread,
+            int pid, int callingUid, long startSeq) {
+    ProcessRecord app;
+    long startTime = SystemClock.uptimeMillis();
+    long bindApplicationTimeMillis;
+    if (pid != MY_PID && pid >= 0) {
+        synchronized (mPidsSelfLocked) {
+            app = mPidsSelfLocked.get(pid);
+        }
+    ......
+    if (providers != null && checkAppInLaunchingProvidersLocked(app)) {
+        //发送消息CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG，埋下炸弹
+        Message msg = mHandler.obtainMessage(CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG);
+        msg.obj = app;
+        mHandler.sendMessageDelayed(msg,
+                ContentResolver.CONTENT_PROVIDER_PUBLISH_TIMEOUT_MILLIS);
+    }
+    ......
+}
+```
+
+## 拆炸弹
+当provider成功publish之后,便会拆除该炸弹
+
+frameworks\base\services\core\java\com\android\server\am\ActivityManagerService.java
+ActivityManagerService#publishContentProviders
+
+```java
+public final void publishContentProviders(IApplicationThread caller,
+            List<ContentProviderHolder> providers) {
+    ......
+    final int N = providers.size();
+    for (int i = 0; i < N; i++) {
+        ContentProviderHolder src = providers.get(i);
+        if (src == null || src.info == null || src.provider == null) {
+            continue;
+        }
+        ContentProviderRecord dst = r.pubProviders.get(src.info.name);
+        if (dst != null) {
+            ComponentName comp = new ComponentName(dst.info.packageName, dst.info.name);
+            mProviderMap.putProviderByClass(comp, dst);
+            String names[] = dst.info.authority.split(";");
+            for (int j = 0; j < names.length; j++) {
+                mProviderMap.putProviderByName(names[j], dst);
+            }
+            int launchingCount = mLaunchingProviders.size();
+            int j;
+            boolean wasInLaunchingProviders = false;
+            for (j = 0; j < launchingCount; j++) {
+                if (mLaunchingProviders.get(j) == dst) {
+                    //将该provider移除mLaunchingProviders队列
+                    mLaunchingProviders.remove(j);
+                    wasInLaunchingProviders = true;
+                    j--;
+                    launchingCount--;
+                }
+            }
+    ......
+    //移除消息CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG
+    if (wasInLaunchingProviders) {
+        mHandler.removeMessages(CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG, r);
+    }
+    ......
+    synchronized (dst) {
+        dst.provider = src.provider;
+        dst.setProcess(r);
+        /唤醒客户端的wait等待方法
+        dst.notifyAll();
+    }
+}
+```
+
+## 引爆炸弹
+在system_server进程中有一个Handler线程, 名叫”ActivityManager”.当倒计时结束便会向该Handler线程发送 一条信息CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG,
+
+frameworks\base\services\core\java\com\android\server\am\ActivityManagerService.java
+
+ActivityManagerService#MainHandler
+
+```java
+final class MainHandler extends Handler {
+    ......
+    //收到消息CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG
+    case CONTENT_PROVIDER_PUBLISH_TIMEOUT_MSG: {
+        ProcessRecord app = (ProcessRecord)msg.obj;
+        synchronized (ActivityManagerService.this) {
+            processContentProviderPublishTimedOutLocked(app);
+        }
+    } break;
+}
 ```
 
 
 ```java
-
+private final void processContentProviderPublishTimedOutLocked(ProcessRecord app) {
+    cleanupAppInLaunchingProvidersLocked(app, true);
+    mProcessList.removeProcessLocked(app, false, true,
+            ApplicationExitInfo.REASON_INITIALIZATION_FAILURE,
+            ApplicationExitInfo.SUBREASON_UNKNOWN,
+            "timeout publishing content providers");
+}
 ```
 
 
 
-
-```sh
-
+```java
+    boolean cleanupAppInLaunchingProvidersLocked(ProcessRecord app, boolean alwaysBad) {
+        // Look through the content providers we are waiting to have launched,
+        // and if any run in this process then either schedule a restart of
+        // the process or kill the client waiting for it if this process has
+        // gone bad.
+        boolean restart = false;
+        for (int i = mLaunchingProviders.size() - 1; i >= 0; i--) {
+            ContentProviderRecord cpr = mLaunchingProviders.get(i);
+            if (cpr.launchingApp == app) {
+                if (++cpr.mRestartCount > ContentProviderRecord.MAX_RETRY_COUNT) {
+                    // It's being launched but we've reached maximum attempts, mark it as bad
+                    alwaysBad = true;
+                }
+                if (!alwaysBad && !app.bad && cpr.hasConnectionOrHandle()) {
+                    restart = true;
+                } else {
+                    //移除死亡的provider
+                    removeDyingProviderLocked(app, cpr, true);
+                }
+            }
+        }
+        return restart;
+    }
 ```
 
+---
+
+# key事件分发超时导致anr
 
 
-```sh
-
-```
-
-
-
-
+---
 
 ```java
 

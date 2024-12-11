@@ -30,8 +30,41 @@ InputDispatcher.cpp；
 # 哪些场景会造成ANR：
 
 
+- Service Timeout:
 
----
+比如前台服务在20s内未执行完成，后台服务200s未执行完成；
+
+对于前台服务，则超时为 SERVICE_TIMEOUT = 20s；
+
+对于后台服务，则超时为 SERVICE_BACKGROUND_TIMEOUT = 200s
+
+logcat日志关键字：Timeout executing service
+
+- BroadcastQueue Timeout：
+
+比如前台广播在10s内未执行完成，后台广播在60s内未执行完成
+
+对于前台广播，则超时为 BROADCAST_FG_TIMEOUT = 10s；
+
+对于后台广播，则超时为 BROADCAST_BG_TIMEOUT = 60s;
+
+logcat日志关键字：Timeout of broadcast BroadcastRecord
+
+- ContentProvider Timeout：
+
+内容提供者,在publish过超时10s;
+
+ContentProvider超时为 CONTENT_PROVIDER_PUBLISH_TIMEOUT = 10s;
+
+logcat日志关键字：timeout publishing content providers
+
+- InputDispatching Timeout: 
+
+输入事件分发超时5s，包括按键和触摸事件。
+
+logcat日志关键字：Input event dispatching timed out
+
+
 
 
 

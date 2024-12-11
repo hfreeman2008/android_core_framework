@@ -774,15 +774,344 @@ void InputDispatcher::doNotifyAnrLockedInterruptible(CommandEntry* commandEntry)
 
 ![显示anr对话框的UI](显示anr对话框的UI.png)
 
-```java
+frameworks/base/services/core/java/com/android/server/am/AppNotRespondingDialog.java
 
+anr对话框显示调用流程：
+```java
+AppNotRespondingDialog.<init>(AppNotRespondingDialog.java)
+ProcessRecord$ErrorDialogController.showAnrDialogs
+AppErrors.handleShowAnrUi(AppErrors.java)
+ActivityManagerService$UiHandler.handleMessage
 ```
 
+ActivityManagerService.java
+```java
+    //定义显示anr的消息
+    static final int SHOW_NOT_RESPONDING_UI_MSG = 2;
+    
+    final class UiHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                //这个是显示anr对话框的消息
+                case SHOW_NOT_RESPONDING_UI_MSG: {
+                    mAppErrors.handleShowAnrUi(msg);
+                    ensureBootCompleted();
+```
+frameworks\base\services\core\java\com\android\server\am\ProcessRecord.java
+
+发送anr的消息：
+
+```java
+    if (mService.mUiHandler != null) {
+        // Bring up the infamous App Not Responding dialog
+        Message msg = Message.obtain();
+        //发送anr的消息
+        msg.what = ActivityManagerService.SHOW_NOT_RESPONDING_UI_MSG;
+        msg.obj = new AppNotRespondingDialog.Data(this, aInfo, aboveSystem);
+        mService.mUiHandler.sendMessage(msg);
+    }
+```
+
+发送anr的消息的调用流程：
+
+```java
+ProcessRecord.appNotResponding(ProcessRecord.java)
+AnrHelper$AnrRecord.appNotResponding(AnrHelper.java)
+AnrHelper$AnrConsumerThread.run(AnrHelper.java)
+```
+
+AnrHelper.java
+```java
+    private void startAnrConsumerIfNeeded() {
+        if (mRunning.compareAndSet(false, true)) {
+            //启动AnrConsumerThread线程
+            new AnrConsumerThread().start();
+        }
+    }
+```
+事件分发显示anr对话框流程
+
+```java
+AnrHelper.startAnrConsumerIfNeeded(AnrHelper.java)
+AnrHelper.appNotResponding(AnrHelper.java)
+ActivityManagerService.inputDispatchingTimedOut
+ActivityManagerService$LocalService.inputDispatchingTimedOut
+ActivityRecord.keyDispatchingTimedOut(ActivityRecord.java)
+InputManagerCallback.notifyANRInner(InputManagerCallback.java)
+InputManagerCallback.notifyANR(InputManagerCallback.java)
+InputManagerService.notifyANR(InputManagerService.java)
+```
+
+InputManagerService.java
+
+InputManagerService#notifyANR是一个native方法：
+
+```java
+// Native callback.
+private long notifyANR(InputApplicationHandle inputApplicationHandle, IBinder token,
+        String reason) {
+    return mWindowManagerCallbacks.notifyANR(inputApplicationHandle,
+            token, reason);
+}
+```
+
+frameworks\native\services\inputflinger\dispatcher\InputDispatcher.cpp
+
+```cpp
+void InputDispatcher::doNotifyAnrLockedInterruptible(CommandEntry* commandEntry) {
+    sp<IBinder> token =
+            commandEntry->inputChannel ? commandEntry->inputChannel->getConnectionToken() : nullptr;
+    mLock.unlock();
+    const nsecs_t timeoutExtension =
+            //调用java层的native notifyAnr方法
+            mPolicy->notifyAnr(commandEntry->inputApplicationHandle, token, commandEntry->reason);
+    mLock.lock();
+    if (timeoutExtension > 0) {
+        extendAnrTimeoutsLocked(commandEntry->inputApplicationHandle, token, timeoutExtension);
+    } else {
+        // stop waking up for events in this connection, it is already not responding
+        sp<Connection> connection = getConnectionLocked(token);
+        if (connection == nullptr) {
+            return;
+        }
+        cancelEventsForAnrLocked(connection);
+    }
+}
+```
+libinputflinger的调用流程：
+```java
+/system/lib64/libinputflinger.so 
+(InputDispatcher::doNotifyAnrLockedInterruptible(CommandEntry*))
+(InputDispatcher::runCommandsLockedInterruptible())
+(InputDispatcher::dispatchOnce())
+
+/system/lib64/libinputflinger_base.so 
+(InputThreadImpl::threadLoop())
+```
 
 ---
 
+# 关键字
 
 
+```java
+anr
+application is not responding
+system_app_anr
+am_anr
+Suspended，Blocked，MONITOR
+block|monit|susp
+```
+
+---
+
+# anr trance日志内容
+
+anr_*.txt （data/anr/anr_2024-12-06-10-47-55-974）
+
+frameworks\base\services\core\java\com\android\server\am\ActivityManagerService.java
+
+```java
+@GuardedBy("ActivityManagerService.class")
+private static SimpleDateFormat sAnrFileDateFormat;
+static final String ANR_FILE_PREFIX = "anr_";
+private static synchronized File createAnrDumpFile(File tracesDir) throws IOException {
+    if (sAnrFileDateFormat == null) {
+        sAnrFileDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
+    }
+    final String formattedDate = sAnrFileDateFormat.format(new Date());
+    final File anrFile = new File(tracesDir, ANR_FILE_PREFIX + formattedDate);
+    if (anrFile.createNewFile()) {
+        FileUtils.setPermissions(anrFile.getAbsolutePath(), 0600, -1, -1); // -rw-------
+        return anrFile;
+    } else {
+        throw new IOException("Unable to create ANR dump file: createNewFile failed");
+    }
+}
+```
+
+frameworks\native\cmds\dumpstate\dumpstate.cpp
+
+```cpp
+static const std::string ANR_DIR = "/data/anr/";
+static const std::string ANR_FILE_PREFIX = "anr_";
+```
+
+frameworks\base\services\core\java\com\android\server\am\ActivityManagerService.java
+
+ActivityManagerService#dumpStackTraces：
+
+```java
+// We'll take the stack crawls of just the top apps using CPU.
+final int N = processCpuTracker.countWorkingStats();
+//extraPids队列信息
+extraPids = new ArrayList<>();
+for (int i = 0; i < N && extraPids.size() < 5; i++) {
+    ProcessCpuTracker.Stats stats = processCpuTracker.getWorkingStats(i);
+    if (lastPids.indexOfKey(stats.pid) >= 0) {
+        if (DEBUG_ANR) Slog.d(TAG, "Collecting stacks for extra pid " + stats.pid);
+        extraPids.add(stats.pid);
+    } else {
+        Slog.i(TAG, "Skipping next CPU consuming process, not a java proc: "
+                + stats.pid);
+    }
+}
+......
+//创建anr dump文件
+tracesFile = createAnrDumpFile(tracesDir);
+......
+Pair<Long, Long> offsets = dumpStackTraces(
+    tracesFile.getAbsolutePath(), firstPids, nativePids, extraPids);
+```
+
+ANR输出重要进程的traces信息，这些进程包含:
+
+- firstPids队列：第一个是ANR进程，第二个是system_server，剩余是所有persistent进程；
+- Native队列：是指/system/bin/目录的mediaserver,sdcard 以及surfaceflinger进程；
+- extraPids队列: 是指processCpuTracker.getWorkingStats信息队列；
+
+```java
+    /**
+     * @return The start/end offset of the trace of the very first PID
+     */
+    public static Pair<Long, Long> dumpStackTraces(String tracesFile, ArrayList<Integer> firstPids,
+            ArrayList<Integer> nativePids, ArrayList<Integer> extraPids) {
+        Slog.i(TAG, "Dumping to " + tracesFile);
+        long remainingTime = 20 * 1000;
+        long firstPidStart = -1;
+        long firstPidEnd = -1;
+        //第一步，先收集最重要的pid进程的stack信息
+        // First collect all of the stacks of the most important pids.
+        if (firstPids != null) {
+            int num = firstPids.size();
+            for (int i = 0; i < num; i++) {
+                final int pid = firstPids.get(i);
+                // We don't copy ANR traces from the system_server intentionally.
+                final boolean firstPid = i == 0 && MY_PID != pid;
+                File tf = null;
+                if (firstPid) {
+                    tf = new File(tracesFile);
+                    firstPidStart = tf.exists() ? tf.length() : 0;
+                }
+                Slog.i(TAG, "Collecting stacks for pid " + pid);
+                final long timeTaken = dumpJavaTracesTombstoned(pid, tracesFile,
+                                                                remainingTime);
+                remainingTime -= timeTaken;
+                if (remainingTime <= 0) {
+                    Slog.e(TAG, "Aborting stack trace dump (current firstPid=" + pid
+                            + "); deadline exceeded.");
+                    return firstPidStart >= 0 ? new Pair<>(firstPidStart, firstPidEnd) : null;
+                }
+                if (firstPid) {
+                    firstPidEnd = tf.length();
+                }
+                if (DEBUG_ANR) {
+                    Slog.d(TAG, "Done with pid " + firstPids.get(i) + " in " + timeTaken + "ms");
+                }
+            }
+        }
+        //第二步，收集native的pid进程的stack信息
+        // Next collect the stacks of the native pids
+        if (nativePids != null) {
+            for (int pid : nativePids) {
+                Slog.i(TAG, "Collecting stacks for native pid " + pid);
+                final long nativeDumpTimeoutMs = Math.min(NATIVE_DUMP_TIMEOUT_MS, remainingTime);
+                final long start = SystemClock.elapsedRealtime();
+                Debug.dumpNativeBacktraceToFileTimeout(
+                        pid, tracesFile, (int) (nativeDumpTimeoutMs / 1000));
+                final long timeTaken = SystemClock.elapsedRealtime() - start;
+                remainingTime -= timeTaken;
+                if (remainingTime <= 0) {
+                    Slog.e(TAG, "Aborting stack trace dump (current native pid=" + pid +
+                        "); deadline exceeded.");
+                    return firstPidStart >= 0 ? new Pair<>(firstPidStart, firstPidEnd) : null;
+                }
+                if (DEBUG_ANR) {
+                    Slog.d(TAG, "Done with native pid " + pid + " in " + timeTaken + "ms");
+                }
+            }
+        }
+        //第三步，收集额外的来自己cpu追踪器的pid进程的stack信息
+        // Lastly, dump stacks for all extra PIDs from the CPU tracker.
+        if (extraPids != null) {
+            for (int pid : extraPids) {
+                Slog.i(TAG, "Collecting stacks for extra pid " + pid);
+                final long timeTaken = dumpJavaTracesTombstoned(pid, tracesFile, remainingTime);
+                remainingTime -= timeTaken;
+                if (remainingTime <= 0) {
+                    Slog.e(TAG, "Aborting stack trace dump (current extra pid=" + pid +
+                            "); deadline exceeded.");
+                    return firstPidStart >= 0 ? new Pair<>(firstPidStart, firstPidEnd) : null;
+                }
+                if (DEBUG_ANR) {
+                    Slog.d(TAG, "Done with extra pid " + pid + " in " + timeTaken + "ms");
+                }
+            }
+        }
+        Slog.i(TAG, "Done dumping");
+        return firstPidStart >= 0 ? new Pair<>(firstPidStart, firstPidEnd) : null;
+    }
+```
+
+```java
+Cmd line: com.example.demoanr2
+Cmd line: system_server
+   ......
+Cmd line: com.android.phone
+Cmd line: com.android.se
+Cmd line: org.codeaurora.ims
+
+   ......
+Cmd line: .qtidataservices
+Cmd line: .dataservices
+Cmd line: com.android.networkstack.process
+Cmd line: com.android.systemui
+
+Cmd line: /vendor/bin/hw/android.hardware.camera.provider@2.4-service_64
+Cmd line: /vendor/bin/hw/android.hardware.gnss@1.0-service
+Cmd line: /vendor/bin/hw/android.hardware.sensors@2.0-service.multihal
+Cmd line: /vendor/bin/hw/android.hardware.audio.service
+Cmd line: media.codec
+Cmd line: media.swcodec
+ 
+
+Cmd line: /system/bin/vold
+Cmd line: /apex/com.android.os.statsd/bin/statsd
+Cmd line: /system/bin/netd
+
+
+Cmd line: /system/bin/surfaceflinger
+Cmd line: /system/bin/cameraserver
+
+Cmd line: media.extractor
+Cmd line: media.metrics
+Cmd line: /system/bin/mediaserver
+Cmd line: media.codec
+Cmd line: media.swcodec
+```
+ActivityManagerService.dumpJavaTracesTombstoned 生成trance日志流程：
+
+```java
+Debug.dumpJavaBacktraceToFileTimeout
+ActivityManagerService.dumpJavaTracesTombstoned
+ActivityManagerService.dumpStackTraces
+ActivityManagerService.dumpStackTraces
+AnrManagerService$AnrDumpManager.dumpAnrDebugInfoLocked
+
+AnrManagerService$AnrDumpManager.dumpAnrDebugInfo
+AnrManagerService.startAnrDump
+
+AnrManagerImpl.startAnrDump
+ProcessErrorStateRecord.appNotResponding
+AnrHelper$AnrRecord.appNotResponding
+AnrHelper$AnrConsumerThread.run
+```
+
+
+```java
+
+```
 
 
 ---

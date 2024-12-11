@@ -86,7 +86,7 @@ Android打印Trace堆栈
 
 ---
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#P27: 系统开发之anr)
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p27-系统开发之anr)
 
 ---
 

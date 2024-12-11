@@ -284,15 +284,228 @@ void serviceTimeout(ProcessRecord proc) {
 
 ---
 
+# BroadcastReceiver超时导致anr
+
+BroadcastReceiver Timeout是位于”ActivityManager”线程中的BroadcastQueue.BroadcastHandler收到 BROADCAST_TIMEOUT_MSG 消息时触发。
+
+frameworks/base/services/core/java/com/android/server/am/BroadcastQueue.java
 
 ```java
+static final int BROADCAST_TIMEOUT_MSG = ActivityManagerService.FIRST_BROADCAST_QUEUE_MSG + 1;
+```
 
+对于广播队列有两个: foreground队列和background队列:
+- 对于前台广播，则超时为 BROADCAST_FG_TIMEOUT = 10s；
+- 对于后台广播，则超时为 BROADCAST_BG_TIMEOUT = 60s
+
+frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+
+```java
+static final int BROADCAST_FG_TIMEOUT = 10*1000;
+static final int BROADCAST_BG_TIMEOUT = 60*1000;
+```
+
+## 埋炸弹
+frameworks\base\services\core\java\com\android\server\am\BroadcastQueue.java
+
+BroadcastQueue#processNextBroadcast
+
+```java
+final void processNextBroadcast(boolean fromMsg) {
+    synchronized(mService) {
+        ...
+        //part 2: 处理当前有序广播
+        do {
+            r = mOrderedBroadcasts.get(0);
+            //获取所有该广播所有的接收者
+            int numReceivers = (r.receivers != null) ? r.receivers.size() : 0;
+            if (mService.mProcessesReady && r.dispatchTime > 0) {
+                long now = SystemClock.uptimeMillis();
+                if ((numReceivers > 0) &&
+                        (now > r.dispatchTime + (2*mTimeoutPeriod*numReceivers))) {
+                    //当广播处理时间超时，则强制结束这条广播
+                    broadcastTimeoutLocked(false);
+                    ...
+                }
+            }
+            if (r.receivers == null || r.nextReceiver >= numReceivers
+                    || r.resultAbort || forceReceive) {
+                if (r.resultTo != null) {
+                    //处理广播消息消息
+                    performReceiveLocked(r.callerApp, r.resultTo,
+                        new Intent(r.intent), r.resultCode,
+                        r.resultData, r.resultExtras, false, false, r.userId);
+                    r.resultTo = null;
+                }
+                //拆炸弹
+                cancelBroadcastTimeoutLocked();
+            }
+        } while (r == null);
+        ...
+
+        //part 3: 获取下条有序广播
+        r.receiverTime = SystemClock.uptimeMillis();
+        if (!mPendingBroadcastTimeoutMessage) {
+            long timeoutTime = r.receiverTime + mTimeoutPeriod;
+            //埋炸弹
+            setBroadcastTimeoutLocked(timeoutTime);
+        }
+        ...
+    }
+}
+```
+BroadcastQueue#setBroadcastTimeoutLocked
+
+
+```java
+final void setBroadcastTimeoutLocked(long timeoutTime) {
+    if (! mPendingBroadcastTimeoutMessage) {
+        //发送消息BROADCAST_TIMEOUT_MSG，埋下炸弹
+        Message msg = mHandler.obtainMessage(BROADCAST_TIMEOUT_MSG, this);
+        mHandler.sendMessageAtTime(msg, timeoutTime);
+        mPendingBroadcastTimeoutMessage = true;
+    }
+}
 ```
 
 
 
-```java
+## 拆炸弹
+frameworks\base\services\core\java\com\android\server\am\BroadcastQueue.java
+BroadcastQueue#processNextBroadcast
 
+```java
+final void processNextBroadcast(boolean fromMsg) {
+    synchronized (mService) {
+        processNextBroadcastLocked(fromMsg, false);
+    }
+}
+
+final void processNextBroadcastLocked(boolean fromMsg, boolean skipOomAdj) {  
+    ......
+    if (DEBUG_BROADCAST) Slog.v(TAG_BROADCAST, "Cancelling BROADCAST_TIMEOUT_MSG");
+    cancelBroadcastTimeoutLocked();
+    ......
+}
+```
+BroadcastQueue#cancelBroadcastTimeoutLocked
+
+```java
+final void cancelBroadcastTimeoutLocked() {
+    if (mPendingBroadcastTimeoutMessage) {
+        //移除消息BROADCAST_TIMEOUT_MSG
+        mHandler.removeMessages(BROADCAST_TIMEOUT_MSG, this);
+        mPendingBroadcastTimeoutMessage = false;
+    }
+}
+```
+
+## 引爆炸弹
+frameworks\base\services\core\java\com\android\server\am\BroadcastQueue.java
+
+BroadcastQueue#BroadcastHandler
+
+```java
+private final class BroadcastHandler extends Handler {
+    @Override
+    public void handleMessage(Message msg) {
+        switch (msg.what) {
+            case BROADCAST_TIMEOUT_MSG: {
+                synchronized (mService) {
+                    //响应消息BROADCAST_TIMEOUT_MSG
+                    broadcastTimeoutLocked(true);
+                }
+            } break;
+        }
+    }
+}
+```
+BroadcastQueue#broadcastTimeoutLocked
+
+```java
+final void broadcastTimeoutLocked(boolean fromMsg) {
+    if (fromMsg) {
+        mPendingBroadcastTimeoutMessage = false;
+    }
+    if (mDispatcher.isEmpty() || mDispatcher.getActiveBroadcastLocked() == null) {
+        return;
+    }
+    long now = SystemClock.uptimeMillis();
+    BroadcastRecord r = mDispatcher.getActiveBroadcastLocked();
+    if (fromMsg) {
+        if (!mService.mProcessesReady) {
+            // Only process broadcast timeouts if the system is ready; some early
+            // broadcasts do heavy work setting up system facilities
+            return;//当系统还没有准备就绪时，广播处理流程中不存在广播超时
+        }
+        // If the broadcast is generally exempt from timeout tracking, we're done
+        if (r.timeoutExempt) {
+            if (DEBUG_BROADCAST) {
+                Slog.i(TAG_BROADCAST, "Broadcast timeout but it's exempt: "
+                        + r.intent.getAction());
+            }
+            return;
+        }
+        long timeoutTime = r.receiverTime + mConstants.TIMEOUT;
+        if (timeoutTime > now) {
+            //如果当前正在执行的receiver没有超时，则重新设置广播超时
+            setBroadcastTimeoutLocked(timeoutTime);
+            return;
+        }
+    }
+    if (r.state == BroadcastRecord.WAITING_SERVICES) {
+        //广播已经处理完成，但需要等待已启动service执行完成。当等待足够时间，
+        //则处理下一条广播。
+        r.curComponent = null;
+        r.state = BroadcastRecord.IDLE;
+        processNextBroadcast(false);
+        return;
+    }
+    final boolean debugging = (r.curApp != null && r.curApp.isDebugging());
+    r.receiverTime = now;
+    if (!debugging) {
+        //当前BroadcastRecord的anr次数执行加1操作
+        r.anrCount++;
+    }
+    ProcessRecord app = null;
+    String anrMessage = null;
+    Object curReceiver;
+    if (r.nextReceiver > 0) {
+        curReceiver = r.receivers.get(r.nextReceiver-1);
+        r.delivery[r.nextReceiver-1] = BroadcastRecord.DELIVERY_TIMEOUT;
+    } else {
+        curReceiver = r.curReceiver;
+    }
+    logBroadcastReceiverDiscardLocked(r);
+    //查询App进程
+    if (curReceiver != null && curReceiver instanceof BroadcastFilter) {
+        BroadcastFilter bf = (BroadcastFilter)curReceiver;
+        if (bf.receiverList.pid != 0
+                && bf.receiverList.pid != ActivityManagerService.MY_PID) {
+            synchronized (mService.mPidsSelfLocked) {
+                app = mService.mPidsSelfLocked.get(
+                        bf.receiverList.pid);
+            }
+        }
+    } else {
+        app = r.curApp;
+    }
+    if (app != null) {
+        anrMessage = "Broadcast of " + r.intent.toString();
+    }
+    if (mPendingBroadcast == r) {
+        mPendingBroadcast = null;
+    }
+    // Move on to the next receiver.
+    //继续移动到下一个广播接收者
+    finishReceiverLocked(r, r.resultCode, r.resultData,
+            r.resultExtras, r.resultAbort, false);
+    scheduleBroadcastsLocked();
+    if (!debugging && anrMessage != null) {
+        //显示anr对话框
+        mService.mAnrHelper.appNotResponding(app, anrMessage);
+    }
+}
 ```
 
 ---

@@ -1108,6 +1108,57 @@ AnrHelper$AnrRecord.appNotResponding
 AnrHelper$AnrConsumerThread.run
 ```
 
+---
+
+# trance日志命令生成
+
+
+
+---
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+```java
+
+```
+
+
+```java
+
+```
+
 
 ```java
 

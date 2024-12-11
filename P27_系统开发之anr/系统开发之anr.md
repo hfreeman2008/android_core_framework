@@ -14,9 +14,14 @@
 ANR(application not response)，应用无响应。
 
 整个ANR机制是横跨几个层：
-App层：应用主线程的处理逻辑；
-Framework层：主要有AMS、BroadcastQueue、ActiveServices、InputmanagerService、InputMonitor、InputChannel、ProcessCpuTracker等；
-Native层：InputDispatcher.cpp；
+- App层：
+应用主线程的处理逻辑；
+
+- Framework层：
+主要有AMS、BroadcastQueue、ActiveServices、InputmanagerService、InputMonitor、InputChannel、ProcessCpuTracker等；
+
+- Native层：
+InputDispatcher.cpp；
 
 
 ---

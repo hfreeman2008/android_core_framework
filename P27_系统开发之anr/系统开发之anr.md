@@ -693,6 +693,30 @@ static final long DEFAULT_INPUT_DISPATCHING_TIMEOUT_NANOS = 5000 * 1000000L;
 
 ![输入事件流程2](输入事件流程2.png)
 
+## ANR处理流程
+
+ANR时间区间：
+
+当前这次的事件dispatch过程中执行findFocusedWindowTargetsLocked()方法到下一次执行resetANRTimeoutsLocked()的时间区间. 
+
+
+以下5个时机会reset. 都位于InputDispatcher.cpp文件
+- resetAndDropEverythingLocked
+- releasePendingEventLocked
+- setFocusedApplication
+- dispatchOnceInnerLocked
+- setInputDispatchMode
+
+简单来说, 主要是以下4个场景,会有机会执行resetANRTimeoutsLocked:
+- 解冻屏幕, 系统开/关机的时刻点 (thawInputDispatchingLw, setEventDispatchingLw)
+- wms聚焦app的改变 (WMS.setFocusedApp, WMS.removeAppToken)
+- 设置input filter的过程 (IMS.setInputFilter)
+- 再次分发事件的过程(dispatchOnceInnerLocked)
+
+当InputDispatcher线程 findFocusedWindowTargetsLocked()过程调用到handleTargetsNotReadyLocked，且满足超时5s的情况则会调用onANRLocked().
+
+
+
 ---
 
 ```java

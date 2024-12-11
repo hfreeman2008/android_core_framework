@@ -203,8 +203,97 @@ private void serviceDoneExecutingLocked(ServiceRecord r, boolean inDestroying,
         mAm.mHandler.removeMessages(ActivityManagerService.SERVICE_TIMEOUT_MSG, r.app);
 ```
 
+## 引爆炸弹
+在system_server进程中有一个Handler线程, 名叫”ActivityManager”.当倒计时结束便会向该Handler线程发送 一条信息SERVICE_TIMEOUT_MSG,
+
+ActivityManagerService#MainHandler
+
+接收引爆消息SERVICE_TIMEOUT_MSG：
+
+frameworks\base\services\core\java\com\android\server\am\ActivityManagerService.java
+
+```java
+final class MainHandler extends Handler {
+   ......
+    @Override
+    public void handleMessage(Message msg) {
+        switch (msg.what) {
+        case SERVICE_TIMEOUT_MSG: {
+            mServices.serviceTimeout((ProcessRecord)msg.obj);
+        } break;
+```
+
+ActiveServices#serviceTimeout
+
+frameworks\base\services\core\java\com\android\server\am\ActiveServices.java
+
+```java
+void serviceTimeout(ProcessRecord proc) {
+    String anrMessage = null;
+    synchronized(mAm) {
+        ......
+        if (proc.executingServices.size() == 0 || proc.thread == null) {
+            return;
+        }
+        final long now = SystemClock.uptimeMillis();
+        final long maxTime =  now -
+                (proc.execServicesFg ? SERVICE_TIMEOUT : SERVICE_BACKGROUND_TIMEOUT);
+        ServiceRecord timeout = null;
+        long nextTime = 0;
+        for (int i=proc.executingServices.size()-1; i>=0; i--) {
+            ServiceRecord sr = proc.executingServices.valueAt(i);
+            if (sr.executingStart < maxTime) {
+                timeout = sr;
+                break;
+            }
+            if (sr.executingStart > nextTime) {
+                nextTime = sr.executingStart;
+            }
+        }
+        if (timeout != null && mAm.mProcessList.mLruProcesses.contains(proc)) {
+            Slog.w(TAG, "Timeout executing service: " + timeout);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new FastPrintWriter(sw, false, 1024);
+            pw.println(timeout);
+            timeout.dump(pw, "    ");
+            pw.close();
+            mLastAnrDump = sw.toString();
+            mAm.mHandler.removeCallbacks(mLastAnrDumpClearer);
+            mAm.mHandler.postDelayed(mLastAnrDumpClearer, LAST_ANR_LIFETIME_DURATION_MSECS);
+            anrMessage = "executing service " + timeout.shortInstanceName;
+        } else {
+            Message msg = mAm.mHandler.obtainMessage(
+                    ActivityManagerService.SERVICE_TIMEOUT_MSG);
+            msg.obj = proc;
+            //再次发SERVICE_TIMEOUT_MSG
+            mAm.mHandler.sendMessageAtTime(msg, proc.execServicesFg
+                    ? (nextTime+SERVICE_TIMEOUT) : (nextTime + SERVICE_BACKGROUND_TIMEOUT));
+        }
+    }
+    if (anrMessage != null) {
+        //显示anr对话框
+        mAm.mAnrHelper.appNotResponding(proc, anrMessage);
+    }
+}
+```
+
+## Service启动流程：
+
+![Service启动流程](Service启动流程.png)
 
 
+---
+
+
+```java
+
+```
+
+
+
+```java
+
+```
 
 ---
 

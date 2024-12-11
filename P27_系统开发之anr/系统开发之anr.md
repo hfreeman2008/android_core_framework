@@ -669,6 +669,30 @@ private final void processContentProviderPublishTimedOutLocked(ProcessRecord app
 # key事件分发超时导致anr
 
 
+frameworks\base\services\core\java\com\android\server\wm\ActivityTaskManagerService.java
+
+```java
+    // How long we wait until we timeout on key dispatching.
+    public static final int KEY_DISPATCHING_TIMEOUT_MS = 5 * 1000;
+    // How long we wait until we timeout on key dispatching during instrumentation.
+    static final int INSTRUMENTATION_KEY_DISPATCHING_TIMEOUT_MS = 60 * 1000;
+```
+
+```java
+frameworks/native/services/inputflinger/InputDispatcher.cpp
+constexpr nsecs_t DEFAULT_INPUT_DISPATCHING_TIMEOUT = 5000 * 1000000LL; // 5 sec
+
+frameworks/base/services/core/java/com/android/server/wm/WindowManagerService.java
+static final long DEFAULT_INPUT_DISPATCHING_TIMEOUT_NANOS = 5000 * 1000000L;
+```
+
+## 输入事件流程：
+
+![输入事件流程1](输入事件流程1.png)
+
+
+![输入事件流程2](输入事件流程2.png)
+
 ---
 
 ```java
@@ -680,8 +704,6 @@ private final void processContentProviderPublishTimedOutLocked(ProcessRecord app
 ---
 
 
-
-![系统属性架构设计](系统属性架构设计.png)
 
 
 

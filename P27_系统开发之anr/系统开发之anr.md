@@ -23,6 +23,12 @@ ANR(application not response)，应用无响应。
 - Native层：
 InputDispatcher.cpp；
 
+---
+
+# anr脑图
+
+![anr脑图](anr脑图.png)
+
 
 ---
 
@@ -1118,8 +1124,6 @@ java|adb shell kill -3 pid | 会生成文件：/data/arn/trace_00,可读性更�
 java|adb shell debuggerd -b pid|直接在终端输出,可读性不强
 native|adb shell debuggerd -b pid|直接在终端输出,可读性不强
 
-
-
 ---
 
 # dropbox日志
@@ -1132,53 +1136,527 @@ data/system/dropbox目录下的system_app_anr@1688888.txt.gz的压缩文件
 ---
 
 
-```java
+# 线程状态：
 
+kernel/thread.h
+
+```java
+enum thread_state {
+    THREAD_SUSPENDED = 0,
+    THREAD_READY,
+    THREAD_RUNNING,
+    THREAD_BLOCKED,
+    THREAD_SLEEPING,
+    THREAD_DEATH,
+};
 ```
 
 
-```java
+状态|值 |说明 
+-|-|-
+THREAD_SUSPENDED|0|暂停
+THREAD_READY|1|准备
+THREAD_RUNNING|2|线程正在运行或准备运行。
+THREAD_BLOCKED|3|线程被阻塞，等待获取一个锁。
+THREAD_SLEEPING|4|睡眠
+THREAD_DEATH|5|死亡
 
+
+ThreadState (defined at “dalvik/vm/thread.h “)
+```java
+THREAD_UNDEFINED = -1, /* makes enum compatible with int32_t */
+THREAD_ZOMBIE = 0, /* TERMINATED */
+THREAD_RUNNING = 1, /* RUNNABLE or running now */
+THREAD_TIMED_WAIT = 2, /* TIMED_WAITING in Object.wait() */
+THREAD_MONITOR = 3, /* BLOCKED on a monitor */
+THREAD_WAIT = 4, /* WAITING in Object.wait() */
+THREAD_INITIALIZING= 5, /* allocated, not yet running */
+THREAD_STARTING = 6, /* started, not yet on thread list */
+THREAD_NATIVE = 7, /* off in a JNI native method */
+THREAD_VMWAIT = 8, /* waiting on a VM resource */
+THREAD_SUSPENDED = 9, /* suspended, usually by GC or debugger */
 ```
 
+|状态|值|说明|说明
+-|-|-|- 
+THREAD_ZOMBIE| 0|TERMINATED|结束
+THREAD_RUNNING| 1|RUNNABLE or running now|正在运行
+THREAD_TIMED_WAIT| 2|TIMED_WAITING in Object.wait()|限期等待，处于这种状态的线程也不会被分配CPU执行时间，不过无须等待被其他线程显式地唤醒，在一定时间之后它们会由系统自动唤醒。
+THREAD_MONITOR| 3|BLOCKED on a monitor| 阻塞
+THREAD_WAIT | 4 | WAITING in Object.wait() | 无限期等待，处于这种状态的线程不会被分配CPU执行时间，它们要等待被其他线程显式地唤醒
+THREAD_INITIALIZING | 5 |allocated not yet running | 已分配但尚未运行
+THREAD_STARTING | 6 |started not yet on thread list| 启动，但未在线程列表中
+THREAD_NATIVE | 7 |off in a JNI native method|在jni原生方法中
+THREAD_VMWAIT | 8 | waiting on a VM resource| 等待VM资源
+THREAD_SUSPENDED | 9 | suspended usually by GC or debugger| 由gc可debugger导致暂停
+
+
+
+Thread.java中定义的状态 | Thread.cpp中定义的状态 | 说明
+-|-|-
+TERMINATED | ZOMBIE | 线程死亡，终止运行
+RUNNABLE | RUNNING/RUNNABLE | 线程可运行或正在运行
+TIMED_WAITING | TIMED_WAIT | 执行了带有超时参数的wait、sleep或join函数
+BLOCKED | MONITOR | 线程阻塞，等待获取对象锁
+WAITING | WAIT | 执行了无超时参数的wait函数
+NEW | INITIALIZING | 新建，正在初始化，为其分配资源
+NEW | STARTING | 新建，正在启动
+RUNNABLE | NATIVE | 正在执行JNI本地函数
+WAITING | VMWAIT | 正在等待VM资源
+RUNNABLE | SUSPENDED | 线程暂停，通常是由于GC或debug被暂停 
+UNKNOWN |UNKNOWN |未知状态
+
+---
+
+# trance日志字段解析
 
 ```java
-
+----- pid 27661 at 2017-06-16 16:16:20 -----
+Cmd line: com.android.camera
+"main" prio=5 tid=1 Waiting
+ | group="main" sCount=1 dsCount=0 obj=0x75a4b5c8 self=0xb4cf6500
+ | sysTid=27661 nice=-10 cgrp=default sched=0/0 handle=0xb6f6cb34
+ | state=S schedstat=( 112155 8689191757 38520 ) utm=895 stm=229 core=0 HZ=100
+ | stack=0xbe4ea000-0xbe4ec000 stackSize=8MB
+ | held mutexes=
+ at java.lang.Object.wait!(Native method)
+ - waiting on <0x09e6a059> (a java.lang.Object)
+ at java.lang.Thread.parkFor$(Thread.java:1220)
+ - locked <0x09e6a059> (a java.lang.Object)
+ at sun.misc.Unsafe.park(Unsafe.java:299)
 ```
 
+解读一下部分字段的含义
+字段|含义
+-|-
+main| 线程名
+prio | 线程优先级
+tid=1 | 线程号
+Waiting | 线程状态
+group | 线程组名称
+sCount | 此线程被挂起的次数
+dsCount | 线程被调试器挂起的次数，当一个进程被调试后，sCount会重置为0，调试完毕后sCount会根据是否被正常挂起增长，但是dsCount不会被重置为0，所以dsCount也可以用来判断这个线程是否被调试过
+obj | 线程java对象的地址
+self | 线程本身的地址
+sysTid=27661 | Linux下的内核线程ID，主线程的线程号和进程号相同
+nice | nice值越小，则优先级越高。因为是主线程此处nice=-10, 可以看到优先级很高了
+cgrp | 调度数组
+sched | 标志了线程的调度策略和优先级
+handle | 线程的处理函数地址
+state | 调度状态
+schedstat | 括号中的3个数字，依次是Running, Runable, Switch。Running时间：CPU运行的时间，单位ns。 　Runable时间：RQ队列的等待时间，单位ns。　　Switch次数：CPU调度切换次数
+utm | 该线程在用户态所执行的时间，单位是jiffies
+stm | 该线程在内核态所执行的时间，单位是jiffies
+core | 最后执行这个线程的cpu核的序号
+
+
+---
+
+# 加大anr超时时间：
+
+frameworks/base/services/core/java/com/android/server/wm/WindowState.java
 
 ```java
-
+public long getInputDispatchingTimeoutNanos() {
+    //add start
+    if (TextUtils.equals(getOwningPackage(), "com.android.systemui")
+            || TextUtils.equals(getOwningPackage(), "com.android.launcher")) {
+        return 8000 * 1000000L; // 8s
+    }
+    //add end
+    return mActivityRecord != null
+            ? mActivityRecord.mInputDispatchingTimeoutNanos
+            : WindowManagerService.DEFAULT_INPUT_DISPATCHING_TIMEOUT_NANOS;
+}
 ```
 
+---
+
+# anr 事件分发应用白名单
+此方法有风险，特别是线程block的情况：
+
+frameworks\base\services\core\java\com\android\server\wm\InputManagerCallback.java
 
 ```java
+//add hexiaoming to avoid anr for launcher 2024_12_6 start
+import android.text.TextUtils;
+//add hexiaoming to  avoid anr for launcher 2024_12_6 end
+......
 
+//add hexiaoming to  avoid anr for launcher 2024_12_6 start
+private String[] whitePkgNamelistAnr = {"com.android.launcher", "com.android.launcher3", "com.example.demoanr2"};
+//add hexiaoming to  avoid anr for launcher 2024_12_6 end
+......
+private long notifyANRInner(InputApplicationHandle inputApplicationHandle, IBinder token,
+        String reason) {
+......
+            if (windowState != null) {
+                Slog.i(TAG_WM, " notifyANRInner 01 Input event dispatching timed out "
+                        + "sending to " + windowState.mAttrs.getTitle()
+                        + ".  Reason: " + reason);
+                //add hexiaoming to avoid anr for launcher 2024_12_6 start
+                boolean isAnrWhitePkg = isWhitePkg(windowState.mAttrs.getTitle().toString());
+                Slog.i(TAG_WM, "isAnrWhitePkg :" + isAnrWhitePkg);
+                if(isAnrWhitePkg){
+                    Slog.i(TAG_WM, "warning!!!!!!!!, to avoid anr error for anr white app :" + windowState.mAttrs.getTitle());
+                    return 0; // abort dispatching
+                }
+                //add hexiaoming to avoid anr for launcher 2024_12_6 end
+            } else if (activity != null) {
+                Slog.i(TAG_WM, "notifyANRInner 02 Input event dispatching timed out "
+                        + "sending to application " + activity.stringName
+                        + ".  Reason: " + reason);
+                //add hexiaoming to avoid anr for launcher 2024_12_6 start
+                boolean isAnrWhitePkg = isWhitePkg(activity.stringName);
+                Slog.i(TAG_WM, "isAnrWhitePkg :" + isAnrWhitePkg);
+                if(isAnrWhitePkg){
+                    Slog.i(TAG_WM, "warning!!!!!!!!, to avoid anr error for anr white app :" + activity.stringName);
+                    return 0; // abort dispatching
+                }
+                //add hexiaoming to avoid anr for launcher 2024_12_6 end
+            } else {
+                Slog.i(TAG_WM, "hexiaoming notifyANRInner 03 Input event dispatching timed out "
+                        + ".  Reason: " + reason);
+            }
+            mService.saveANRStateLocked(activity, windowState, reason);
+            ......
+}
+......
+    //add hexiaoming to avoid anr for launcher 2024_12_6 start
+    private boolean isWhitePkg(String pkg) {
+        if(TextUtils.isEmpty(pkg)){
+            return false;
+        }
+        if (0 == android.provider.Settings.System.getInt(mService.mContext.getContentResolver(), "enable_anr_white_pkg", 1)) {
+            Slog.i(TAG_WM, "warning!!!!!!!!, not enable anr white pkg!");
+            return false;
+        }
+        for(String appName : whitePkgNamelistAnr){
+            if(pkg.contains(appName)){
+                return true;
+            }
+        }
+        return false;
+    }
+    //add hexiaoming to avoid anr for launcher 2024_12_6 end
 ```
 
-
+anr应用白名单开关：
 ```java
-
-```
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-```java
-
+adb shell settings get system enable_anr_white_pkg
 ```
 
 
 ---
 
+# 广播超时打印调用堆栈
 
+```java
+ActivityManagerService.dumpJavaTracesTombstoned
+ActivityManagerService.dumpStackTraces
+ActivityManagerService.dumpStackTraces
+ProcessRecord.appNotResponding
+BroadcastQueue$AppNotResponding.run
+```
+
+---
+
+# 服务超时anr:
+
+```java
+ActivityManagerService.dumpStackTraces
+ActivityManagerService.dumpStackTraces
+ProcessRecord.appNotResponding
+ActiveServices.serviceTimeout
+ActivityManagerService$MainHandler.handleMessage
+```
+
+---
+
+# ANR分析流程
+
+1、首先我们搜索am_anr，找到出现ANR的时间点、进程PID、ANR类型、然后再找搜索PID，找前5秒左右的日志。
+
+```java
+12-02 20:01:27.593096  1135  4484 I am_anr  : [0,2311,com.android.launcher,818462277,Input dispatching timed out (Application does not have a focused window)]
+```
+
+2、过滤ANR，查看CPU信息
+
+![查看CPU信息](查看CPU信息.png)
+
+3、接着查看traces.txt，找到java的堆栈信息定位代码位置，最后查看源码，分析与解决问题。
+```java
+ActivityManager: Dumping to /data/anr/anr_2024-12-02-20-01-28-143
+```
+
+
+4.综合查看设备的整体信息(包括cpu,memory,io等)，确认设备的当前状况
+
+
+---
+
+# 常见导致ANR的原因：
+
+主线程耗时：
+- 数据库操作I/O被阻塞
+- iowait、ContentResolver.query、onPostExecute
+- 在UI线程进行网络数据的读写
+
+整机异常：
+- cpu占用率过高
+- 内存不足
+- 程序异常退出，uncausedexception （Fatal）
+-程序异常退出
+- 程序强制关闭，ForceClosed (简称FC) （Fatal）
+- 系统锁异常
+- bind应用数目过多
+```java
+native/libs/binder/ProcessState.cpp
+#define DEFAULT_MAX_BINDER_THREADS 15 //线程池 最大的个数
+```
+
+
+通过搜索ANR定位问题原因：
+
+---
+
+# 常见的anr例子
+
+## 1.线程Blocked导致anr
+```java
+----- pid 2304 at 2020-08-25 20:18:37 -----
+Cmd line: com.android.phone
+```
+
+```java
+"main" prio=5 tid=1 Blocked
+| group="main" sCount=1 dsCount=0 flags=1 obj=0x71dfd258 self=0x7919667c00
+| sysTid=1344 nice=-2 cgrp=default sched=0/0 handle=0x791abcfed0
+| state=S schedstat=( 74538261055 43111188843 196687 ) utm=3180 stm=4273 core=4 HZ=100
+| stack=0x7fe8542000-0x7fe8544000 stackSize=8192KB
+| held mutexes=
+at com.android.server.policy.PhoneWindowManager$ScreenSplitTransaction.isTriggerScreenModeChanged(PhoneWindowManager.java:6425)
+- waiting to lock <0x0a7c67c0> (a com.android.server.policy.PhoneWindowManager$ScreenSplitTransaction) held by thread 16
+at com.android.server.policy.PhoneWindowManager$MyScreenSplitListener.onAngleChanged(PhoneWindowManager.java:6357)
+at com.android.server.policy.PhoneWindowManager$MyScreenSplitListener.onSensorChanged(PhoneWindowManager.java:6317)
+at android.hardware.SystemSensorManager$SensorEventQueue.dispatchSensorEvent(SystemSensorManager.java:952)
+at android.os.MessageQueue.nativePollOnce(Native method)
+at android.os.MessageQueue.next(MessageQueue.java:336)
+at android.os.Looper.loop(Looper.java:181)
+at com.android.server.SystemServer.run(SystemServer.java:557)
+at com.android.server.SystemServer.main(SystemServer.java:365)
+at java.lang.reflect.Method.invoke(Native method)
+at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:492)
+at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:913)
+```
+
+可以看到其在等待thread 16的锁，搜索tid=16
+```java
+"android.ui" prio=5 tid=16 Native
+| group="main" sCount=1 dsCount=0 flags=1 obj=0x12e406a0 self=0x78831c2800
+| sysTid=1524 nice=-4 cgrp=default sched=0/0 handle=0x7826308d50
+| state=S schedstat=( 8293708218 5582300938 25087 ) utm=418 stm=411 core=0 HZ=100
+| stack=0x7826206000-0x7826208000 stackSize=1039KB
+| held mutexes=
+kernel: (couldn't read /proc/self/task/1524/stack)
+native: #00 pc 00000000000d1094 /apex/com.android.runtime/lib64/bionic/libc.so (__ioctl+4)
+native: #01 pc 000000000008b6b0 /apex/com.android.runtime/lib64/bionic/libc.so (ioctl+132)
+native: #02 pc 0000000000058d14 /system/lib64/libbinder.so (android::IPCThreadState::talkWithDriver(bool)+244)
+native: #03 pc 0000000000059c00 /system/lib64/libbinder.so (android::IPCThreadState::waitForResponse(android::Parcel*, int*)+60)
+native: #04 pc 00000000000599a4 /system/lib64/libbinder.so (android::IPCThreadState::transact(int, unsigned int, android::Parcel const&, android::Parcel*, unsigned int)+180)
+native: #05 pc 000000000004df60 /system/lib64/libbinder.so (android::BpBinder::transact(unsigned int, android::Parcel const&, android::Parcel*, unsigned int)+72)
+native: #06 pc 000000000015483c /system/lib64/libandroid_runtime.so (android_os_BinderProxy_transact(_JNIEnv*, _jobject*, int, _jobject*, _jobject*, int)+152)
+at android.os.BinderProxy.transactNative(Native method)
+at android.os.BinderProxy.transact(BinderProxy.java:511)
+at android.app.IActivityController$Stub$Proxy.activityStarting(IActivityController.java:273)
+at com.android.server.wm.ActivityStarter.startActivity(ActivityStarter.java:829)
+at com.android.server.wm.ActivityStarter.startActivity(ActivityStarter.java:608)
+at com.android.server.wm.ActivityStarter.execute(ActivityStarter.java:550)
+at com.android.server.wm.ActivityStartController.startHomeActivity(ActivityStartController.java:186)
+at com.android.server.wm.RootActivityContainer.startHomeOnDisplay(RootActivityContainer.java:405)
+at com.android.server.wm.RootActivityContainer.startHomeOnDisplay(RootActivityContainer.java:354)
+at com.android.server.wm.ActivityTaskManagerService$LocalService.startHomeActivity(ActivityTaskManagerService.java:6950)
+- locked <0x0ea03fec> (a com.android.server.wm.WindowManagerGlobalLock)
+at com.android.server.wm.ActivityTaskManagerService.activeSplitScreenTaskToTop(ActivityTaskManagerService.java:8017)
+at com.android.server.wm.ActivityTaskManagerService.activeSplitSecondScreenTask(ActivityTaskManagerService.java:7980)
+at com.android.server.wm.ActivityTaskManagerService.activeSplitScreenTask(ActivityTaskManagerService.java:7917)
+at com.android.server.wm.ActivityTaskManagerService.onScreenSplitStatusChanged(ActivityTaskManagerService.java:7904)
+at com.android.server.wm.ActivityTaskManagerService.onScreenSplitStatusChanged(ActivityTaskManagerService.java:7821)
+- locked <0x0ea03fec> (a com.android.server.wm.WindowManagerGlobalLock)
+at com.android.server.wm.WindowManagerService.updateScreenSplitStatus(WindowManagerService.java:8131)
+at com.android.server.policy.PhoneWindowManager.updateScreenSplitStatus(PhoneWindowManager.java:6781)
+- locked <0x0a3d4fb5> (a com.android.server.policy.PhoneWindowManager)
+at com.android.server.policy.PhoneWindowManager.access$5000(PhoneWindowManager.java:288)
+at com.android.server.policy.PhoneWindowManager$ScreenSplitTransaction$ObserveSplitRunnable.run(PhoneWindowManager.java:6542)
+- locked <0x0a7c67c0> (a com.android.server.policy.PhoneWindowManager$ScreenSplitTransaction)
+at android.os.Handler.handleCallback(Handler.java:883)
+at android.os.Handler.dispatchMessage(Handler.java:100)
+at android.os.Looper.loop(Looper.java:221)
+at android.os.HandlerThread.run(HandlerThread.java:67)
+at com.android.server.ServiceThread.run(ServiceThread.java:44)
+at com.android.server.UiThread.run(UiThread.java:43)
+```
+
+
+
+## 2.android.io线程卡造成watchdog生效
+```java
+11-06 11:41:11.134 1433 1524 I watchdog: Blocked in handler on i/o thread (android.io)
+```
+
+查看anr：
+
+文件：anr_2020-11-06-11-41-11-199
+
+```java
+
+"android.io" prio=5 tid=16 Native
+| group="main" sCount=1 dsCount=0 flags=1 obj=0x13f40710 self=0x7bf31cbc00
+| sysTid=1520 nice=0 cgrp=default sched=0/0 handle=0x7beb880d50
+| state=S schedstat=( 471802192 382727386 2439 ) utm=32 stm=14 core=1 HZ=100
+| stack=0x7beb77e000-0x7beb780000 stackSize=1039KB
+| held mutexes=
+kernel: (couldn't read /proc/self/task/1520/stack)
+native: #00 pc 00000000000d1094 /apex/com.android.runtime/lib64/bionic/libc.so (__ioctl+4)
+native: #01 pc 000000000008b6b0 /apex/com.android.runtime/lib64/bionic/libc.so (ioctl+132)
+native: #02 pc 000000000008a338 /system/lib64/libhidlbase.so (android::hardware::IPCThreadState::transact(int, unsigned int, android::hardware::Parcel const&, android::hardware::Parcel*, unsigned int)+1772)
+native: #03 pc 0000000000085824 /system/lib64/libhidlbase.so (android::hardware::BpHwBinder::transact(unsigned int, android::hardware::Parcel const&, android::hardware::Parcel*, unsigned int, std::__1::function<void (android::hardware::Parcel&)>)+72)
+native: #04 pc 000000000013f3bc /system/lib64/libandroid_runtime.so (JHwRemoteBinder_native_transact(_JNIEnv*, _jobject*, int, _jobject*, _jobject*, int)+288)
+at android.os.HwRemoteBinder.transact(Native method)
+at android.hardware.tetheroffload.control.V1_0.IOffloadControl$Proxy.getForwardedStats(IOffloadControl.java:448)
+at com.android.server.connectivity.tethering.OffloadHardwareInterface.getForwardedStats(OffloadHardwareInterface.java:162)
+at com.android.server.connectivity.tethering.OffloadController.maybeUpdateStats(OffloadController.java:315)
+at com.android.server.connectivity.tethering.OffloadController.updateStatsForCurrentUpstream(OffloadController.java:340)
+at com.android.server.connectivity.tethering.OffloadController.access$800(OffloadController.java:71)
+at com.android.server.connectivity.tethering.OffloadController$OffloadTetheringStatsProvider.lambda$getTetherStats$0$OffloadController$OffloadTetheringStatsProvider(OffloadController.java:261)
+at com.android.server.connectivity.tethering.-$$Lambda$OffloadController$OffloadTetheringStatsProvider$3TF0NI3fE8A-xW0925oMv3YzAOk.run(lambda:-1)
+at android.os.Handler.handleCallback(Handler.java:883)
+at android.os.Handler.dispatchMessage(Handler.java:100)
+at android.os.Looper.loop(Looper.java:221)
+at android.os.HandlerThread.run(HandlerThread.java:67)
+at com.android.server.ServiceThread.run(ServiceThread.java:44)
+```
+
+## 3.system_server关键main，android.io,android.ui线程blocked
+
+
+```java
+Cmd line: system_server
+同上面一样，重点关注一些线程的trace日志：
+(1)main线程
+"main" prio=5 tid=1 Native
+| group="main" sCount=1 dsCount=0 obj=0x75922a00 self=0x55a5b3a620
+| sysTid=5208 nice=-2 cgrp=default sched=0/0 handle=0x7faa2dafc8
+| state=S schedstat=( 0 0 0 ) utm=450 stm=152 core=0 HZ=100
+| stack=0x7ff7053000-0x7ff7055000 stackSize=8MB
+| held mutexes=
+
+(2)android.io线程
+"android.io" prio=5 tid=14 Native
+| group="main" sCount=1 dsCount=0 obj=0x12e163c0 self=0x55a5d31880
+| sysTid=5245 nice=0 cgrp=default sched=0/0 handle=0x7f90e97450
+| state=S schedstat=( 0 0 0 ) utm=37 stm=29 core=3 HZ=100
+| stack=0x7f90d95000-0x7f90d97000 stackSize=1037KB
+| held mutexes=
+ 
+(3)android.ui线程：
+"android.ui" prio=5 tid=11 Native
+| group="main" sCount=1 dsCount=0 obj=0x12c9ba50 self=0x55a5b60580
+| sysTid=5229 nice=-2 cgrp=default sched=0/0 handle=0x7f911a6450
+| state=S schedstat=( 0 0 0 ) utm=86 stm=44 core=3 HZ=100
+| stack=0x7f910a4000-0x7f910a6000 stackSize=1037KB
+| held mutexes=
+```
+
+## 4.内存占用过高导致anr
+
+(1)确认设备内存情况，排查内存过低导致anr的情况.
+
+查看anr时间点附近是否有am_meminfo，onTrimMemory，memory，lowmemory,lowmemorykiller等日志
+
+
+```java
+Runtime : onTrimMemory level:80,pid:com.xxx.xxx:Launcher0
+```
+level等级是80，内存严重不足
+```java
+   /**
+    * Level for {@link #onTrimMemory(int)}: the process is nearing the end
+    * of the background LRU list, and if more memory isn't found soon it will
+    * be killed.
+    */
+   static final int TRIM_MEMORY_COMPLETE = 80;
+```
+(2)查看Anr的时间范围内，是否有在频繁的GC, 比如
+```java
+GC_CONCURRENT freed 8264K, 24% free 121992K/159976K, paused 10ms+28ms, total 238ms 
+```
+
+(3)查看am_pss, 查看相关进程的内存占用，是否有进程占用比较高的内存
+
+```java
+I am_pss : [2855,10014,com.jamdeo.tv.vod,60409856（pss）,54833152] //标红的为pss
+```
+
+am_pss日志解读
+```java
+am_pss:[12170,10248,com.android.calend,23965696,21639168,237568,131608576,0,19,6]
+```
+
+pid 进程id：12170
+
+Uid 用户id：10248 （Android作为单用户系统，Uid用于数据共享，可在AndroidManifest.xml中配置）
+
+进程名称：com.android.calend
+
+Pss Proportional Set Size 实际使用的物理内存（比例分配共享库占用的内存）：23965696
+
+Uss Unique Set Size 进程独自占用的物理内存（不包含共享库占用的内存）：21639168
+
+SwapPss swap交换分区：237568
+
+Rss: 131608576
+
+StatType: 0
+
+ProcState: 19
+
+PssDuration （如果有的话）:6
+
+(4)机器内存比较低，导致anr
+
+考虑ZRAM开启
+
+
+
+## 5.CPU被抢占
+```java
+CPU usage from 0ms to 10625ms later (2020-03-09 14:38:31.633 to 2020-03-09 14:38:42.257):
+543% 2045/com.alibaba.android.rimet: 54% user + 89% kernel / faults: 4608 minor 1 major ————关键行！！！
+99% 674/android.hardware.camera.provider@2.4-service: 81% user + 18% kernel / faults: 403 minor
+```
+
+```java
+某一时刻的前一分钟、五分钟、十五分钟的CPU平均负载
+AnrManager: Load: 23.31 / 10.37 / 3.95
+```
+
+
+## 6.binder 通信失败
+
+```java
+binder: 1698:2362 transaction failed 29189/-3, size 100-0 line 3042
+binder: 1765:4071 transaction failed 29189/-3, size 76-0 line 3042
+binder: 1765:4067 transaction failed 29189/-3, size 224-8 line 3042
+binder: 1765:2397 transaction failed 29189/-22, size 348-0 line 2916
+```
+
+## 7.分析在发生anr前对应时间段内排查相应的日志
+
+上面还是不能定位原因，在发生anr时，向前对应时间段查找log，查看是否有相关的日志信息。
+
+特别注意查看ANR进程的主线程打印，看是否有skipped多少帧的打印，确认主线程是否有做过其他耗时操作
 
 ---
 

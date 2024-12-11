@@ -1112,13 +1112,24 @@ AnrHelper$AnrConsumerThread.run
 
 # trance日志命令生成
 
+进程类型|命令|说明
+-|-|-
+java|adb shell kill -3 pid | 会生成文件：/data/arn/trace_00,可读性更强
+java|adb shell debuggerd -b pid|直接在终端输出,可读性不强
+native|adb shell debuggerd -b pid|直接在终端输出,可读性不强
+
 
 
 ---
 
-```java
+# dropbox日志
 
+```java
+adb pull data/system/dropbox
+data/system/dropbox目录下的system_app_anr@1688888.txt.gz的压缩文件
 ```
+
+---
 
 
 ```java

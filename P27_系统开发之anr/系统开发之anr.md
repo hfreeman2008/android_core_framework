@@ -1350,6 +1350,74 @@ anr应用白名单开关：
 adb shell settings get system enable_anr_white_pkg
 ```
 
+---
+
+# 事件分发without focus window导致anr的白名单
+
+
+frameworks\native\services\inputflinger\dispatcher\InputDispatcher.cpp
+
+```cpp
+int32_t InputDispatcher::findFocusedWindowTargetsLocked(nsecs_t currentTime,
+                                                        const EventEntry& entry,
+                                                        std::vector<InputTarget>& inputTargets,
+                                                        nsecs_t* nextWakeupTime) {
+    std::string reason;
+
+    int32_t displayId = getTargetDisplayId(entry);
+    sp<InputWindowHandle> focusedWindowHandle =
+            getValueByKey(mFocusedWindowHandlesByDisplay, displayId);
+    sp<InputApplicationHandle> focusedApplicationHandle =
+            getValueByKey(mFocusedApplicationHandlesByDisplay, displayId);
+
+    // If there is no currently focused window and no focused application
+    // then drop the event.
+    if (focusedWindowHandle == nullptr && focusedApplicationHandle == nullptr) {
+        ALOGI("Dropping %s event because there is no focused window or focused application in "
+              "display %" PRId32 ".",
+              EventEntry::typeToString(entry.type), displayId);
+        return INPUT_EVENT_INJECTION_FAILED;
+    }
+
+    // Compatibility behavior: raise ANR if there is a focused application, but no focused window.
+    // Only start counting when we have a focused event to dispatch. The ANR is canceled if we
+    // start interacting with another application via touch (app switch). This code can be removed
+    // if the "no focused window ANR" is moved to the policy. Input doesn't know whether
+    // an app is expected to have a focused window.
+    if (focusedWindowHandle == nullptr && focusedApplicationHandle != nullptr) {
+        if (!mNoFocusedWindowTimeoutTime.has_value()) {
+            // We just discovered that there's no focused window. Start the ANR timer
+            const nsecs_t timeout = focusedApplicationHandle->getDispatchingTimeout(
+                    DEFAULT_INPUT_DISPATCHING_TIMEOUT.count());
+            mNoFocusedWindowTimeoutTime = currentTime + timeout;
+            mAwaitedFocusedApplication = focusedApplicationHandle;
+            ALOGW(" Waiting because no window has focus but %s may eventually add a "
+                  "window when it finishes starting up. Will wait for %" PRId64 "ms",
+                  mAwaitedFocusedApplication->getName().c_str(), ns2ms(timeout));
+            //add  to  avoid anr for launcher 2024_12_3 start
+            bool isInLauncher = (strstr(mAwaitedFocusedApplication->getName().c_str(), "com.android.launcher/.MainActivity") != nullptr);
+            ALOGW(" warning: to avoid anr error isInLauncher: %d",isInLauncher);
+            if(isInLauncher){
+                ALOGW("warning: to avoid anr error when keyevent is pressed on launcher MainActivity ,so to skip and drop the keyevent!!!!!!!!!!");
+                return INPUT_EVENT_INJECTION_FAILED;
+            }
+            //add  to B avoid anr for launcher 2024_12_3 end
+            *nextWakeupTime = *mNoFocusedWindowTimeoutTime;
+            return INPUT_EVENT_INJECTION_PENDING;
+        } else if (currentTime > *mNoFocusedWindowTimeoutTime) {
+            // Already raised ANR. Drop the event
+            ALOGE(" Dropping %s event because there is no focused window",
+                  EventEntry::typeToString(entry.type));
+            return INPUT_EVENT_INJECTION_FAILED;
+        } else {
+            // Still waiting for the focused window
+            return INPUT_EVENT_INJECTION_PENDING;
+        }
+    }
+
+```
+
+
 
 ---
 

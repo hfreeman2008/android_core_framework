@@ -8,6 +8,12 @@ GMS认证，因为其工作量的爆炸性增加，问题解决的难度也在�
 
 所以做了这样一个专题，希望对大家有所帮助。
 
+
+---
+
+[跳转到readme](https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md)
+
+
 ---
 
 # 整体介绍android 13的GMS认证

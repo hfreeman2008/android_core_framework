@@ -1,10 +1,15 @@
 # 专题三: AndroidStudio不同渠道打包
 
 # 目的或需求
+
 主要是一套代码，编译出二个不同包名的应用，并且可以自动根据不同的配置来动态替换包名，应用名，应用图标，字符串，图片等。
 
 按比较专业的术语描述此需求为：
 要实现一个壳工程打出不同样式的包，也就是使用Gradle中的productFlavors，在做定制或适配的时候，不需要建立多个工程、来回切换项目分支、逐个编译apk，使用productFlavors可以帮我们简化这一步操作，快速打包所有项目版本的apk。
+
+---
+
+[跳转到readme](https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md)
 
 ---
 

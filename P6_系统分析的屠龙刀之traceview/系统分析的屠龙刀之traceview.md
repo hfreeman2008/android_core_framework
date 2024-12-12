@@ -9,6 +9,10 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 
 ---
 
+[跳转到readme](https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md)
+
+---
+
 [<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
 
 ---

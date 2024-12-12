@@ -5,6 +5,9 @@ android问题的分析，大家使用最多的，也可以说是最重要的就�
 
 ---
 
+[跳转到readme](https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md)
+
+---
 
 [<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
 

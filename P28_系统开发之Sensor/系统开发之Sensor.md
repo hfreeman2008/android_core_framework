@@ -164,24 +164,98 @@ frameworks\native\services\sensorservice\SensorService.cpp
 
 ## HAL层： 
 
-```java
+![HAL层](HAL层.png)
 
+SensorDevice 的poll函数读取数据
+
+
+hardware:
+
+```java
+hardware/interfaces/sensors/2.0/multihal/Android.bp
+u:r:hal_sensors_default:s0     system          806      1 12565056  5644 0                   0 S android.hardware.sensors@2.0-service.multihal
+
+ vendor/qcom/proprietary/sensors-see/sensorcal-hidl-impl/Android.bp
+u:r:vendor_hal_sensorscalibrate_qti_default:s0 system 839 1 12350328 2188 0                  0 S vendor.qti.hardware.sensorscalibrate@1.0-service
+
+ vendor/qcom/proprietary/sensors-see/sensordaemon/Android.bp
+u:r:vendor_sensors_qti:s0      system          979      1 12437944  1372 0                   0 S sensors.qti
 ```
 
 
-```java
-
-```
 
 
 ```java
-
+hardware/interfaces/sensors/
+vendor\mediatek\proprietary\hardware\sensor
+hardware/libhardware/include/hardware/sensors.h
 ```
 
+
+Google为Sensor提供了统一的HAL接口，不同的硬件厂商需要根据该接口来实现并完成具体的硬件抽象层，Android中Sensor的HAL接口定义在：
+
+hardware/libhardware/include/hardware/sensors.h
 
 ```java
-
+/*
+ * Sensor string types for Android defined sensor types.
+ * For Android defined sensor types, string type will be override in sensor service and thus no
+ * longer needed to be added to sensor_t data structure.
+ * These definitions are going to be removed soon.
+ */
+#define SENSOR_STRING_TYPE_ACCELEROMETER                "android.sensor.accelerometer"
+#define SENSOR_STRING_TYPE_MAGNETIC_FIELD               "android.sensor.magnetic_field"
+#define SENSOR_STRING_TYPE_ORIENTATION                  "android.sensor.orientation"
+#define SENSOR_STRING_TYPE_GYROSCOPE                    "android.sensor.gyroscope"
+#define SENSOR_STRING_TYPE_LIGHT                        "android.sensor.light"
+#define SENSOR_STRING_TYPE_PRESSURE                     "android.sensor.pressure"
+#define SENSOR_STRING_TYPE_TEMPERATURE                  "android.sensor.temperature"
+#define SENSOR_STRING_TYPE_PROXIMITY                    "android.sensor.proximity"
+#define SENSOR_STRING_TYPE_GRAVITY                      "android.sensor.gravity"
+#define SENSOR_STRING_TYPE_LINEAR_ACCELERATION          "android.sensor.linear_acceleration"
+#define SENSOR_STRING_TYPE_ROTATION_VECTOR              "android.sensor.rotation_vector"
+#define SENSOR_STRING_TYPE_RELATIVE_HUMIDITY            "android.sensor.relative_humidity"
+#define SENSOR_STRING_TYPE_AMBIENT_TEMPERATURE          "android.sensor.ambient_temperature"
+#define SENSOR_STRING_TYPE_MAGNETIC_FIELD_UNCALIBRATED  "android.sensor.magnetic_field_uncalibrated"
+#define SENSOR_STRING_TYPE_GAME_ROTATION_VECTOR         "android.sensor.game_rotation_vector"
+#define SENSOR_STRING_TYPE_GYROSCOPE_UNCALIBRATED       "android.sensor.gyroscope_uncalibrated"
+#define SENSOR_STRING_TYPE_SIGNIFICANT_MOTION           "android.sensor.significant_motion"
+#define SENSOR_STRING_TYPE_STEP_DETECTOR                "android.sensor.step_detector"
+#define SENSOR_STRING_TYPE_STEP_COUNTER                 "android.sensor.step_counter"
+#define SENSOR_STRING_TYPE_GEOMAGNETIC_ROTATION_VECTOR  "android.sensor.geomagnetic_rotation_vector"
+#define SENSOR_STRING_TYPE_HEART_RATE                   "android.sensor.heart_rate"
+#define SENSOR_STRING_TYPE_TILT_DETECTOR                "android.sensor.tilt_detector"
+#define SENSOR_STRING_TYPE_WAKE_GESTURE                 "android.sensor.wake_gesture"
+#define SENSOR_STRING_TYPE_GLANCE_GESTURE               "android.sensor.glance_gesture"
+#define SENSOR_STRING_TYPE_PICK_UP_GESTURE              "android.sensor.pick_up_gesture"
+#define SENSOR_STRING_TYPE_WRIST_TILT_GESTURE           "android.sensor.wrist_tilt_gesture"
+#define SENSOR_STRING_TYPE_DEVICE_ORIENTATION           "android.sensor.device_orientation"
+#define SENSOR_STRING_TYPE_POSE_6DOF                    "android.sensor.pose_6dof"
+#define SENSOR_STRING_TYPE_STATIONARY_DETECT            "android.sensor.stationary_detect"
+#define SENSOR_STRING_TYPE_MOTION_DETECT                "android.sensor.motion_detect"
+#define SENSOR_STRING_TYPE_HEART_BEAT                   "android.sensor.heart_beat"
+#define SENSOR_STRING_TYPE_DYNAMIC_SENSOR_META          "android.sensor.dynamic_sensor_meta"
+#define SENSOR_STRING_TYPE_ADDITIONAL_INFO              "android.sensor.additional_info"
+#define SENSOR_STRING_TYPE_LOW_LATENCY_OFFBODY_DETECT   "android.sensor.low_latency_offbody_detect"
+#define SENSOR_STRING_TYPE_ACCELEROMETER_UNCALIBRATED   "android.sensor.accelerometer_uncalibrated"
+#define SENSOR_STRING_TYPE_HINGE_ANGLE                  "android.sensor.hinge_angle"
 ```
+
+---
+
+## kernel层：
+
+硬件驱动
+
+kernel:
+
+```java
+vendor/qcom/proprietary/sensors-see
+kernel/msm-4.19/drivers/sensors
+kernel/drivers/misc/mediatek/sensor_bio
+```
+
+---
 
 
 ```java

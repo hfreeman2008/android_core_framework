@@ -257,10 +257,363 @@ kernel/drivers/misc/mediatek/sensor_bio
 
 ---
 
+# 客制化开关
+在alps\device\mediatek$(proj)\ProjectConfig.mk中 配置对应的传感器为y
+
+等效路径（kernel3.18\arch\arm64\configs$(proj).deconfig）
+
+
+```java
+CONFIG_MTK_SENSOR_SUPPORT=y 
+CONFIG_CUSTOM_KERNEL_ACCELEROMETER=y 
+CONFIG_MTK_ICM20645G=y 
+CONFIG_CUSTOM_KERNEL_ALSPS=y 
+CONFIG_MTK_CM36558=y 
+CONFIG_CUSTOM_KERNEL_GYROSCOPE=y 
+CONFIG_MTK_ICM20645GY=y
+```
+
+---
+
+# SensorService 的启动流程
+
+老版本的一个启动SensorService调用时序图：
+
+![启动SensorService调用时序图_01](启动SensorService调用时序图_01.png)
+
+
+![启动SensorService调用时序图_02](启动SensorService调用时序图_02.png)
+
+
+下面是高通平台的一个SensorService启动流程：
+
+(1)SystemServer#startBootstrapServices
+
+```java
+        t.traceBegin("StartSensorPrivacyService");
+        mSystemServiceManager.startService(new SensorPrivacyService(mSystemContext));
+        t.traceEnd();
+
+        // The sensor service needs access to package manager service, app ops
+        // service, and permissions service, therefore we start it after them.
+        // Start sensor service in a separate thread. Completion should be checked
+        // before using it.
+        mSensorServiceStart = SystemServerInitThreadPool.submit(() -> {
+            TimingsTraceAndSlog traceLog = TimingsTraceAndSlog.newAsyncLog();
+            traceLog.traceBegin(START_SENSOR_SERVICE);
+            startSensorService();
+            traceLog.traceEnd();
+        }, START_SENSOR_SERVICE);
+```
+
+（2）com_android_server_SystemServer#android_server_SystemServer_startSensorService
+
+frameworks\base\services\core\jni\com_android_server_SystemServer.cpp
+```c++
+static void android_server_SystemServer_startSensorService(JNIEnv* /* env */, jobject /* clazz */) {
+    char propBuf[PROPERTY_VALUE_MAX];
+    property_get("system_init.startsensorservice", propBuf, "1");
+    if (strcmp(propBuf, "1") == 0) {
+        SensorService::publish(false /* allowIsolated */,
+                               IServiceManager::DUMP_FLAG_PRIORITY_CRITICAL);
+    }
+}
+```
+
+(3)SensorService--sensor服务
+
+frameworks\native\services\sensorservice\SensorService.cpp
+
+SensorService的初始化主要有：
+1. 创建SensorDevice实例，获取Sensor列表
+2. 调用SensorDevice.getSensorList(),获取Sensor模块所有传感器列表并为为每个传感器注册监听器
+
+SensorService::onFirstRef()
+```c++
+
+void SensorService::onFirstRef() {
+
+    SensorDevice& dev(SensorDevice::getInstance());//SensorDevice对象
+    if (dev.initCheck() == NO_ERROR) {
+        sensor_t const* list;
+        ssize_t count = dev.getSensorList(&list);//获取Sensor列表
+        if (count > 0) {
+            ssize_t orientationIndex = -1;
+            bool hasGyro = false, hasAccel = false, hasMag = false;
+            for (ssize_t i=0 ; i<count ; i++) {
+                bool useThisSensor=true;
+
+                switch (list[i].type) {
+                    case SENSOR_TYPE_ACCELEROMETER:
+                        hasAccel = true;
+                        break;
+                    case SENSOR_TYPE_MAGNETIC_FIELD:
+                        hasMag = true;
+                        break;
+                    ......
+            }
+            if (hasGyro && hasAccel && hasMag) {
+                // Add Android virtual sensors if they're not already
+                // available in the HAL
+                bool needRotationVector =
+                        (virtualSensorsNeeds & (1<<SENSOR_TYPE_ROTATION_VECTOR)) != 0;
+
+                registerSensor(new RotationVectorSensor(), !needRotationVector, true);//注册sensor
+                registerSensor(new OrientationSensor(), !needRotationVector, true);
+
+                // virtual debugging sensors are not for user
+                registerSensor( new CorrectedGyroSensor(list, count), true, true);
+                registerSensor( new GyroDriftSensor(), true, true);
+            }
+
+//启动一个线程，获取HAL层的数据
+bool SensorService::threadLoop() {
+    ALOGD("nuSensorService thread starting...");
+    SensorDevice& device(SensorDevice::getInstance());
+
+    const int halVersion = device.getHalDeviceVersion();
+    do {
+        //从HAL层读取数据
+        ssize_t count = device.poll(mSensorEventBuffer, numEventMax);
+        if (count < 0) {
+            if(count == DEAD_OBJECT && device.isReconnecting()) {
+                device.reconnect();
+                continue;
+            } else {
+                ALOGE("sensor poll failed (%s)", strerror(-count));
+                break;
+            }
+        }
+       ......
+        // Send our events to clients. Check the state of wake lock for each client and release the
+        // lock if none of the clients need it.
+        bool needsWakeLock = false;
+        for (const sp<SensorEventConnection>& connection : activeConnections) {
+            //向客户端发数据
+            connection->sendEvents(mSensorEventBuffer, count, mSensorEventScratch,
+                    mMapFlushEventsToConnections);
+            needsWakeLock |= connection->needsWakeLock();
+            // If the connection has one-shot sensors, it may be cleaned up after first trigger.
+            // Early check for one-shot sensors.
+            if (connection->hasOneShotSensors()) {
+                cleanupAutoDisabledSensorLocked(connection, mSensorEventBuffer, count);
+            }
+        }
+
+}
+```
+
+(4)SensorDevice
+
+frameworks\native\services\sensorservice\SensorDevice.cpp
+```c++
+//获取Sensor列表
+ssize_t SensorDevice::getSensorList(sensor_t const** list) {
+    *list = &mSensorList[0];
+    return mSensorList.size();
+}
+
+//构造方法
+SensorDevice::SensorDevice()
+        : mHidlTransportErrors(20),
+          mRestartWaiter(new HidlServiceRegistrationWaiter()),
+          mEventQueueFlag(nullptr),
+          mWakeLockQueueFlag(nullptr),
+          mReconnecting(false) {
+    //hidl service是使用此接口来连接的
+    if (!connectHidlService()) {
+        return;
+    }
+    initializeSensorList();
+    mIsDirectReportSupported =
+            (checkReturnAndGetStatus(mSensors->unregisterDirectChannel(-1)) != INVALID_OPERATION);
+}
+
+//初始化方法
+void SensorDevice::initializeSensorList() {
+    float minPowerMa = 0.001; // 1 microAmp
+
+    checkReturn(mSensors->getSensorsList(
+            [&](const auto &list) {
+                const size_t count = list.size();
+
+                mActivationCount.setCapacity(count);
+                Info model;
+                for (size_t i=0 ; i < count; i++) {
+                    sensor_t sensor;
+                    convertToSensor(convertToOldSensorInfo(list[i]), &sensor);
+
+                    if (sensor.type < static_cast<int>(SensorType::DEVICE_PRIVATE_BASE)) {
+                        if(sensor.resolution == 0) {
+                            // Don't crash here or the device will go into a crashloop.
+                            ALOGW("%s must have a non-zero resolution", sensor.name);
+                            // For simple algos, map their resolution to 1 if it's not specified
+                            sensor.resolution =
+                                    SensorDeviceUtils::defaultResolutionForType(sensor.type);
+                        }
+
+                        // Some sensors don't have a default resolution and will be left at 0.
+                        // Don't crash in this case since CTS will verify that devices don't go to
+                        // production with a resolution of 0.
+                        if (sensor.resolution != 0) {
+                            double promotedResolution = sensor.resolution;
+                            double promotedMaxRange = sensor.maxRange;
+                            if (fmod(promotedMaxRange, promotedResolution) != 0) {
+                                ALOGW("%s's max range %f is not a multiple of the resolution %f",
+                                        sensor.name, sensor.maxRange, sensor.resolution);
+                                SensorDeviceUtils::quantizeValue(
+                                        &sensor.maxRange, promotedResolution);
+                            }
+                        }
+                    }
+
+                    // Sanity check and clamp power if it is 0 (or close)
+                    if (sensor.power < minPowerMa) {
+                        ALOGI("Reported power %f not deemed sane, clamping to %f",
+                              sensor.power, minPowerMa);
+                        sensor.power = minPowerMa;
+                    }
+                    mSensorList.push_back(sensor);//sensor列表
+
+                    mActivationCount.add(list[i].sensorHandle, model);
+
+                    // Only disable all sensors on HAL 1.0 since HAL 2.0
+                    // handles this in its initialize method
+                    if (!mSensors->supportsMessageQueues()) {
+                        checkReturn(mSensors->activate(list[i].sensorHandle,
+                                    0 /* enabled */));
+                    }
+                }
+            }));
+}
+```
+
+poll相关的方法：
+
+```c++
+//poll方法
+ssize_t SensorDevice::poll(sensors_event_t* buffer, size_t count) {
+    ssize_t eventsRead = 0;
+    if (mSensors->supportsMessageQueues()) {
+        //调用pollFmq方法
+        eventsRead = pollFmq(buffer, count);
+    } else if (mSensors->supportsPolling()) {
+        //调用pollHal方法
+        eventsRead = pollHal(buffer, count);
+    } else {
+        ALOGE("Must support polling or FMQ");
+        eventsRead = -1;
+    }
+    return eventsRead;
+}
+
+
+ssize_t SensorDevice::pollHal(sensors_event_t* buffer, size_t count) {
+    ......
+    do {
+        auto ret = mSensors->poll(
+                count,
+                [&](auto result,
+                    const auto &events,
+                    const auto &dynamicSensorsAdded) {
+                    if (result == Result::OK) {
+                        convertToSensorEventsAndQuantize(convertToNewEvents(events),
+                                convertToNewSensorInfos(dynamicSensorsAdded), buffer);
+                        err = (ssize_t)events.size();
+                    } else {
+                        err = statusFromResult(result);
+                    }
+                });
+     ......
+    } while (hidlTransportError);
+}
+
+ssize_t SensorDevice::pollFmq(sensors_event_t* buffer, size_t maxNumEventsToRead) {
+    ssize_t eventsRead = 0;
+    size_t availableEvents = mSensors->getEventQueue()->availableToRead();
+
+    if (availableEvents == 0) {
+        uint32_t eventFlagState = 0;
+        // Wait for events to become available. This is necessary so that the Event FMQ's read() is
+        // able to be called with the correct number of events to read. If the specified number of
+        // events is not available, then read() would return no events, possibly introducing
+        // additional latency in delivering events to applications.
+        mEventQueueFlag->wait(asBaseType(EventQueueFlagBits::READ_AND_PROCESS) |
+                              asBaseType(INTERNAL_WAKE), &eventFlagState);
+        availableEvents = mSensors->getEventQueue()->availableToRead();
+    }
+
+    size_t eventsToRead = std::min({availableEvents, maxNumEventsToRead, mEventBuffer.size()});
+    if (eventsToRead > 0) {
+        if (mSensors->getEventQueue()->read(mEventBuffer.data(), eventsToRead)) {
+            // Notify the Sensors HAL that sensor events have been read. This is required to support
+            // the use of writeBlocking by the Sensors HAL.
+            mEventQueueFlag->wake(asBaseType(EventQueueFlagBits::EVENTS_READ));
+
+            for (size_t i = 0; i < eventsToRead; i++) {
+                convertToSensorEvent(mEventBuffer[i], &buffer[i]);
+                android::SensorDeviceUtils::quantizeSensorEventValues(&buffer[i],
+                        getResolutionForSensor(buffer[i].sensor));
+            }
+            eventsRead = eventsToRead;
+        } 
+    }
+
+    return eventsRead;
+}
+
+```
+
+
+---
+
+# 客户端与服务端之间Sensor数据传递
+
+进入while循环， 不停的从底层poll数据， 并sendEvent到上层
+
 
 ```java
 
 ```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
+
+```java
+
+```
+
+```java
+
+```
+
 
 
 ```java

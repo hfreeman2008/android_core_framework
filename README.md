@@ -155,6 +155,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## P28: 系统开发之Sensor
+[系统开发之Sensor.md](./P28_系统开发之Sensor/系统开发之Sensor.md)
+
+---
+
 
 Note: 
 

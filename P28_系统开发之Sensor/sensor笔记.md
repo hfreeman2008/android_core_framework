@@ -529,12 +529,25 @@ framework层
 
 ![温度_气体_framework_3](温度_气体_framework_3.png)
 
+3).添加权限
 
+![添加权限](添加权限.png)
+
+
+
+## 6.血氧
+
+  1)移植 
+![血氧_移植](血氧_移植.png)
+
+ 2).ATA测试
 
 ```java
-
+mediatek/proprietary/factory/src/test/ftm_biosensor.c
+mediatek/proprietary/factory/src/test/ftm_biosensor_cali.c
+mediatek/proprietary/external/biosensord/libbiosensor/libbiosensor.c
 ```
-
+![libbiosensor](libbiosensor.png)
 
 ```java
 

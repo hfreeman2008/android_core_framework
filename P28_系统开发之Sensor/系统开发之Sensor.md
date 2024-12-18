@@ -133,9 +133,11 @@ List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
 包含SensorService， 接收HAl层传上来的 sensor event 数据，并让应用层做出相应的动作，如陀螺仪转动，横竖屏切换等。
 
 frameworks java:
-
+```java
 frameworks\base\core\java\android\hardware\SensorManager.java
 frameworks\base\core\java\android\hardware\SystemSensorManager.java
+```
+
 
 ```java
     private final HashMap<SensorEventListener, SensorEventQueue> mSensorListeners =
@@ -143,21 +145,27 @@ frameworks\base\core\java\android\hardware\SystemSensorManager.java
 ```
 
 sensor事件回调接口：
-
+```java
 frameworks\base\core\java\android\hardware\SensorEventListener.java
 frameworks\base\core\java\android\hardware\SensorListener.java
+```
+
 
 jni:
-
+```java
 frameworks\base\core\jni\android_hardware_SensorManager.cpp
+```
+
 
 
 native:
 
 服务端 SensorService：
-
+```java
 frameworks\native\services\sensorservice\SensorService.h
 frameworks\native\services\sensorservice\SensorService.cpp
+```
+
 
 
 ---

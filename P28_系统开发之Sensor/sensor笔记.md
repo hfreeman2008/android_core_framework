@@ -484,6 +484,53 @@ ii.修改方向
 
  ![库文件](库文件.png)
 
+iv.framework 下改为使用vendor文件
+
+ frameworks / native/services/sensorservice/SensorService.cpp
+
+![vendor_sensor](vendor_sensor.png)
+
+
+## 4.Hall-sensor
+  1).移植(完成数据上报) 
+
+![hall_sensor](hall_sensor.png)
+
+2).磁铁测试
+
+将磁铁放在hall传感器位置，cat节点出现接近，拿开出现leave
+
+一般节点:
+/sys/class/switch/hall_switch/state
+
+
+## 5.温度/气体
+
+  1)移植  
+![温度_气体](温度_气体.png)
+
+  2)添加vendor到framework层
+
+打通driver到app层的数据流 
+
+Hardware层
+
+![温度_气体_hardware](温度_气体_hardware.png)
+
+![温度_气体_hardware_2](温度_气体_hardware_2.png)
+
+![温度_气体_hardware_3](温度_气体_hardware_3.png)
+
+framework层
+
+![温度_气体_framework_1](温度_气体_framework_1.png)
+
+![温度_气体_framework_2](温度_气体_framework_2.png)
+
+![温度_气体_framework_3](温度_气体_framework_3.png)
+
+
+
 ```java
 
 ```

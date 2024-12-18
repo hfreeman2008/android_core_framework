@@ -57,9 +57,37 @@ vendor/qcom/proprietary/sensors-see/ssc/registry/config/sdm710_ltr559_0.json
 
 ---
 
+# Add LSM6DS3TR-C json file
+vendor/qcom/proprietary/sensors-see/ssc/registry/config/config_list.txt
+
+```java
+sdm710_cm3526_0.json,
+sdm710_lsm6ds3_0.json,
++sdm710_lsm6dsm_0.json,
+sdm710_lsm6dso_0.json,
+```
+
+vendor/qcom/proprietary/sensors-see/ssc/registry/config/lsm6dsm_0.json
+```java
+  "config":
+  {
+    "hw_platform": ["MTP", "Dragon", "Surf"],
+    "soc_id": ["336", "347", "360"]
+  },
+```
+
+![Add LSM6DS3TR-C json file](Add_LSM6DS3TR.png)
+
+添加文件:
+vendor/qcom/proprietary/sensors-see/ssc/registry/config/sdm710_lsm6dsm_0.json
+
+
+
 ```java
 
 ```
+
+---
 
 
 ```java

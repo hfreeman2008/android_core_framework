@@ -4,7 +4,14 @@
 
 ---
 
+
 [跳转到readme](https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md)
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
 
 
 # Accelerometer 加速度传感器

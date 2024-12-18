@@ -560,73 +560,166 @@ mediatek/proprietary/factory/src/test
 
 ![item_cpp](item_cpp.png)
 
-```java
 
+
+## 8.Sensor 关键节点： 
+
+1).Driver 部分
+
+kernel-4.4\drivers\misc\mediatek\sensors-1.0\accelerometer\accel.c
+
+![accel](accel.png)
+
+2).Hardware部分
+
+vendor\mediatek\proprietary\hardware\sensor\sensors-1.0\Acceleration.cpp
+
+![Acceleration_hall](Acceleration_hall.png)
+
+3).Framework部分
+
+i.native部分
+
+frameworks\native\services\sensorservice\SensorService.cpp 
+![SensorService_native](SensorService_native.png)
+
+
+ii.Jni部分 
+
+frameworks\base\core\jni\android_hardware_SensorManager.cpp 
+
+![android_hardware_SensorManager_jni](android_hardware_SensorManager_jni.png)
+
+ iii.java部分 
+
+frameworks\base\core\java\android\hardware\SystemSensorManager.java  
+
+![SystemSensorManager](SystemSensorManager.png)
+
+
+
+# 移植sensor代码：
+
+kernel-4.9 / arch/arm64/boot/dts/mediatek/x014_k63v2_64_bsp.dts
+
+```java
+/* sensor add by chenxx */
+&i2c1 {
+    gsensor@68 {
+		i2c_num					= <1>;
+		i2c_addr				= <0x68 0 0 0>;
+		direction				= <0>;
+		power_id				= <0xffff>;
+		power_vol				= <0>;
+		firlen					= <0>;
+		is_batch_supported		= <0>;
+	};
+	
+	gyro@69 {
+		i2c_num					= <1>;
+		i2c_addr				= <0x69 0 0 0>;
+		direction				= <0>;
+		power_id				= <0xffff>;
+		power_vol				= <0>;
+		firlen					= <0>;
+		is_batch_supported		= <0>;
+	};
+	
+	alsps@67 {
+		i2c_num	= <1>;
+		i2c_addr = <0x67 0 0 0>;
+		polling_mode_ps = <0>;
+		polling_mode_als = <1>;
+		power_id = <0xffff>;
+		power_vol = <0>;
+		als_level = <5 9 36 59 82 132 205 273 500 845 1136 1545 2364 4655 6982>;
+		als_value = <0 10 80 85 90 145 225 300 550 930 1250 1700 2600 5120 7680 10240>;
+		ps_threshold_high		=  <1700>;
+		ps_threshold_low		=  <1500>;
+		is_batch_supported_ps	= <0>;
+		is_batch_supported_als	= <0>;
+	};
+	
+
+	msensor@0c {
+		i2c_num				= <1>;
+		/* i2c_addr			= <0x0C 0 0 0>; */
+		direction			= <1>;
+		power_id			= <0xffff>;
+		power_vol			= <0>;
+		/* is_batch_supported		= <0>; */
+	};
+
+};
+
+&als {
+	//alsps-supply = <&mt_pmic_vio28_ldo_reg>;
+	pinctrl-names = "pin_default", "pin_cfg";
+	pinctrl-0 = <&alsps_intpin_default>;
+	pinctrl-1 = <&alsps_intpin_cfg>;
+	status = "okay";
+};
+/* sensor add by chenxx */
+```
+
+kernel-4.9 / arch/arm64/configs/x014_k63v2_64_bsp_debug_defconfig
+
+kernel-4.9 / arch/arm64/configs/x014_k63v2_64_bsp_defconfig
+```java
+CONFIG_MTK_STK3X3X=y
+```
+kernel-4.9/arch/arm64/boot/dts/mediatek/mt6763.dts
+```java
+#include "x014_k63v2_64_bsp.dtsi"
 ```
 
 
-```java
+# add acc and gyro sensor
+kernel-4.9 / arch/arm64/boot/dts/mediatek/x014_k63v2_64_bsp.dts
 
+```java
+&pio {
+	gyro_intpin_default: gyrodefaultcfg {
+
+	};
+	gyro_intpin_cfg: gyropincfg {
+
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO4__FUNC_GPIO4>;
+			slew-rate = <0>;
+			bias-pull-down = <00>;
+		};
+	};
+
+};
+
+&gyro{
+	pinctrl-names = "pin_default", "pin_cfg";
+	pinctrl-0 = <&gyro_intpin_default>;
+	pinctrl-1 = <&gyro_intpin_cfg>;
+	status = "okay";
+};
 ```
 
-```java
+kernel-4.9 / arch/arm64/configs/x014_k63v2_64_bsp_debug_defconfig
 
-```
-
-
-```java
-
-```
-
+kernel-4.9 / arch/arm64/configs/x014_k63v2_64_bsp_defconfig
 
 ```java
-
-```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-```java
-
-```
-
-```java
-
-```
-
-```java
-
-```
-
-
-```java
-
+CONFIG_MTK_ICM206XX_A=y
+CONFIG_MTK_ICM206XX_G=y
+CONFIG_MTK_ICM206XX_SC=y
+CONFIG_CUSTOM_KERNEL_STEP_COUNTER=y
+CONFIG_MTK_AF6133_8=y
 ```
 
 
-```java
-
-```
-
+# delete acc sensor
+kernel-4.9 / arch/arm64/configs/x017_k62v1_64_bsp_debug_defconfig
 
 ```java
-
+CONFIG_MTK_MIR3DA=n
 ```
-
-
-
-
-
-
-
-
 
 
 

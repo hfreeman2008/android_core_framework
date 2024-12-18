@@ -571,74 +571,283 @@ ssize_t SensorDevice::pollFmq(sensors_event_t* buffer, size_t maxNumEventsToRead
 
 进入while循环， 不停的从底层poll数据， 并sendEvent到上层
 
+![客户端与服务端之间Sensor数据传递](客户端与服务端之间Sensor数据传递.png)
+
+传递数据是的一个关键宏：
+sensors_event_t
+
+hardware\libhardware\include\hardware\sensors.h
+```java
+    int32_t version;      // sensor 的version
+    int32_t sensor;      //sensor 标识每个sensor都唯一
+    int32_t type;        // sensor 的类型一个sensor可有多个类型 如： 陀螺仪有校准后与校准前类型
+    int32_t reserved0; 
+    int64_t timestamp;  // sensor产生时间戳
+    union {
+        union {
+            float           data[16];
+            sensors_vec_t   acceleration;    //加速sensor
+            sensors_vec_t   magnetic;       // 磁场感应sensor
+            sensors_vec_t   orientation;     // 横竖屏sensor
+            sensors_vec_t   gyro;           // 陀螺仪sensor
+            float           temperature;    //温度sensor
+            float           distance;        // 距离sensor
+            float           light;            // 光感sensor
+            float           pressure;        //压力sensor
+            float           relative_humidity; // 相对湿度sensor
+            uncalibrated_event_t uncalibrated_gyro;      // 无定向的陀螺仪sensor
+            uncalibrated_event_t uncalibrated_magnetic;  // 无定向的磁场sensor
+ 
+            heart_rate_event_t heart_rate;  // 心率检测sensor
+            meta_data_event_t meta_data;
+        };
+        union {
+            uint64_t        data[8];
+            uint64_t        step_counter; // 步数检测sensor
+        } u64;
+    };
+    uint32_t flags;
+    uint32_t reserved1[3];
+} sensors_event_t;
+```
+
+4. 使用管道传递数据的原因是由于sensor数据量较大， Binder不能胜任此任务， 所以需要BitTube管道来传递这些数据
+
+5. 客户端与服务端之间Sensor数据传递时序图：
+
+![客户端与服务端之间Sensor数据传递时序图](客户端与服务端之间Sensor数据传递时序图.png)
+
+根据图示可以看出客户端与服务端通过Binder建立链接， 通过BitTube管道进行数据传递。
+
+BitTube init函数：
+
+frameworks/native/libs/sensor/BitTube.cpp
+
 
 ```java
+void BitTube::init(size_t rcvbuf, size_t sndbuf) {
+    int sockets[2];
+    if (socketpair(AF_UNIX, SOCK_SEQPACKET, 0, sockets) == 0) {
+        size_t size = DEFAULT_SOCKET_BUFFER_SIZE;
+        setsockopt(sockets[0], SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(rcvbuf));
+        setsockopt(sockets[1], SOL_SOCKET, SO_SNDBUF, &sndbuf, sizeof(sndbuf));
+        // sine we don't use the "return channel", we keep it small...
+        setsockopt(sockets[0], SOL_SOCKET, SO_SNDBUF, &size, sizeof(size));
+        setsockopt(sockets[1], SOL_SOCKET, SO_RCVBUF, &size, sizeof(size));
+        fcntl(sockets[0], F_SETFL, O_NONBLOCK);
+        fcntl(sockets[1], F_SETFL, O_NONBLOCK);
+        mReceiveFd = sockets[0];
+        mSendFd = sockets[1];
+    } else {
+        mReceiveFd = -errno;
+        ALOGE("BitTube: pipe creation failed (%s)", strerror(-mReceiveFd));
+    }
+}
+```
 
+1. 使用socket[0] 来接收数据
+
+2. 使用socket[1] 来发送数据
+
+3.通过pipe(fds)创建管道,通过fcntl来设置操作管道的方式,设置通道两端的操作方式为O_NONBLOCK ，非阻塞IO方式，read或write调用返回-1和EAGAIN错误。
+
+---
+
+# Sensor Framework 类图
+
+![Sensor_Framework_类图](Sensor_Framework_类图.png)
+
+
+## Sensor SDK
+
+```java
+SensorManager:
+该类主要封装了 Sensor 相关的 API ，提供给 Application 使用。
+文件路径：frameworks/base/core/java/android/hardware/SensorManager.java
+
+SystemSensorManager:
+该类主要实现 SensorManager 控制和数据获取的逻辑。
+文件路径：frameworks/base/core/java/android/hardware/SystemSensorManager.java
+
+android_hardware_SensorManager.cpp
+该文件负责 jave 层和 native 层通信的 JNI 实现，上层的 Java 代码通过 JNI 调用 Native 层提供的服务。
+文件路径：frameworks/base/core/jni/android_hardware_SensorManager.cpp
+
+SensorManager.cpp
+Sensor 在 Native 层的客户端，负责与服务端 SensorService.cpp 的通信
+文件路径：frameworks/native/libs/gui/SensorManager.cpp
+```
+
+---
+
+## Sensor Native Framework
+
+```java
+SensorService.cpp
+SensorService 是 Android Sensor Framework 最核心的模块，它实现了主要的 Sensor控制流和数据流逻辑，完成 Sensor 参数配置，数据分发，Client 请求处理等功能。
+文件路径：frameworks/native/services/sensorservice/SensorService.cpp
+
+BinderService
+BinderService 是 Android Service 框架的主要类，它提供了 Service 的生命周期管理、进程间通信、请求响应处理等功能。Android 中的绝大部分 Service 都会继承此类。
+文件路径：frameworks/native/include/binder/BinderService.h
+
+BnSensorServer
+该类提供类 Sensor 信息获取以及 SensorEventConnection 创建的功能。
+文件路径：frameworks/native/include/gui/ISensorServer.h
+
+SensorEventConnection
+SensorEventConnection 是 Sensor 数据的传输通道，当 Client 开始监听某一个 Sensor 是，一个对应的 SensorEventConnection 将会被创建，Server 端在接收到 Sensor 数据后，通过写入到 SensorEventConnection 传递给 Client 端。
+文件路径：frameworks/native/libs/gui/ISensorEventConnection.cpp
+
+Bittube
+该类为单向字节管道，提供进程间单向数据通信功能。SensorEventConnection 是基于 Bittube 实现的。
+文件路径：frameworks/native/libs/gui/BitTube.cpp
+
+SensorDevice
+该类负责管理和维护系统中的所有 Sensor，封装了 Sensor 的使能、配置、数据读取等功能。
+文件路径：frameworks/native/services/sensorservice/SensorDevice.cpp
+```
+
+---
+
+# Sensor HAL
+
+Android 定义了一系列 Sensor HAL 接口，实际的 Sensor HAL 库需要实现这些接口，主要的接口如下:
+
+1  SensorList
+
+SensorList 定义了 HAL 层提供的 Sensor，提供 Sensor 类型、供应商、功耗等信息。同时，HAL 层需要实现获取 SensorList 的回调接口。
+
+2 sensors_module_t
+
+HAL 层需要定义一个 sensors_module_t，供系统在启动时加载 Sensor HAL 动态库。sensors_module_t 向上层注册获取 SensorList 和获取 Sensor 控制接口的相关回调函数。
+
+```java
+./hardware/libhardware/include/hardware/sensors.h
+/**
+ * Every hardware module must have a data structure named HAL_MODULE_INFO_SYM
+ * and the fields of this data structure must begin with hw_module_t
+ * followed by module specific information.
+ */
+struct sensors_module_t {
+    struct hw_module_t common;
+
+    /**
+     * Enumerate all available sensors. The list is returned in "list".
+     * return number of sensors in the list
+     */
+    int (*get_sensors_list)(struct sensors_module_t* module,
+            struct sensor_t const** list);
+
+    /**
+     *  Place the module in a specific mode. The following modes are defined
+     *
+     *  0 - Normal operation. Default state of the module.
+     *  1 - Loopback mode. Data is injected for the supported
+     *      sensors by the sensor service in this mode.
+     * return 0 on success
+     *         -EINVAL if requested mode is not supported
+     *         -EPERM if operation is not allowed
+     */
+    int (*set_operation_mode)(unsigned int mode);
+};
+
+./hardware/libhardware/include/hardware/sensors.h
+int (*get_sensors_list)(struct sensors_module_t* module,
+
+./hardware/interfaces/sensors/1.0/default/Sensors.h
+sensors_module_t *mSensorModule;
+```
+
+
+3 Sensor 控制和数据获取接口
+
+HAL 层还需要提供实际控制和获取 Sensor 数据的接口，SensorService 中对 Sensor 的控制和数据的获取最终会调用到这些接口。
+
+---
+
+# dumpsys sensorservice
+
+```sh
+adb shell dumpsys -l | findstr -i sen
+  sensor_privacy
+  sensorservice
 ```
 
 
 ```java
-
+adb shell dumpsys sensorservice
+adb shell dumpsys sensor_privacy
 ```
 
 
 ```java
+Captured at: 15:28:00.805
+Sensor Device:
+Total 38 h/w sensors, 38 running 0 disabled clients:
+Sensor List:
+0x0000000b) icm4x6xx Accelerometer Non-wakeup | TDK-Invensense  | ver: 78596 | type: android.sensor.accelerometer(1) | perm: n/a | flags: 0x00000000
+    continuous | minRate=1.00Hz | maxRate=400.00Hz | FIFO (max,reserved) = (10000, 3000) events | non-wakeUp | 
+.......
+0x5f6c696e) Linear Acceleration Sensor | AOSP            | ver: 3 | type: android.sensor.linear_acceleration(10) | perm: n/a | flags: 0x00000000
+    continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+0x5f726f76) Rotation Vector Sensor    | AOSP            | ver: 3 | type: android.sensor.rotation_vector(11) | perm: n/a | flags: 0x00000000
+    continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+0x5f797072) Orientation Sensor        | AOSP            | ver: 1 | type: android.sensor.orientation(3) | perm: n/a | flags: 0x00000000
+    continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+
+Fusion States:
+9-axis fusion disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+game fusion(no mag) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+geomag fusion (no gyro) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+Recent Sensor events:
+Device Orientation  Wakeup: last 1 events
+     1 (ts=5789.608539248, wall=11:33:16.320) 0.00, 
+Active sensors:
+Socket Buffer size = 984 events
+WakeLock Status: not held 
+Mode : NORMAL
+Sensor Privacy: disabled
+0 active connections
+0 direct connections
+Previous Registrations:
+11:33:17 - 0x00000110 pid= 1402 uid= 1000 package=com.android.server.policy.WindowOrientationListener
+11:33:15 + 0x00000110 pid= 1402 uid= 1000 package=com.android.server.policy.WindowOrientationListener samplingPeriod=66667us batchingPeriod=0us
+01:45:15 - 0x00000110 pid= 1402 uid= 1000 package=com.android.server.policy.WindowOrientationListener
+01:44:15 - 0x00000015 pid= 3769 uid=10019 package=android.hardware.LegacySensorManager
+01:44:15 + 0x00000015 pid= 3769 uid=10019 package=android.hardware.LegacySensorManager samplingPeriod=200000us batchingPeriod=0us
+01:44:13 + 0x00000110 pid= 1402 uid= 1000 package=com.android.server.policy.WindowOrientationListener samplingPeriod=66667us batchingPeriod=0us
 
 ```
 
+对应代码：
 
-```java
+frameworks\native\services\sensorservice\SensorService.cpp
 
-```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-```java
-
-```
-
-```java
-
+```cpp
+status_t SensorService::dump(int fd, const Vector<String16>& args)
 ```
 
 
 
-```java
 
-```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-```java
-
-```
 
 
 
 # 参考资料
 
+1.Android Sensor流程
 
+https://blog.csdn.net/beifengfoguo/article/details/50896263
+
+2.Android Sensor 传感器总结
+
+https://www.jianshu.com/p/8440a5897944
+
+
+3.Sensor传感器框架以及驱动移植和调试方法(Hal层部分)
+
+https://www.jindouyun.cn/document/industry/details/244841
 
 
 

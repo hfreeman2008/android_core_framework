@@ -118,7 +118,7 @@ sensors_event_t.data[3] = cos(theta/2)
 ---
 
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#sensor各类)
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#Accelerometer 加速度传感器)
 
 ---
 

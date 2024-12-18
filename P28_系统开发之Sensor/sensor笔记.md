@@ -507,6 +507,7 @@ iv.framework 下改为使用vendor文件
 ## 5.温度/气体
 
   1)移植  
+
 ![温度_气体](温度_气体.png)
 
   2)添加vendor到framework层

@@ -426,7 +426,11 @@ frameworks / native/services/sensorservice/SensorService.cpp
 
 # Accel/gyro/step 样例
 
+## 1.加速度/陀螺仪
 
+1).移植(完成数据上报)
+
+![加速度_陀螺仪_移植](加速度_陀螺仪_移植.png)
 
 ```java
 

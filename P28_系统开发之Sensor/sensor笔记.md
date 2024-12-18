@@ -547,7 +547,18 @@ mediatek/proprietary/factory/src/test/ftm_biosensor.c
 mediatek/proprietary/factory/src/test/ftm_biosensor_cali.c
 mediatek/proprietary/external/biosensord/libbiosensor/libbiosensor.c
 ```
+
 ![libbiosensor](libbiosensor.png)
+
+
+##  7.工模
+
+mediatek/proprietary/factory/src/test
+
+
+![工模](工模.png)
+
+![item_cpp](item_cpp.png)
 
 ```java
 

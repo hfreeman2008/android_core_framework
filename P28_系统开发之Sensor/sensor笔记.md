@@ -432,6 +432,23 @@ frameworks / native/services/sensorservice/SensorService.cpp
 
 ![加速度_陀螺仪_移植](加速度_陀螺仪_移植.png)
 
+ 2).加速度/陀螺仪的方向 
+
+![加速度_陀螺仪](加速度_陀螺仪.png)
+
+
+## 2.light/p-sensor
+
+  1).移植(完成数据上报) 
+
+![light_p_sensor](light_p_sensor.png)
+
+
+  2).距离传感器测试
+i.门限值设置(灰卡，标准3-6cm，灰卡或黄卡仅测试一个)
+
+![距离传感器测试](距离传感器测试.png)
+
 ```java
 
 ```

@@ -838,7 +838,20 @@ status_t SensorService::dump(int fd, const Vector<String16>& args)
 
 
 
+# sensor笔记
 
+https://github.com/hfreeman2008/android_core_framework/blob/main/P28_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BSensor/sensor%E7%AC%94%E8%AE%B0.md
+
+
+# sensor种类
+
+https://github.com/hfreeman2008/android_core_framework/blob/main/P28_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BSensor/sensor%E7%A7%8D%E7%B1%BB.md
+
+# 相关PPT
+
+光距感学习.pptx
+
+加速度传感器学习.pptx
 
 
 

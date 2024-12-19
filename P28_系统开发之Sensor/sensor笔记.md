@@ -76,7 +76,7 @@ vendor/qcom/proprietary/sensors-see/ssc/registry/config/lsm6dsm_0.json
   },
 ```
 
-![Add LSM6DS3TR-C json file](Add_LSM6DS3TR.png)
+![Add LSM6DS3TR-C json file](./image/Add_LSM6DS3TR.png)
 
 添加文件:
 vendor/qcom/proprietary/sensors-see/ssc/registry/config/sdm710_lsm6dsm_0.json
@@ -103,7 +103,7 @@ vendor/qcom/proprietary/sensors-see/ssc/registry/config/sdm710_ak991x_0.json
     },
 ```
 
-![Change the orient of magnetic](Change_the_orient_of_magnetic.png)
+![Change the orient of magnetic](./image/Change_the_orient_of_magnetic.png)
 
 ---
 
@@ -430,24 +430,24 @@ frameworks / native/services/sensorservice/SensorService.cpp
 
 1).移植(完成数据上报)
 
-![加速度_陀螺仪_移植](加速度_陀螺仪_移植.png)
+![加速度_陀螺仪_移植](./image/加速度_陀螺仪_移植.png)
 
  2).加速度/陀螺仪的方向 
 
-![加速度_陀螺仪](加速度_陀螺仪.png)
+![加速度_陀螺仪](./image/加速度_陀螺仪.png)
 
 
 ## 2.light/p-sensor
 
   1).移植(完成数据上报) 
 
-![light_p_sensor](light_p_sensor.png)
+![light_p_sensor](./image/light_p_sensor.png)
 
 
   2).距离传感器测试
 i.门限值设置(灰卡，标准3-6cm，灰卡或黄卡仅测试一个)
 
-![距离传感器测试](距离传感器测试.png)
+![距离传感器测试](./image/距离传感器测试.png)
 
 ii.油渍/黑卡/灰卡测试
 
@@ -473,28 +473,28 @@ b.如果底噪值比较大(没有遮挡时p-sensor值)，那也很有可能是�
   1).移植(完成数据上报)
 i.驱动部分 
 
-![Mag_sensor](Mag_sensor.png)
+![Mag_sensor](./image/Mag_sensor.png)
 
 ii.修改方向
 
 
-![Mag_sensor_ori](Mag_sensor_ori.png)
+![Mag_sensor_ori](./image/Mag_sensor_ori.png)
 
  iii.库文件
 
- ![库文件](库文件.png)
+ ![库文件](./image/库文件.png)
 
 iv.framework 下改为使用vendor文件
 
  frameworks / native/services/sensorservice/SensorService.cpp
 
-![vendor_sensor](vendor_sensor.png)
+![vendor_sensor](./image/vendor_sensor.png)
 
 
 ## 4.Hall-sensor
   1).移植(完成数据上报) 
 
-![hall_sensor](hall_sensor.png)
+![hall_sensor](./image/hall_sensor.png)
 
 2).磁铁测试
 
@@ -508,7 +508,7 @@ iv.framework 下改为使用vendor文件
 
   1)移植  
 
-![温度_气体](温度_气体.png)
+![温度_气体](./image/温度_气体.png)
 
   2)添加vendor到framework层
 
@@ -516,30 +516,30 @@ iv.framework 下改为使用vendor文件
 
 Hardware层
 
-![温度_气体_hardware](温度_气体_hardware.png)
+![温度_气体_hardware](./image/温度_气体_hardware.png)
 
-![温度_气体_hardware_2](温度_气体_hardware_2.png)
+![温度_气体_hardware_2](./image/温度_气体_hardware_2.png)
 
-![温度_气体_hardware_3](温度_气体_hardware_3.png)
+![温度_气体_hardware_3](./image/温度_气体_hardware_3.png)
 
 framework层
 
-![温度_气体_framework_1](温度_气体_framework_1.png)
+![温度_气体_framework_1](./image/温度_气体_framework_1.png)
 
-![温度_气体_framework_2](温度_气体_framework_2.png)
+![温度_气体_framework_2](./image/温度_气体_framework_2.png)
 
-![温度_气体_framework_3](温度_气体_framework_3.png)
+![温度_气体_framework_3](./image/温度_气体_framework_3.png)
 
 3).添加权限
 
-![添加权限](添加权限.png)
+![添加权限](./image/添加权限.png)
 
 
 
 ## 6.血氧
 
   1)移植 
-![血氧_移植](血氧_移植.png)
+![血氧_移植](./image/血氧_移植.png)
 
  2).ATA测试
 
@@ -549,7 +549,7 @@ mediatek/proprietary/factory/src/test/ftm_biosensor_cali.c
 mediatek/proprietary/external/biosensord/libbiosensor/libbiosensor.c
 ```
 
-![libbiosensor](libbiosensor.png)
+![libbiosensor](./image/libbiosensor.png)
 
 
 ##  7.工模
@@ -557,9 +557,9 @@ mediatek/proprietary/external/biosensord/libbiosensor/libbiosensor.c
 mediatek/proprietary/factory/src/test
 
 
-![工模](工模.png)
+![工模](./image/工模.png)
 
-![item_cpp](item_cpp.png)
+![item_cpp](./image/item_cpp.png)
 
 
 
@@ -569,33 +569,33 @@ mediatek/proprietary/factory/src/test
 
 kernel-4.4\drivers\misc\mediatek\sensors-1.0\accelerometer\accel.c
 
-![accel](accel.png)
+![accel](./image/accel.png)
 
 2).Hardware部分
 
 vendor\mediatek\proprietary\hardware\sensor\sensors-1.0\Acceleration.cpp
 
-![Acceleration_hall](Acceleration_hall.png)
+![Acceleration_hall](./image/Acceleration_hall.png)
 
 3).Framework部分
 
 i.native部分
 
 frameworks\native\services\sensorservice\SensorService.cpp 
-![SensorService_native](SensorService_native.png)
+![SensorService_native](./image/SensorService_native.png)
 
 
 ii.Jni部分 
 
 frameworks\base\core\jni\android_hardware_SensorManager.cpp 
 
-![android_hardware_SensorManager_jni](android_hardware_SensorManager_jni.png)
+![android_hardware_SensorManager_jni](./image/android_hardware_SensorManager_jni.png)
 
  iii.java部分 
 
 frameworks\base\core\java\android\hardware\SystemSensorManager.java  
 
-![SystemSensorManager](SystemSensorManager.png)
+![SystemSensorManager](./image/SystemSensorManager.png)
 
 
 

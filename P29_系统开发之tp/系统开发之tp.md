@@ -108,30 +108,142 @@ arch/arm64/boot/dts/qcom/sdm710-i7s-qrd.dtsi:257:                compatible = "g
 gt1x.c 驱动加载:
 
 ```java
-
+module_init(gt1x_ts_init);
 ```
+调用gt1x_ts_init函数，作用是注册一个i2c驱动:
 
 ```java
-
+/**   
+ * gt1x_ts_init - Driver Install function.
+ * Return   0---succeed.
+ */
+static int __init gt1x_ts_init(void)
+{
+	//GTP_INFO("GTP driver installing...");
+	return i2c_add_driver(&gt1x_ts_driver);
+}
 ```
+再查看变量gt1x_ts_driver:
 
 ```java
-
+static struct i2c_driver gt1x_ts_driver = {
+	.probe = gt1x_ts_probe,
+	.remove = gt1x_ts_remove,
+	.id_table = gt1x_ts_id,
+	.driver = {
+		   .name = GTP_I2C_NAME,
+		   .owner = THIS_MODULE,
+#ifdef CONFIG_OF
+		   .of_match_table = gt1x_match_table,
+#endif
+		   },
+};
 ```
+
+这个gt1x_ts_driver.driver.name = GTP_I2C_NAME，去们可以查看:
 
 ```java
-
+cat /proc/bus/input/devices
 ```
+
+probe函数内容gt1x_ts_probe:
+
+```java
+/**
+ * gt1x_ts_probe -   I2c probe.
+ * @client: i2c device struct.
+ * @id: device id.
+ * Return  0: succeed, <0: failed.
+ */
+static int gt1x_ts_probe(struct i2c_client *client, const struct i2c_device_id *id)
+{
+	int ret = -1;
+	struct goodix_ts_data *ts;
+
+	/* do NOT remove these logs */
+	GTP_INFO("GTP Driver Version: %s,slave addr:%02xh",
+			GTP_DRIVER_VERSION, client->addr);
+
+	gt1x_i2c_client = client;
+	spin_lock_init(&irq_lock);
+```
+调用到linux-3.0.86/drivers/input/input.c中的一些方法（实质上注册input设备，生成设备节点等什么都是这个东西干的）
+
 ---
 
-```java
+# touch panel 驱动定位
 
+通过：
+
+```java
+adb shell cat /proc/bus/input/devices
 ```
 
 
 ```java
-
+I: Bus=0018 Vendor=dead Product=beef Version=28bb
+N: Name="goodix-ts"
+P: Phys=input/ts
+S: Sysfs=/devices/virtual/input/input3
+U: Uniq=
+H: Handlers=kgsl event3 cpufreq
+B: PROP=2
+B: EV=b
+B: KEY=400 c00000000000000 0 0 0 0
+B: ABS=661800000000000
 ```
+
+cat /dev/input/event0(根据实际情况分析具体是那个节点),最终确定tp的驱动：
+
+```java
+N: Name="goodix-ts"
+```
+
+然后去内核中确定源码是：
+
+```java
+LINUX\android\kernel\msm-4.9\drivers\input\touchscreen\goodix.c
+```
+
+确定dtsi：
+```java
+grep -rni  --include={*.dts,*.dtsi} "goodix-ts"  ./
+```
+vendor\qcom\proprietary\devicetree-4.19\qcom\sc780-dts\bengal-qrd.dtsi 中一个tp touch的定义：
+```java
+&qupv3_se2_i2c {
+	status = "okay";
+	qcom,i2c-touch-active="chipsemi,chsc_cap_touch";
+
+	smtouch@2E {
+		compatible = "chipsemi,chsc_cap_touch";
+		reg = <0x2E>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <80 0x2008>;
+		//vdd-supply = <&pm8916_l17>;
+		vio-supply = <&L9A>;
+		chipsemi,int-gpio = <&tlmm 80 0x2008>;
+		chipsemi,rst-gpio = <&tlmm 71 0x00>;
+		chipsemi,vdd-en-gpio = <&tlmm 97 0x00>;
+		pinctrl-names = "pmx_ts_active","pmx_ts_suspend","pmx_ts_release","pmx_ts_int_active";
+		pinctrl-0 = <&ts_reset_active>;
+		pinctrl-1 = <&ts_int_suspend &ts_reset_suspend>;
+		pinctrl-2 = <&ts_release>;
+		pinctrl-3 = <&ts_int_active>;
+
+		panel = <&dsi_sc780_st7785m_qvga_video>;
+	};
+};
+```
+
+配置开关一般在这种文件中：
+
+```java
+kernel/msm-4.19/arch/arm64/configs/vendor/sc780_defconfig
+kernel/msm-4.19/arch/arm64/configs/vendor/sc780-perf_defconfig
+```
+
+---
 
 
 ```java

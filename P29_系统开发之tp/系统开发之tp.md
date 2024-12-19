@@ -278,11 +278,33 @@ https://blog.csdn.net/weijory/article/details/72733155
 
 ---
 
-
+# 关闭TP手势  disable TP gesture
+kernel-4.9/drivers/input/touchscreen/mediatek/oreo/ilitek.h
 
 ```java
-
+//#define ENABLE_GESTURE			ENABLE
+#define ENABLE_GESTURE			DISABLE
 ```
+
+---
+
+# TP最大触摸点数
+kernel-4.9 / drivers/input/touchscreen/mediatek/oreo/ilitek.h
+```java
+#define MAX_TOUCH_NUM				5  //10
+```
+
+---
+
+# 设置虚拟按键位置
+修改TP的虚拟按键位置
+ kernel-4.4 / arch/arm64/boot/dts/mediatek/MT6739-h05g.dts
+
+
+ ![修改TP的虚拟按键位置](./image/修改TP的虚拟按键位置.png)
+
+
+---
 
 
 ```java

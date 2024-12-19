@@ -74,17 +74,54 @@ drivers/input/touchscreen/gt1x/gt1x.c:996:      .probe = gt1x_ts_probe,
 
 ![gt1x_01](./image/gt1x_01.png)
 
+我们再看看方法gt1x_ts_probe：
+
+![gt1x_ts_probe](./image/gt1x_ts_probe.png)
+
+我们再搜索compatible：
+
+grep -rni "compatible" ./
+
+./gt1x.c:776:           {.compatible = "goodix,gt1x",},
+
+
+查看：
+
+![compatible_01](./image/compatible_01.png)
+
+进入目录：kernel/msm-4.9/arch/arm64/boot/dts/qcom，查找“goodix,gt1x”：
+
+grep -nr goodix,gt1x
+
+```java
+kernel/msm-4.9$ grep -rni "goodix,gt1x"  arch/arm64/boot/dts/qcom/
+arch/arm64/boot/dts/qcom/sdm710-i7s-qrd.dtsi:257:                compatible = "goodix,gt1x";
+```
+
+对就查看此配制文件：
+
+ vi sdm710-i7s-qrd.dtsi +257
+
+ ![goodix_dtsi](./image/goodix_dtsi.png)
+
+
+gt1x.c 驱动加载:
 
 ```java
 
 ```
 
+```java
+
+```
 
 ```java
 
 ```
 
+```java
 
+```
 ---
 
 ```java

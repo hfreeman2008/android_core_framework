@@ -8,6 +8,18 @@
 
 ---
 
+[sensor笔记](https://github.com/hfreeman2008/android_core_framework/blob/main/P28_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BSensor/sensor%E7%AC%94%E8%AE%B0.md)
+
+
+---
+
+
+[sensor种类](https://github.com/hfreeman2008/android_core_framework/blob/main/P28_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BSensor/sensor%E7%A7%8D%E7%B1%BB.md)
+
+
+
+---
+
 [<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
 
 ---

@@ -306,40 +306,419 @@ kernel-4.9 / drivers/input/touchscreen/mediatek/oreo/ilitek.h
 
 ---
 
+# 关闭虚拟按键
 
+vendor/mediatek/proprietary/packages/apps/SettingsProvider/res/values/defaults.xml
 ```java
-
+<bool name="config_systemui_virtual_key_mode">true</bool>
 ```
 
-
+ProductFeatureVIA_A4/product_features
 ```java
-
+FEATURE_SYSTEMUI_VIRTUAL_KEY_MODE = true
 ```
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
----
 
 
 ---
 
 
+# TouchScreen兼容
+
+ ![TouchScreen兼容_01](./image/TouchScreen兼容_01.png)
+
+ ![TouchScreen兼容_02](./image/TouchScreen兼容_02.png)
+
+
+---
+
+# max tp number 最大触摸点数：
+
+kernel-4.9/arch/arm64/boot/dts/mediatek/x014_k63v2_64_bsp.dts
+```java
+&touch {
+	tpd-max-touch-num = <10>;
+};
+```
+
+tp firmware
+```java
+kernel-4.4/drivers/input/touchscreen/mediatek/synaptics_dsx/synaptics/SynapticsImage.h
+kernel-4.9 / arch/arm64/boot/dts/mediatek/x016_k61v1_64_bsp.dts
+
+&touch {
+	tpd-filter-enable = <0>;
+	tpd-max-touch-num = <10>;
+};
+```
+
+---
+
+# 添加一个touchscreen的goodix GT1X驱动
+kernel/msm-4.9/drivers/input/touchscreen/Kconfig
+```java
+config TOUCHSCREEN_GOODIX_GT1X
+        bool "GOODIX GT1X Touchscreen Driver"
+        depends on I2C
+        help
+          Say Y here if you have a GOODIX GT1X  Touchscreen.
+          If unsure, say N.
+source "drivers/input/touchscreen/gt1x/Kconfig"
+```
+
+kernel/msm-4.9/drivers/input/touchscreen/Makefile
+```java
+obj-$(CONFIG_TOUCHSCREEN_GOODIX_GT1X)   += gt1x/
+```
+
+gt1x代码：
+
+ ![goodix GT1X驱动](./image/goodix GT1X驱动.png)
+
+最后在自己的项目中配置此参数：
+
+kernel/msm-4.9/arch/arm64/configs/sdm710_g3-perf_defconfig
+
+kernel/msm-4.9/arch/arm64/configs/sdm710_g3_defconfig
+
+```java
+CONFIG_TOUCHSCREEN_GOODIX_GT1X=y
+```
+
+
+---
+
+# 添加chsc_cap_touch驱动
+1.确认tp的名字chsc_cap_touch：
+```java
+/proc/bus/input # cat devices
+```
+
+ ![添加chsc_cap_touch驱动](./image/添加chsc_cap_touch驱动.png)
+
+2.确认dps中的定义：
+```java
+grep -rni  --include={*.dts,*.dtsi}  "chsc_cap_touch"  ./
+```
+
+vendor/qcom/proprietary/devicetree-4.19/qcom/sc780-dts/bengal-qrd.dtsi
+
+```java
+&qupv3_se2_i2c {
+	status = "okay";
+	qcom,i2c-touch-active="chipsemi,chsc_cap_touch";
+	smtouch@2E {
+		compatible = "chipsemi,chsc_cap_touch";
+		reg = <0x2E>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <80 0x2008>;
+		//vdd-supply = <&pm8916_l17>;
+		vio-supply = <&L9A>;
+		chipsemi,int-gpio = <&tlmm 80 0x2008>;
+		chipsemi,rst-gpio = <&tlmm 71 0x00>;
+		chipsemi,vdd-en-gpio = <&tlmm 97 0x00>;
+		pinctrl-names = "pmx_ts_active","pmx_ts_suspend","pmx_ts_release","pmx_ts_int_active";
+		pinctrl-0 = <&ts_reset_active>;
+		pinctrl-1 = <&ts_int_suspend &ts_reset_suspend>;
+		pinctrl-2 = <&ts_release>;
+		pinctrl-3 = <&ts_int_active>;
+		panel = <&dsi_sc780_st7785m_qvga_video>;
+	};
+};
+```
+
+
+3.确定代码位置：
+```java
+grep -rni  --include=*.c  "chipsemi,chsc_cap_touch"  ./kernel/ ./vendor/qcom/
+```
+
+
+kernel/msm-4.19/drivers/input/touchscreen/chsc5xxx/qual_core.c
+```java
+static const struct of_device_id sm_of_match[] = 
+{
+    {.compatible = "chipsemi,chsc_cap_touch", },
+    {}
+};
+```
+
+4.配置文件：
+kernel/msm-4.19\drivers\input\touchscreen\chsc5xxx\Makefile
+```java
+#semitouch touchpanel driver
+obj-$(CONFIG_TOUCHSCREEN_CHSC5XXX)      += semi_touch_driver.o
+semi_touch_driver-objs += basic_util.o
+semi_touch_driver-objs += i2c_communication.o
+semi_touch_driver-objs += qual_core.o
+semi_touch_driver-objs += semi_touch_function.o
+semi_touch_driver-objs += semi_touch_upgrade.o
+semi_touch_driver-objs += semi_touch_apk.o
+semi_touch_driver-objs += semi_touch_device.o
+kernel\msm-4.19\drivers\input\touchscreen\chsc5xxx\Kconfig
+#
+# ChipSemi CHSC5XXX Touchscreen driver
+#
+config CHSC5XXX_TOUCHPANEL_DRIVER
+    tristate "ChipSemi CHSC5XXX touchpanel driver"
+    depends on TOUCHSCREEN_CHSC5XXX
+    default y
+    help
+      This is the main file for touchpanel driver for ChipSemi CHSC5XXX
+      touchscreens.
+      Say Y here if you have a ChipSemi CHSC5XXX touchscreen connected
+      to your system.
+      If unsure, say N.
+      To compile this driver as a module, choose M here: the
+      module will be called semi_touch_driver.
+config SEMI_TOUCH_AUTO_UPDATE_EN
+    tristate "ChipSemi CHSC5XXX touchpanel auto update support"
+    depends on CHSC5XXX_TOUCHPANEL_DRIVER
+    default n
+    help
+      This enables support for firmware update for ChipSemi CHSC5XXX
+      touchscreens.
+      Say Y here if you have a ChipSemi CHSC5XXX touchscreen connected
+      to your system.
+      If unsure, say N.
+      To compile this driver as a module, choose M here: the
+      module will be called semi_touch_upgrade.
+config SEMI_TOUCH_APK_NODE_EN
+    tristate "ChipSemi CHSC5XXX Node for debuging"
+    depends on CHSC5XXX_TOUCHPANEL_DRIVER
+    default n
+    help
+      This is application debug interface support for ChipSemi CHSC5XXX
+      touchscreens.
+      Say Y here if you want to have a Android app debug interface
+      to your system.
+      If unsure, say N.
+      To compile this driver as a module, choose M here: the
+      module will be called semi_touch_apk.
+```
+
+
+
+
+./kernel/msm-4.19/arch/arm64/configs/vendor/sc780_defconfig
+
+./kernel/msm-4.19/arch/arm64/configs/vendor/sc780-perf_defconfig
+
+```java
+CONFIG_TOUCHSCREEN_CHSC5XXX=y
+```
+
+---
+
+# 开机不加载TP固件EVT板子
+kernel/msm-4.9/drivers/input/touchscreen/gt1x/Kconfig
+```java
+config GTP_DRIVER_SEND_CFG
+	bool "GTP_DRIVER_SEND_CONFIG"
+	default n
+	help
+	Say Y here if you want touch driver send chip config
+	data to hardware.
+
+	If unsure, say N.
+```
+
+---
+
+# 配置TP:
+kernel-4.4 / arch/arm/configs/h33_bsp_1g_defconfig
+kernel-4.4 / arch/arm/configs/h33_bsp_1g_debug_defconfig
+```java
+CONFIG_TOUCHSCREEN_MTK_ILITEK=y
+```
+
+
+
+---
+
+# TP报点不准
+kernel-4.9/drivers/input/touchscreen/mediatek/mtk_tpd.c
+
+```c
+/* touch panel probe */
+static int tpd_probe(struct platform_device *pdev)
+{
+	int touch_type = 1;	/* 0:R-touch, 1: Cap-touch */
+**************
+
+#ifdef CONFIG_LCM_WIDTH
+		ret = kstrtoul(CONFIG_LCM_WIDTH, 0, &tpd_res_x);
+		if (ret < 0) {
+			pr_info("Touch down get lcm_x failed");
+			return ret;
+		}
+		TPD_RES_X = tpd_res_x;
+		ret = kstrtoul(CONFIG_LCM_HEIGHT, 0, &tpd_res_x);
+		if (ret < 0) {
+			pr_info("Touch down get lcm_y failed");
+			return ret;
+		}
+		TPD_RES_Y = tpd_res_y;
+#endif
+#endif
+	}
+
+	if (2560 == TPD_RES_X)
+		TPD_RES_X = 2048;
++#ifndef	CONFIG_TOUCHSCREEN_MTK_FOCALTECH_TS_FT8006S
+	if (1600 == TPD_RES_Y)
+		TPD_RES_Y = 1536;
++#endif
+	pr_debug("mtk_tpd: TPD_RES_X = %lu, TPD_RES_Y = %lu\n",
+		TPD_RES_X, TPD_RES_Y);
+
+	tpd_mode = TPD_MODE_NORMAL;
+```
+
+---
+
+# LCD使用fpstest测试屏幕帧率只有20帧
+
+fpstest.apk   测试屏幕fps的apk
+
+ ![测试屏幕帧率只有20帧](./image/测试屏幕帧率只有20帧.png)
+
+lcm 帧率 60fps
+kernel-4.9/drivers/misc/mediatek/lcm/ft8006s_hdPlus_dsi_vdo_tdt_mtk/ft8006s_hdPlus_dsi_vdo_tdt_mtk.c
+
+```c
+static void lcm_get_params(struct LCM_PARAMS *params)
+{
+	memset(params, 0, sizeof(struct LCM_PARAMS));
+............
+	params->dsi.horizontal_active_pixel 			= FRAME_WIDTH;
+
++#if (LCM_DSI_CMD_MODE)
++	params->dsi.PLL_CLOCK = 505;	/* this value must be in MTK suggested table */
++#else
++	params->dsi.PLL_CLOCK = 300;//97;//97;//285; //220;	/* this value must be in MTK suggested table */
++#endif
+```
+
+---
+
+# 刷机后开机不待机前屏幕帧率只有20帧待机唤醒 后恢复正常
+vendor/mediatek/proprietary/bootable/bootloader/lk / dev/lcm/ft8006s_hdPlus_dsi_vdo_tdt_mtk/ft8006s_hdPlus_dsi_vdo_tdt_mtk.c
+
+```c
+#if (LCM_DSI_CMD_MODE)
+	params->dsi.PLL_CLOCK = 505;	/* this value must be in MTK suggested table */
+#else
+	params->dsi.PLL_CLOCK = 300;//97;//285; //220;	/* this value must be in MTK suggested table */
+#endif
+
+```
+
+---
+
+# 屏幕默认休眠时间是1分钟，等屏幕变为半亮时点击屏幕点亮
+1.屏幕默认休眠时间是1分钟，等屏幕变为半亮时点击屏幕点亮
+
+2.再将屏幕休眠时间改为15秒，屏幕不会自动熄屏。
+
+```java
+这个是android的一个新的feature，主要实现是通过类ScreenUndimDetector：
+其类说明为：
+/**
+ * Detects when user manually undims the screen (x times) and acquires a wakelock to keep the screen
+ * on temporarily (without changing the screen timeout setting).
+ */
+中文翻译为：
+
+检测当用户手动解锁屏幕（x次）,即使用户不更改屏幕超时设置，也会获取唤醒锁定，以暂时(10分钟)保持屏幕亮。
+这个功能针对用户多次主动亮屏，保持亮屏10分钟，所以是正常的逻辑，直接关闭。
+```
+
+
+
+---
+
+# 显示TP报点
+
+关于这个显示TP报点的问题，在系统和app层的源码非常之简单，只有一个Activity，具体源码为：
+(1)development/apps/Development/src/com/android/development/PointerLocation.java
+```java
+public class PointerLocation extends Activity {
+ @Override
+protected void onCreate(Bundle icicle) {
+ super.onCreate(icicle);
+ setContentView(new PointerLocationView(this));
+ 
+ // Make the screen full bright for this activity.
+ WindowManager.LayoutParams lp = getWindow().getAttributes();
+ lp.screenBrightness = 1.0f;
+ getWindow().setAttributes(lp);
+ }
+}
+```
+
+这个文件中是定义了这个显示报点的界面。
+
+(2) development/apps/Development/AndroidManifest.xml 
+这个文件是定义了此activity
+```xml
+<activity android:name="PointerLocation" android:label="Pointer Location"
+android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+android:configChanges="keyboard|keyboardHidden|navigation|orientation">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.TEST" />
+</intent-filter>
+</activity>
+```
+
+
+(3) frameworks/base/core/java/com/android/internal/widget/PointerLocationView.java
+这个是最核心的类，其主要功能是显示自定义的一个view，此view显示按点和用户按点轨迹trace信息。
+所以我们可以看出，在上层应用中，这里只是一个被动的tp按点信息显示功能，其所有的逻辑显示都是根据tp按点信息来显示的，所以如果有问题，一般都是要考虑tp按点的数据有问题。
+
+根据前面处理的此界面的tp按点问题的经验，主要是二个方面的问题：
+1. tp驱动的配置，精确度，导致问题；
+2. tp的固件版本不对，导致问题；
+
+看现象，大部分都是正常，只是概率的出现一些问题，我怀疑可能是与tp的按点精确度，或者tp报点速度有关系。
+
+所以，我建议请这二个方向的工程师check一下，如果要调试，也可以在PointerLocationView.java添加日志来追踪问题。
+
+---
+
+# LCM笔记
+
+
+[LCM笔记](https://github.com/hfreeman2008/android_core_framework/blob/main/P28_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BSensor/sensor%E7%AC%94%E8%AE%B0.md)
+
+
+---
 
 # 参考资料
 
+1.Touch--驱动部分理解
 
+https://blog.csdn.net/cassie_huang/article/details/53422252
+
+2.linux驱动由浅入深系列：输入子系统之一(input子系统概述、应用层读取event)
+
+https://blog.csdn.net/radianceblau/article/details/55046812
+
+3.linux驱动由浅入深系列：输入子系统之二(编写一个gpio_key驱动)
+
+https://blog.csdn.net/radianceblau/article/details/56290469
+
+4.linux驱动由浅入深系列：输入子系统之三(应用层模拟input_event)
+
+https://blog.csdn.net/radianceblau/article/details/56487185
+
+5.linux驱动由浅入深系列：基于高通平台分析触摸屏(TP)、虚拟按键驱动
+
+https://blog.csdn.net/radianceblau/article/details/76687690
+
+6.Android getevent用法详解
+
+https://www.cnblogs.com/lialong1st/p/9093851.html
 
 
 

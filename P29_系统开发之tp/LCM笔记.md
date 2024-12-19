@@ -121,6 +121,59 @@ iii.修改背光曲线
 
 ---
 
+
+# 添加CABC
+i.首先需要打开feature config :
+```java
+CONFIG_MTK_AAL_SUPPORT=y
+```
+
+ii.LCM中添加代码：
+
+![添加CABC](./image/添加CABC.png)
+
+
+ 注意：
+遇到的情况是：仅打开AAL，会出现屏幕越暗或者，某些APK打开，背光电流增大，其他地方背光电流小
+
+---
+
+# 修改开机logo
+i.开机logo 制作
+- 需要找一张分辨率正确图片，可以是jpg或png
+- 通过 画图工具 转化为 24位的bmp图片
+- 同时修改 uboot 及 kernel；根据所使用的分辨率文件夹名字(如fhd)来命名
+ 
+ii.开机logo 代码路径及需要修改的文件
+
+![修改开机logo](./image/修改开机logo.png)
+
+ vendor/mediatek/proprietary/bootable/bootloader/lk/Android.mk
+```java
+ifeq ($(TARGET_PRODUCT),H56A)
+$(shell cp -rf ${LOCAL_PATH}/dev_${TARGET_PRODUCT}/* ${LOCAL_PATH}/dev/)
+endif
+```
+
+![修改开机logo2](./image/修改开机logo2.png)
+
+iii.修改logo分辨率 （包括lk和project.mk）
+
+以下仅仅是project.mk
+
+BOOT_LOGO  值
+
+```java
+LCM_HEIGHT = 960
+LCM_WEIGHT = 480
+BOOT_LOGO = fwvga
+```
+
+---
+
+
+
+
 ```java
 
 ```
@@ -141,7 +194,19 @@ iii.修改背光曲线
 ```
 
 
+```java
 
+```
+
+
+```java
+
+```
+
+
+```java
+
+```
 
 
 

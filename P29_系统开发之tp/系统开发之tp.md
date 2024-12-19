@@ -245,6 +245,31 @@ kernel/msm-4.19/arch/arm64/configs/vendor/sc780-perf_defconfig
 
 ---
 
+# Qualcomm 平台触摸屏驱动移植
+
+https://blog.csdn.net/weijory/article/details/72733155
+
+调试相关经验:
+
+一般TP驱动开发，屏产都会给驱动代码或者PATCH，这时主要合代码进去。
+
+一般找代码内现有的一个TP驱动，按它的添加。主要：
+
+1. 把驱动文件放入kernel\drivers\input\touchscreen\，
+2. 修改kconfig和Makefile，加入需要根据宏才能编进去，那么需要在deconfig配置文件中设置为Y.
+3. 在DTSI中加入该TP的配置。
+4. 编译boot，在out/target/product/msmXXX/obj/KERNEL_OBJ/driver/input/touchscreen/下，看是否有.o文件没有，有则编译成功。
+5. 把新的boot文件刷入板子，查看内核log，cat proc/kmsg，看是否有该TP驱动的打印信息。
+6. 根据打印信息，判断出错的问题。
+
+一般问题，中断注册不上，资源分配不成功，I2C设备通信失败。
+
+一些经验，I2C总线不通，可能是因为I2C供电的电源没有供电，或者该总线上挂的设备太多影响的，前期调最好I2C总线上，只挂一个设备。
+
+若probe成功，可在中断或者工作线程里面加一些打印log。
+在adb shell进入终端，输入getevent，手按TP，查看是否有数据打出，对于该TP的输入设备。
+
+---
 
 ```java
 

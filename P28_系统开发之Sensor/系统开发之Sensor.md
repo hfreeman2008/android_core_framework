@@ -15,13 +15,13 @@
 # sensor的整体架构
 
 
-![sensor的整体架构_01](sensor的整体架构_01.png)
+![sensor的整体架构_01](./image/sensor的整体架构_01.png)
 
 
-![sensor的整体架构_02](sensor的整体架构_02.png)
+![sensor的整体架构_02](./image/sensor的整体架构_02.png)
 
 
-![sensor的整体架构_03](sensor的整体架构_03.png)
+![sensor的整体架构_03](./image/sensor的整体架构_03.png)
 
 
 
@@ -172,7 +172,7 @@ frameworks\native\services\sensorservice\SensorService.cpp
 
 ## HAL层： 
 
-![HAL层](HAL层.png)
+![HAL层](./image/HAL层.png)
 
 SensorDevice 的poll函数读取数据
 
@@ -287,10 +287,10 @@ CONFIG_MTK_ICM20645GY=y
 
 老版本的一个启动SensorService调用时序图：
 
-![启动SensorService调用时序图_01](启动SensorService调用时序图_01.png)
+![启动SensorService调用时序图_01](./image/启动SensorService调用时序图_01.png)
 
 
-![启动SensorService调用时序图_02](启动SensorService调用时序图_02.png)
+![启动SensorService调用时序图_02](./image/启动SensorService调用时序图_02.png)
 
 
 下面是高通平台的一个SensorService启动流程：
@@ -579,7 +579,7 @@ ssize_t SensorDevice::pollFmq(sensors_event_t* buffer, size_t maxNumEventsToRead
 
 进入while循环， 不停的从底层poll数据， 并sendEvent到上层
 
-![客户端与服务端之间Sensor数据传递](客户端与服务端之间Sensor数据传递.png)
+![客户端与服务端之间Sensor数据传递](./image/客户端与服务端之间Sensor数据传递.png)
 
 传递数据是的一个关键宏：
 sensors_event_t
@@ -623,7 +623,7 @@ hardware\libhardware\include\hardware\sensors.h
 
 5. 客户端与服务端之间Sensor数据传递时序图：
 
-![客户端与服务端之间Sensor数据传递时序图](客户端与服务端之间Sensor数据传递时序图.png)
+![客户端与服务端之间Sensor数据传递时序图](./image/客户端与服务端之间Sensor数据传递时序图.png)
 
 根据图示可以看出客户端与服务端通过Binder建立链接， 通过BitTube管道进行数据传递。
 
@@ -663,7 +663,7 @@ void BitTube::init(size_t rcvbuf, size_t sndbuf) {
 
 # Sensor Framework 类图
 
-![Sensor_Framework_类图](Sensor_Framework_类图.png)
+![Sensor_Framework_类图](./image/Sensor_Framework_类图.png)
 
 
 ## Sensor SDK

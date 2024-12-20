@@ -623,6 +623,16 @@ https://blog.csdn.net/weixin_42754390/article/details/124268534
 
 ---
 
+
+[上一篇文章 P16_系统开发之浅谈PowerManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P16_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88PowerManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88PowerManagerService.md)
+
+
+
+
+[下一篇文章 P18_系统开发之浅谈VibratorManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P18_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88VibratorManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88VibratorManagerService.md)
+
+---
+
 # 结束语
 
 <img src="../Images/end_001.png">

@@ -933,6 +933,15 @@ registerService(Context.ACTIVITY_SERVICE, ActivityManager.class,
 
 ---
 
+[上一篇文章 P13_系统开发之浅谈ActivityTaskManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P13_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88ActivityTaskManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88ActivityTaskManagerService.md)
+
+
+
+
+[下一篇文章 P15_系统开发之浅谈PackageManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P15_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88PackageManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88PackageManagerService.md)
+
+---
+
 
 # 结束语
 

@@ -808,6 +808,16 @@ registerService(Context.ACTIVITY_TASK_SERVICE, ActivityTaskManager.class,
 
 ---
 
+
+[上一篇文章 P12_系统开发之浅谈WindowManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P12_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88WindowManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88WindowManagerService.md)
+
+
+
+
+[下一篇文章 P14_系统开发之浅谈ActivityManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P14_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88ActivityManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88ActivityManagerService.md)
+
+---
+
 # 结束语
 
 <img src="../Images/end_001.png">

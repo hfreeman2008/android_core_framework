@@ -158,6 +158,17 @@ frameworks\native\cmds\rss_hwm_reset\Android.bp
 
 ---
 
+[上一篇文章 P22_系统开发之浅谈LightsService](https://github.com/hfreeman2008/android_core_framework/blob/main/P22_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88LightsService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88LightsService.md)
+
+
+
+
+
+[下一篇文章 P24_系统开发之回调接口注册注销](https://github.com/hfreeman2008/android_core_framework/blob/main/P24_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E5%9B%9E%E8%B0%83%E6%8E%A5%E5%8F%A3%E6%B3%A8%E5%86%8C%E6%B3%A8%E9%94%80/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E5%9B%9E%E8%B0%83%E6%8E%A5%E5%8F%A3%E6%B3%A8%E5%86%8C%E6%B3%A8%E9%94%80.md)
+
+
+---
+
 # 结束语
 
 <img src="../Images/end_001.png">

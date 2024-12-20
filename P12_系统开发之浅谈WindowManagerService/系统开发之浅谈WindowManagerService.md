@@ -575,12 +575,6 @@ WindowManagerPolicy windowManagerPolicy = LocalServices.getService(WindowManager
 
 ---
 
-
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p12_系统开发之浅谈windowmanagerservice)
-
----
-
-
 # 结束语
 
 对于android第一个核心系统服务 WindowManagerService ，至此你是不是已经有了一个比较整体的了解呢？
@@ -591,6 +585,21 @@ WindowManagerPolicy windowManagerPolicy = LocalServices.getService(WindowManager
 
 毕竟8000+行代码比20000+代码看起来是要轻松的多了。
 
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p12_系统开发之浅谈windowmanagerservice)
+
+---
+
+
+[上一篇文章 P11_系统开发之浅谈TimeDetectorService](https://github.com/hfreeman2008/android_core_framework/blob/main/P11_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88TimeDetectorService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88TimeDetectorService.md)
+
+
+
+[下一篇文章 P13_系统开发之浅谈ActivityTaskManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P13_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88ActivityTaskManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88ActivityTaskManagerService.md)
+
+---
 
 <img src="../Images/end_001.png">
 

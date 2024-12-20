@@ -738,6 +738,8 @@ https://www.cnblogs.com/lialong1st/p/9093851.html
 
 ---
 
+<right>文本位置：居中</right>
+
 [下一篇文章](https://github.com/hfreeman2008/android_core_framework/blob/main/P30_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BRRO/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BRRO.md)
 
 ---

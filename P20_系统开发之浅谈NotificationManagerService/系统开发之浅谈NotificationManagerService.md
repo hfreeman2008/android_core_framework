@@ -12,6 +12,15 @@
 
 ---
 
+[上一篇文章 P19_系统开发之浅谈AudioService](https://github.com/hfreeman2008/android_core_framework/blob/main/P19_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88AudioService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88AudioService.md)
+
+
+
+[下一篇文章 P21_系统开发之浅谈InputMethodManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P21_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88InputMethodManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88InputMethodManagerService.md)
+
+---
+
+
 # NotificationManagerService 作用
 
 主要是管理通知(notification)，包含通知的增加，删除，更新，播放通知声音，创建一些白名单应用的通知栏，消息等级管理，震动，led灯的管理，通知的策略管理。

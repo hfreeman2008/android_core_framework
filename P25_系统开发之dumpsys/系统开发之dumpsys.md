@@ -12,6 +12,14 @@
 
 ---
 
+[上一篇文章 P24_系统开发之回调接口注册注销](https://github.com/hfreeman2008/android_core_framework/blob/main/P24_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E5%9B%9E%E8%B0%83%E6%8E%A5%E5%8F%A3%E6%B3%A8%E5%86%8C%E6%B3%A8%E9%94%80/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E5%9B%9E%E8%B0%83%E6%8E%A5%E5%8F%A3%E6%B3%A8%E5%86%8C%E6%B3%A8%E9%94%80.md)
+
+
+
+[下一篇文章 P26_系统开发之系统属性](https://github.com/hfreeman2008/android_core_framework/blob/main/P26_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E7%B3%BB%E7%BB%9F%E5%B1%9E%E6%80%A7/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E7%B3%BB%E7%BB%9F%E5%B1%9E%E6%80%A7.md)
+
+---
+
 # 前言
 
 dumpsys命令是我们系统开发常用的命令之一，对于我们定位系统的具体细节信息是非常有用的；

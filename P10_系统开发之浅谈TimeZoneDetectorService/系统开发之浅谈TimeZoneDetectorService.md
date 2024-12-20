@@ -12,6 +12,16 @@
 
 ---
 
+[上一篇文章 P9_系统开发之系统服务初步了解](https://github.com/hfreeman2008/android_core_framework/blob/main/P9_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3.md)
+
+
+
+
+[下一篇文章 P11_系统开发之浅谈TimeDetectorService](https://github.com/hfreeman2008/android_core_framework/blob/main/P11_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88TimeDetectorService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88TimeDetectorService.md)
+
+
+---
+
 # 问题描述：
 客户有一个关闭通话功能的需求，根据MTK的配置方法关闭了大概8个宏开关后，实现通话功能，但是导致插好sim卡开机后，时间和时区不能更新的问题。
 

@@ -15,6 +15,15 @@ android问题的分析，大家使用最多的是日志。
 
 ---
 
+[上一篇文章 P4_系统分析的屠龙刀之log日志](https://github.com/hfreeman2008/android_core_framework/blob/main/P4_%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Blog%E6%97%A5%E5%BF%97/%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Blog%E6%97%A5%E5%BF%97.md)
+
+
+
+
+[下一篇文章 P6_系统分析的屠龙刀之traceview](https://github.com/hfreeman2008/android_core_framework/blob/main/P6_%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Btraceview/%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Btraceview.md)
+
+---
+
 
 一个android系统工程，你只有掌握了dumpsys工具，你才能说自己已经开始摸到系统的脉搏了。
 <img src="mai_bo.png">

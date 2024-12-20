@@ -12,6 +12,16 @@
 
 ---
 
+[上一篇文章 P15_系统开发之浅谈PackageManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P15_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88PackageManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88PackageManagerService.md)
+
+
+
+
+[下一篇文章 P17_系统开发之浅谈BatteryService](https://github.com/hfreeman2008/android_core_framework/blob/main/P17_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88BatteryService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88BatteryService.md)
+
+
+---
+
 # PowerManagerService 类的作用：
 
 主要是处理与电源有关的逻辑,包括手机亮度管理,手机锁屏,节能锁屏,手机低电量模式,手机睡眠,手机双击亮屏.

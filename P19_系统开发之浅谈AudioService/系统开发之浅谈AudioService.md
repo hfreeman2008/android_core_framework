@@ -12,6 +12,16 @@
 
 ---
 
+[上一篇文章 P18_系统开发之浅谈VibratorManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P18_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88VibratorManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88VibratorManagerService.md)
+
+
+
+
+[下一篇文章 P20_系统开发之浅谈NotificationManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P20_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88NotificationManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88NotificationManagerService.md)
+
+---
+
+
 # AudioService 类的作用
 
 AudioService 主要用于管理 负责管理应用程序和系统的音频资源。在操作系统中分配、控制和处理音频资源，以提供高质量、可靠和灵活的音频服务。

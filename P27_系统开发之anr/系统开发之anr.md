@@ -13,6 +13,13 @@
 
 ---
 
+[上一篇文章 P26_系统开发之系统属性](https://github.com/hfreeman2008/android_core_framework/blob/main/P26_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E7%B3%BB%E7%BB%9F%E5%B1%9E%E6%80%A7/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E7%B3%BB%E7%BB%9F%E5%B1%9E%E6%80%A7.md)
+
+
+[下一篇文章 P28: 系统开发之Sensor](https://github.com/hfreeman2008/android_core_framework/blob/main/P28_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BSensor/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BSensor.md)
+
+---
+
 # ANR
 
 ANR(application not response)，应用无响应。

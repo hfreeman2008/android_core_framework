@@ -17,6 +17,15 @@
 
 ---
 
+[上一篇文章 P2_开机速度优化](https://github.com/hfreeman2008/android_core_framework/blob/main/P2_%E5%BC%80%E6%9C%BA%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96/%E5%BC%80%E6%9C%BA%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96.md)
+
+
+
+[下一篇文章 P4_系统分析的屠龙刀之log日志](https://github.com/hfreeman2008/android_core_framework/blob/main/P4_%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Blog%E6%97%A5%E5%BF%97/%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Blog%E6%97%A5%E5%BF%97.md)
+
+---
+
+
 # 实现效果
 ## 生成二个不同包名的apk，并且应用图标和应用名称实现动态替换
 <img src=".\Image\logo_and_name.PNG">

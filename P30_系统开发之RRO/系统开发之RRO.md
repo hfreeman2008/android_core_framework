@@ -13,6 +13,11 @@
 
 ---
 
+[上一篇文章 P29_系统开发之tp](https://github.com/hfreeman2008/android_core_framework/blob/main/P29_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Btp/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Btp.md)
+
+
+---
+
 # RRO作用
 
 三方应用的问题，一般我们是没有办法处理。

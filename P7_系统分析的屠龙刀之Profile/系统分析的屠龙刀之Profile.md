@@ -14,6 +14,16 @@ Android Profile是性能分析工具traceview的升级版本，功能更强大�
 
 ---
 
+[上一篇文章 P6_系统分析的屠龙刀之traceview](https://github.com/hfreeman2008/android_core_framework/blob/main/P6_%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Btraceview/%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Btraceview.md)
+
+
+
+
+[下一篇文章 P8_系统开发之自定义系统服务](https://github.com/hfreeman2008/android_core_framework/blob/main/P8_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1.md)
+
+
+---
+
 # Android Profile主要作用
 - Cpu 问题分析
 - Memory问题分析

@@ -24,6 +24,15 @@
 
 ---
 
+[上一篇文章 P27: 系统开发之anr](https://github.com/hfreeman2008/android_core_framework/blob/main/P27_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Banr/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Banr.md)
+
+
+
+[下一篇文章 P29_系统开发之tp](https://github.com/hfreeman2008/android_core_framework/blob/main/P29_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Btp/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Btp.md)
+
+
+---
+
 # sensor的整体架构
 
 

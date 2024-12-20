@@ -13,6 +13,13 @@ GMS认证，因为其工作量的爆炸性增加，问题解决的难度也在�
 
 [跳转到readme](https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md)
 
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
+[下一篇文章 P2_开机速度优化](https://github.com/hfreeman2008/android_core_framework/blob/main/P2_%E5%BC%80%E6%9C%BA%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96/%E5%BC%80%E6%9C%BA%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96.md)
 
 ---
 
@@ -39,7 +46,6 @@ GMS认证，因为其工作量的爆炸性增加，问题解决的难度也在�
 
 [android GMS认证](https://blog.csdn.net/hfreeman2008/category_6170578.html)
 
----
 
 ---
 
@@ -52,7 +58,6 @@ GMS认证，因为其工作量的爆炸性增加，问题解决的难度也在�
 
 ---
 
----
 
 # 结束语
 

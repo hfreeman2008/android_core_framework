@@ -13,6 +13,16 @@
 
 ---
 
+[上一篇文章 P16_系统开发之浅谈PowerManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P16_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88PowerManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88PowerManagerService.md)
+
+
+
+
+[下一篇文章 P18_系统开发之浅谈VibratorManagerService](https://github.com/hfreeman2008/android_core_framework/blob/main/P18_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88VibratorManagerService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88VibratorManagerService.md)
+
+
+---
+
 # BatteryService 类的作用：
 
 该服务继承SystemService，主要用于管理 电池的充电状态，充电百分比，监视当前电量的状态,并根据当前的电量状态进行相应的逻辑操作.

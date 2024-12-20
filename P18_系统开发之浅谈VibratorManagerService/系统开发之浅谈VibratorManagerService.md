@@ -12,6 +12,16 @@
 
 ---
 
+[上一篇文章 P17_系统开发之浅谈BatteryService](https://github.com/hfreeman2008/android_core_framework/blob/main/P17_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88BatteryService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88BatteryService.md)
+
+
+
+
+[下一篇文章 P19_系统开发之浅谈AudioService](https://github.com/hfreeman2008/android_core_framework/blob/main/P19_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88AudioService/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E6%B5%85%E8%B0%88AudioService.md)
+
+---
+
+
 
 # VibratorManagerService 作用
 

@@ -16,6 +16,15 @@
 
 ---
 
+
+[上一篇文章 P28: 系统开发之Sensor](https://github.com/hfreeman2008/android_core_framework/blob/main/P28_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BSensor/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BSensor.md)
+
+
+
+[下一篇文章 P30: 系统开发之RRO](https://github.com/hfreeman2008/android_core_framework/blob/main/P30_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BRRO/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BRRO.md)
+
+---
+
 # touchscreen屏幕
 kernel\msm-4.9\drivers\input\touchscreen
 

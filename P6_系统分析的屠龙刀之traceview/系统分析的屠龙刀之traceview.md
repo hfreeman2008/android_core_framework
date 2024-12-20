@@ -17,6 +17,14 @@ traceview我主要是用来定位应用短时间的卡，耗时操作。
 
 ---
 
+[上一篇文章 P5_系统分析的屠龙刀之dumpsys信息](https://github.com/hfreeman2008/android_core_framework/blob/main/P5_%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Bdumpsys%E4%BF%A1%E6%81%AF/%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Bdumpsys%E4%BF%A1%E6%81%AF.md)
+
+
+
+[下一篇文章 P7_系统分析的屠龙刀之Profile](https://github.com/hfreeman2008/android_core_framework/blob/main/P7_%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8BProfile/%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8BProfile.md)
+
+
+---
 
 # 如何使用
 - 通过Android studio自带的traceview查看（Android profiler）

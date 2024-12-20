@@ -79,51 +79,41 @@ LatinImeGoogleOverlay\res\values\strings.xml
 
 
 ```java
-
+PRODUCT_PACKAGES += RROCalendar
 ```
 
----
+2.RROCalendar应用
 
+2.1 Android.mk
+```mk
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+LOCAL_MODULE_TAGS := optional
+LOCAL_SRC_FILES := $(call all-subdir-java-files)
+LOCAL_SDK_VERSION := current
+LOCAL_PACKAGE_NAME := RROCalendar
+LOCAL_MODULE_PATH := $(TARGET_OUT)/vendor/overlay
+LOCAL_CERTIFICATE := shared
+include $(BUILD_PACKAGE)
+```
+
+2.2 AndroidManifest.xml
+```xml
+ <?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.calendar.overlay.RROCalendar">
+    <overlay android:targetPackage="com.android.calendar" android:priority="1200"/>
+</manifest>
+```
+2.3 res目录，下放置各个国家的语言
+
+2.4应用并列的Android.mk
+
+这个主要是把此应用目录下的Android.mk文件包含进来
 
 ```java
-
+include $(call all-subdir-makefiles)
 ```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-```java
-
-```
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

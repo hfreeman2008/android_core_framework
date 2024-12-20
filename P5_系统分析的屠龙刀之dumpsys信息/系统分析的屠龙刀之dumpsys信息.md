@@ -339,6 +339,17 @@ https://developer.android.google.cn/studio/command-line/dumpsys
 
 ---
 
+
+[上一篇文章 P4_系统分析的屠龙刀之log日志](https://github.com/hfreeman2008/android_core_framework/blob/main/P4_%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Blog%E6%97%A5%E5%BF%97/%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Blog%E6%97%A5%E5%BF%97.md)
+
+
+
+
+[下一篇文章 P6_系统分析的屠龙刀之traceview](https://github.com/hfreeman2008/android_core_framework/blob/main/P6_%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Btraceview/%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E7%9A%84%E5%B1%A0%E9%BE%99%E5%88%80%E4%B9%8Btraceview.md)
+
+
+---
+
 # 结束语
 
 <img src="../Images/end_001.png">

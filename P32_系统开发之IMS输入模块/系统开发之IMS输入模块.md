@@ -1,1 +1,61 @@
+# P32: 系统开发之IMS输入模块
 
+<img src="../flower/flower_p22.png">
+
+---
+
+[跳转到readme](https://github.com/hfreeman2008/android_core_framework/blob/main/README-CN.md)
+
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章结尾</font>](#结束语)
+
+---
+
+[上一篇文章 P30_系统开发之RRO](https://github.com/hfreeman2008/android_core_framework/blob/main/P30_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BRRO/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BRRO.md)
+
+
+---
+
+
+# android
+
+
+
+
+
+---
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+---
+
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p)
+
+---
+
+
+[上一篇文章 P30_系统开发之RRO](https://github.com/hfreeman2008/android_core_framework/blob/main/P30_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BRRO/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BRRO.md)
+
+
+
+---
+
+# 结束语
+
+<img src="../Images/end_001.png">

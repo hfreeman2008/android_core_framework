@@ -19,8 +19,17 @@
 ---
 
 
-# android
+# 输入模块框架：
 
+
+## framework
+frameworks/base/core/java/android/hardware/input/InputManager.java
+frameworks\base\services\core\java\com\android\server\input\InputManagerService.java
+frameworks/base/services/core/jni/com_android_server_input_InputManagerService.cpp
+ InputManagerService是Android框架层一个非核心服务，主要是提供一个IMS输入系统启动的入口，同时对应用层提供业务相关接口。
+
+frameworks\base\services\core\java\com\android\server\wm\WindowManagerService.java
+WindowManagerService有一个核心的功能，输入系统的中转站；
 
 
 

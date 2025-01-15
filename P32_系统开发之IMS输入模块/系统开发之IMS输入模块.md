@@ -21,6 +21,7 @@
 
 # 输入模块框架：
 
+![输入模块框架](./image/输入模块框架.png)
 
 ## framework
 frameworks/base/core/java/android/hardware/input/InputManager.java
@@ -97,7 +98,7 @@ hardware\libhardware\modules\input\evdev
 
 ---
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p)
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p32-系统开发之ims输入模块)
 
 ---
 

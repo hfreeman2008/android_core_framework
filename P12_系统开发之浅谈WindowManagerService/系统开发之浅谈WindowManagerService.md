@@ -313,8 +313,9 @@ https://blog.csdn.net/hfreeman2008/article/details/113589077
 
 ## 1. 界面结构布局
 
-<img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/atms_whole_13.png">
 
+
+<img src="../P13_系统开发之浅谈ActivityTaskManagerService/atms_whole_13.png">
 
 ---
 
@@ -323,19 +324,20 @@ https://blog.csdn.net/hfreeman2008/article/details/113589077
 ```java
 dumpsys activity activities
 ```
-<img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/activity_activities.png">
 
+
+<img src="../P13_系统开发之浅谈ActivityTaskManagerService/activity_activities.png">
 
 ```java
 dumpsys window displays
 ```
-<img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/window_displays.png">
+<img src="../P13_系统开发之浅谈ActivityTaskManagerService/window_displays.png">
 
 ---
 
 ## 3.ams和wms关联的类图
 
-<img src="../专题十三_系统开发之浅谈ActivityTaskManagerService/atms_ams_wms_13.png">
+<img src="../P13_系统开发之浅谈ActivityTaskManagerService/atms_ams_wms_13.png">
 
 ---
 

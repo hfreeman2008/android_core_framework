@@ -181,7 +181,7 @@ public ActivityTaskManager createService(ContextImpl ctx) {
 ---
 # activity和各个contain的关系
 
-<img src="../专题十二_系统开发之浅谈WindowManagerService/ams_wms_001.png">
+<img src="../P12_系统开发之浅谈WindowManagerService/ams_wms_001.png">
 
 
 这部分参考：

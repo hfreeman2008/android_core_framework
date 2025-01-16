@@ -231,7 +231,7 @@
 <div align=left>
 
 
-![alt text](image.png)
+
 
 android开发是个杀猪刀，入行要考虑清楚。
 

@@ -114,70 +114,70 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
-## P20: 系统开发之浅谈NotificationManagerService
+## P20: System Development about NotificationManagerService
 [系统开发之浅谈NotificationManagerService.md](./P20_系统开发之浅谈NotificationManagerService/系统开发之浅谈NotificationManagerService.md)
 
 ---
 
-## P21: 系统开发之浅谈InputMethodManagerService
+## P21: System Development about InputMethodManagerService
 [系统开发之浅谈InputMethodManagerService.md](./P21_系统开发之浅谈InputMethodManagerService/系统开发之浅谈InputMethodManagerService.md)
 
 ---
 
-## P22: 系统开发之浅谈LightsService
+## P22: System Development about LightsService
 [系统开发之浅谈LightsService.md](./P22_系统开发之浅谈LightsService/系统开发之浅谈LightsService.md)
 
 ---
 
-## P23: 系统开发之如何新建一个system_bin
+## P23: System Development about How to create a new system_bin
 [系统开发之如何新建一个system_bin.md](./P23_系统开发之如何新建一个system_bin/系统开发之如何新建一个system_bin.md)
 
 
 ---
 
-## P24: 系统开发之回调接口注册注销
+## P24: System Development about Callback interface registration
 [系统开发之回调接口注册注销.md](./P24_系统开发之回调接口注册注销/系统开发之回调接口注册注销.md)
 
 ---
 
-## P25: 系统开发之dumpsys
+## P25: System Development about dumpsys
 [系统开发之dumpsys.md](./P25_系统开发之dumpsys/系统开发之dumpsys.md)
 
 ---
 
-## P26: 系统开发之系统属性
+## P26: System Development about system properties
 [系统开发之系统属性.md](./P26_系统开发之系统属性/系统开发之系统属性.md)
 
 ---
 
-## P27: 系统开发之anr
+## P27: System Development about anr
 [系统开发之anr.md](./P27_系统开发之anr/系统开发之anr.md)
 
 ---
 
-## P28: 系统开发之Sensor
+## P28: System Development about Sensor
 [系统开发之Sensor.md](./P28_系统开发之Sensor/系统开发之Sensor.md)
 
 ---
 
 
 
-## P29: 系统开发之tp
+## P29: System Development about tp
 [系统开发之tp.md](./P29_系统开发之tp/系统开发之tp.md)
 
 ---
 
-## P30: 系统开发之RRO
+## P30: System Development about RRO
 [系统开发之RRO.md](./P30_系统开发之RRO/系统开发之RRO.md)
 
 ---
 
-## P31: 系统开发之驱动开发
+## P31: System Development about kenel develop
 [系统开发之驱动开发.md](./P31_系统开发之驱动开发/系统开发之驱动开发.md)
 
 ---
 
-## P32: 系统开发之IMS输入模块
+## P32: System Development about IMS
 [系统开发之IMS输入模块.md](./P32_系统开发之IMS输入模块/系统开发之IMS输入模块.md)
 
 

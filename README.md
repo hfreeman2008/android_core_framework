@@ -183,6 +183,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## P33: System Development about Project customization
+[系统开发之项目客制化.md](./P33_系统开发之项目客制化/系统开发之项目客制化.md)
+
+---
+
 Note: 
 
 The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.

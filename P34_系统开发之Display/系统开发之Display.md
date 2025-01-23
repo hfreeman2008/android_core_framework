@@ -22,7 +22,9 @@
 
 ---
 
+# 文章集合
 
+- [View的控件xml属性和Activity的xml属性解析]()
 
 
 

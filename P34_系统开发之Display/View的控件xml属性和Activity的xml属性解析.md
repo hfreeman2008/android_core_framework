@@ -20,6 +20,8 @@
 # 前言
 刚开始学习android基本控件时，直接在xml布局文件中配置基本的UI控件属性，就可以实现控件的自定义；
 
+对于activity，也是在AndroidManifest.xml中配置一下属性，就可以实现activity的自定义；
+
 那个到底是如何实现的呢？
 
 我们今天一起追一个源码，探索一下；
@@ -380,7 +382,7 @@ https://developer.android.google.cn/reference/kotlin/android/app/Activity?hl=en
 
 ---
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p34-系统开发之display)
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#view的控件xml属性和activity的xml属性解析)
 
 ---
 

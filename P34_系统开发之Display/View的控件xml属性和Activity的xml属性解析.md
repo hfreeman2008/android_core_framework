@@ -1,6 +1,6 @@
 # View的控件xml属性和Activity的xml属性解析
 
-<img src="../flower/flower_p25.png">
+<img src="../flower/flower_p24.png">
 
 ---
 

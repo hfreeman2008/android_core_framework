@@ -188,6 +188,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## P34: System Development about Display
+[系统开发之Display.md](./P34_系统开发之Display/系统开发之Display.md)
+
+---
+
 Note: 
 
 The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.

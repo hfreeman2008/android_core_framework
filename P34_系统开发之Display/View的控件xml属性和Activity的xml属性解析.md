@@ -144,47 +144,236 @@ frameworks\base\core\res\res\values\attrs.xml
 以TextView的editable为例：
 
 
-```xml
+## (1)xml布局文件为
 
+```xml
+    <TextView
+        android:id="@+id/text_view_id"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:editable="true" />
 ```
 
 
-```xml
+## (2)xml解析
+frameworks\base\core\java\android\widget\TextView.java
 
+TextView#TextView
+
+```java
+public TextView(
+        Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+......
+readTextAppearance(context, a, attributes, true /* styleArray */);
+int n = a.getIndexCount();
+// Must set id in a temporary variable because it will be reset by setText()
+boolean textIsSetFromXml = false;
+for (int i = 0; i < n; i++) {
+    int attr = a.getIndex(i);
+
+    switch (attr) {
+        //这就是对android:editable属性解析
+        case com.android.internal.R.styleable.TextView_editable:
+            editable = a.getBoolean(attr, editable);
+            break;
+        //这就是对android:inputMethod属性解析
+        case com.android.internal.R.styleable.TextView_inputMethod:
+            inputMethod = a.getText(attr);
+            break;
+        //这就是对android:numeric属性解析
+        case com.android.internal.R.styleable.TextView_numeric:
+            numeric = a.getInt(attr, numeric);
+            break;
+        //这就是对android:digits属性解析
+        case com.android.internal.R.styleable.TextView_digits:
+            digits = a.getText(attr);
+            break;
+        //这就是对android:phoneNumber属性解析
+        case com.android.internal.R.styleable.TextView_phoneNumber:
+            phone = a.getBoolean(attr, phone);
+            break;
+.......
+}
 ```
 
 
-```xml
-
-```
-
+## (3)属性定义文件
+frameworks\base\core\res\res\values\attrs.xml
 
 ```xml
-
+<!-- If set, specifies that this TextView has an input method.
+     It will be a textual one unless it has otherwise been specified.
+     For TextView, this is false by default.  For EditText, it is
+     true by default.
+     {@deprecated Use inputType instead.} -->
+<attr name="editable" format="boolean" />
 ```
 
+## (4)TextView的其他xml属性
 
-```xml
-
-```
+![TextView的其他xml属性](./image/TextView的其他xml属性.png)
 
 
 ---
 
 
+# Activity的xml属性
+
+以android:screenOrientation为例：
+
+## (1)AndroidManifest.xml配置
+
+```xml
+<activity
+    android:name=".YourActivity"
+    android:screenOrientation="这里设置横竖屏">
+</activity>
+
+```
+
+
+## (2)xml解析
+
+frameworks\base\core\java\android\content\pm\parsing\component\ParsedActivityUtils.java
+
+```java
+int screenOrientation = sa.getInt(R.styleable.AndroidManifestActivity_screenOrientation, SCREEN_ORIENTATION_UNSPECIFIED);
+int resizeMode = getActivityResizeMode(pkg, sa, screenOrientation);
+activity.screenOrientation = screenOrientation;
+```
+
+frameworks\base\core\java\android\content\pm\PackageParser.java
+```java
+a.info.screenOrientation = sa.getInt(
+        R.styleable.AndroidManifestActivity_screenOrientation,
+        SCREEN_ORIENTATION_UNSPECIFIED);
+```
+
+
+## (3)screenOrientation属性的定义
+frameworks\base\core\res\res\values\attrs_manifest.xml
+
+```xml
+<!-- Specify the orientation an activity should be run in.  If not
+     specified, it will run in the current preferred orientation
+     of the screen.
+     <p>This attribute is supported by the <a
+        href="{@docRoot}guide/topics/manifest/activity-element.html">{@code <activity>}</a>
+        element. -->
+<attr name="screenOrientation">
+    <!-- No preference specified: let the system decide the best
+         orientation.  This will either be the orientation selected
+         by the activity below, or the user's preferred orientation
+         if this activity is the bottom of a task. If the user
+         explicitly turned off sensor based orientation through settings
+         sensor based device rotation will be ignored. If not by default
+         sensor based orientation will be taken into account and the
+         orientation will changed based on how the user rotates the device.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_UNSPECIFIED}. -->
+    <enum name="unspecified" value="-1" />
+    <!-- Would like to have the screen in a landscape orientation: that
+         is, with the display wider than it is tall, ignoring sensor data.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_LANDSCAPE}. -->
+    <enum name="landscape" value="0" />
+    <!-- Would like to have the screen in a portrait orientation: that
+         is, with the display taller than it is wide, ignoring sensor data.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_PORTRAIT}. -->
+    <enum name="portrait" value="1" />
+    <!-- Use the user's current preferred orientation of the handset.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_USER}. -->
+    <enum name="user" value="2" />
+    <!-- Keep the screen in the same orientation as whatever is behind
+         this activity.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_BEHIND}. -->
+    <enum name="behind" value="3" />
+    <!-- Orientation is determined by a physical orientation sensor:
+         the display will rotate based on how the user moves the device.
+         Ignores user's setting to turn off sensor-based rotation.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_SENSOR}. -->
+    <enum name="sensor" value="4" />
+    <!-- Always ignore orientation determined by orientation sensor:
+         the display will not rotate when the user moves the device.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_NOSENSOR}. -->
+    <enum name="nosensor" value="5" />
+    <!-- Would like to have the screen in landscape orientation, but can
+         use the sensor to change which direction the screen is facing.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_SENSOR_LANDSCAPE}. -->
+    <enum name="sensorLandscape" value="6" />
+    <!-- Would like to have the screen in portrait orientation, but can
+         use the sensor to change which direction the screen is facing.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_SENSOR_PORTRAIT}. -->
+    <enum name="sensorPortrait" value="7" />
+    <!-- Would like to have the screen in landscape orientation, turned in
+         the opposite direction from normal landscape.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_REVERSE_LANDSCAPE}. -->
+    <enum name="reverseLandscape" value="8" />
+    <!-- Would like to have the screen in portrait orientation, turned in
+         the opposite direction from normal portrait.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_REVERSE_PORTRAIT}. -->
+    <enum name="reversePortrait" value="9" />
+    <!-- Orientation is determined by a physical orientation sensor:
+         the display will rotate based on how the user moves the device.
+         This allows any of the 4 possible rotations, regardless of what
+         the device will normally do (for example some devices won't
+         normally use 180 degree rotation).
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_FULL_SENSOR}. -->
+    <enum name="fullSensor" value="10" />
+    <!-- Would like to have the screen in landscape orientation, but if
+         the user has enabled sensor-based rotation then we can use the
+         sensor to change which direction the screen is facing.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_USER_LANDSCAPE}. -->
+    <enum name="userLandscape" value="11" />
+    <!-- Would like to have the screen in portrait orientation, but if
+         the user has enabled sensor-based rotation then we can use the
+         sensor to change which direction the screen is facing.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_USER_PORTRAIT}. -->
+    <enum name="userPortrait" value="12" />
+    <!-- Respect the user's sensor-based rotation preference, but if
+         sensor-based rotation is enabled then allow the screen to rotate
+         in all 4 possible directions regardless of what
+         the device will normally do (for example some devices won't
+         normally use 180 degree rotation).
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_FULL_USER}. -->
+    <enum name="fullUser" value="13" />
+    <!-- Screen is locked to its current rotation, whatever that is.
+         Corresponds to
+         {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_LOCKED}. -->
+    <enum name="locked" value="14" />
+</attr>
+```
+
+
+
+
 ---
 
+# 参考
+1.View官网
 
+https://developer.android.google.cn/reference/android/view/View?hl=en#xml-attributes
 
+2.TextView官网
 
+https://developer.android.google.cn/reference/android/widget/TextView?hl=en
 
----
+3.Actiity官网
 
-
-
-
-
-
+https://developer.android.google.cn/reference/kotlin/android/app/Activity?hl=en
 
 
 

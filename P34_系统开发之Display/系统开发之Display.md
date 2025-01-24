@@ -26,7 +26,10 @@
 
 - [1.View的控件xml属性和Activity的xml属性解析](https://github.com/hfreeman2008/android_core_framework/blob/main/P34_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay/View%E7%9A%84%E6%8E%A7%E4%BB%B6xml%E5%B1%9E%E6%80%A7%E5%92%8CActivity%E7%9A%84xml%E5%B1%9E%E6%80%A7%E8%A7%A3%E6%9E%90.md)
 
-- [2.View控件soundEffectsEnabled属性和Activity的excludeFromRecents属性]()
+
+- [2.View控件soundEffectsEnabled属性和Activity的excludeFromRecents属性](https://github.com/hfreeman2008/android_core_framework/blob/main/P34_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay/View%E6%8E%A7%E4%BB%B6soundEffectsEnabled%E5%B1%9E%E6%80%A7%E5%92%8CActivity%E7%9A%84excludeFromRecents%E5%B1%9E%E6%80%A7.md)
+
+
 
 
 

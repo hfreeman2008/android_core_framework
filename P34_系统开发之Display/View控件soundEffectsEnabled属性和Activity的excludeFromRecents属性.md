@@ -346,7 +346,7 @@ SparseBooleanArray getRecentTaskIds() {
 
 ---
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#view的控件xml属性和activity的xml属性解析)
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#view控件soundeffectsenabled属性和activity的excludefromrecents属性)
 
 ---
 

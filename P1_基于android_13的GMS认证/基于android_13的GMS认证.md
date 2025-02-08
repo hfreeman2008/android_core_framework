@@ -47,6 +47,17 @@ GMS认证，因为其工作量的爆炸性增加，问题解决的难度也在�
 [android GMS认证](https://blog.csdn.net/hfreeman2008/category_6170578.html)
 
 
+
+# 相关资料
+
+- 1.查询cve 安全漏洞的网址：
+
+https://www.cve.org/
+
+- 2.兼容性测试套件下载
+
+https://source.android.google.cn/docs/compatibility/cts/downloads?hl=zh_cn
+
 ---
 
 [<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p1-基于android-13的gms认证)

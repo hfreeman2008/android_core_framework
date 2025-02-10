@@ -54,6 +54,8 @@ GMS认证，因为其工作量的爆炸性增加，问题解决的难度也在�
 
 https://www.cve.org/
 
+https://source.android.com/docs/security/bulletin?hl=zh-cn
+
 - 2.兼容性测试套件下载
 
 https://source.android.google.cn/docs/compatibility/cts/downloads?hl=zh_cn

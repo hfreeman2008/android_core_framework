@@ -196,7 +196,10 @@ public void onActivityManagerInternalAdded() {
     }
 }
 ```
+
 可以看出，这就是一个初始化的逻辑调用。
+
+
 ---
 # handler消息
 

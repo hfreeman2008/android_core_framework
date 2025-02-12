@@ -343,7 +343,7 @@ public void onNotificationVisibilityChanged(NotificationVisibility[] newlyVisibl
 
 ---
 
-# handler和消息
+# handler消息
 
 ```java
 protected class WorkerHandler extends Handler

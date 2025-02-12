@@ -59,6 +59,10 @@ mAm = ActivityManager.getService();
 方式4 (system server进程使用)
 ActivityManagerInternal mAm;
 mAm = LocalServices.getService(ActivityManagerInternal.class);
+
+方式5
+IBinder b = ServiceManager.getService(Context.ACTIVITY_SERVICE);
+IActivityManager am = IActivityManager.Stub.asInterface(b);
 ```
 ---
 # ActivityManagerService调用流程

@@ -469,6 +469,40 @@ void createWatermark() {
 
 ---
 
+# [FAQ10818] 如何给所有画面增加一层水印(WaterMark)效果?
+
+[DESCRIPTION]
+
+如何给所有画面增加一层水印(WaterMark)效果? 
+
+如下图所示:
+
+![如何给所有画面增加一层水印](如何给所有画面增加一层水印.png)
+
+[SOLUTION]
+
+1) 新建一个名为setup.conf的文件,写入以下内容:B79A939390%20
+
+然后把这个conf文件push到手机的system/etc目录下
+ 
+
+2) 以加水印字串“hello world,this is my mark”为例, 再修改:WaterMark.java
+
+(frameworks/base/services/java/com/android/server/wm)文件,
+
+注释掉WaterMark构造函数中的这一句:
+
+mText = builder.toString();
+
+加上这一句:
+
+mText = "xxx"  ,  xxx表示你想要加为水印的字符串
+ 
+ 
+3) 重新编译生成services.jar文件并push到手机的system/framework下, reboot手机.
+
+---
+
 # 界面转换的日志
 
 ```java

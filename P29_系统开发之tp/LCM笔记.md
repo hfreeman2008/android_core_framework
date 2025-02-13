@@ -202,7 +202,8 @@ LCM_WEIGHT = 480
 
 ---
 
-# 录屏软件倒置
+
+# 录屏软件倒置
 
 主要就是修改 MTK_LCM_PHYSICAL_ROTATION 和 DEFINES += MTK_LCM_PHYSICAL_ROTATION_HW，一般设置为默认的即可
 kernel-4.4 / arch/arm/configs/D33B_bsp_debug_defconfig

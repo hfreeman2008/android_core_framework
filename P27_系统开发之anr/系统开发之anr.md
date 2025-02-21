@@ -1737,6 +1737,40 @@ binder: 1765:2397 transaction failed 29189/-22, size 348-0 line 2916
 
 特别注意查看ANR进程的主线程打印，看是否有skipped多少帧的打印，确认主线程是否有做过其他耗时操作
 
+
+
+---
+
+# ANR监控实现方式
+
+## 1、使用FileObserver监听 /data/anr/traces.txt的变化
+
+缺点
+
+高版本ROM需要root权限。
+
+解决方案
+
+海外Google Play服务、国内Hardcoder
+
+
+## 2、监控消息队列的运行时间
+
+卡顿监控原理：
+
+利用主线程的消息队列处理机制，应用发生卡顿，一定是在dispatchMessage中执行了耗时操作。我们通过给主线程的Looper设置一个Printer，打点统计dispatchMessage方法执行的时间，如果超出阀值，表示发生卡顿，则dump出各种信息，提供开发者分析性能瓶颈。
+
+为卡顿监控代码增加ANR的线程监控，在发送消息时，在ANR线程中保存一个状态，主线程消息执行完后再Reset标志位。如果在ANR线程中收到发送消息后，超过一定时间没有复位，就可以任务发生了ANR。
+
+缺点
+
+无法准确判断是否真正出现ANR，只能说明APP发生了UI阻塞，需要进行二次校验。校验的方式就是等待手机系统出现发生了Error的进程，并且Error类型是NOT_RESPONDING（值为2）。
+
+在每次出现ANR弹框前，Native层都会发出signal为SIGNAL_QUIT（值为3）的信号事件，也可以监听此信号。
+
+- 无法得到完整ANR日志
+- 隶属于卡顿优化的方式
+
 ---
 
 # 参考资料

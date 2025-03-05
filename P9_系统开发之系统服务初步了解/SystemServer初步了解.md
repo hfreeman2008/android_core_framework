@@ -26,11 +26,131 @@ SystemServer类主要是system_server的主入口
 
 ---
 
+# 查看Service列表
 
+查看系统服务列表：
+```bash
+adb shell service list
+
+Found 1 services:
+0 phone: [com.android.internal.telephony.ITelephony]
+```
+
+检查Service是否存在：
+```bash
+adb shell service check phone
+Service phone: found
+```
+
+
+使用Service：
+```bash
+adb shell service call phone 2 s16 "10086"
+```
+
+---
+
+# 如何获取正在运行的服务列表
+
+如何获取正在运行的服务列表
+```bash
+// List all services
+adb shell dumpsys activity services
+```
+
+
+---
+
+# run()
+
+如果persist.sys.timezone没有设置,那我们设置其为GMT
+
+```java
+//
+// Default the timezone property to GMT if not set.
+//
+String timezoneProperty =  SystemProperties.get("persist.sys.timezone");
+if (timezoneProperty == null || timezoneProperty.isEmpty()) {
+    Slog.w(TAG, "Timezone not set; setting to GMT.");
+    SystemProperties.set("persist.sys.timezone", "GMT");
+}
+```
+
+如果persist.sys.language为空,则读取当地的语言,再设置:
+
+```java
+// If the system has "persist.sys.language" and friends set, replace them with
+// "persist.sys.locale". Note that the default locale at this point is calculated
+// using the "-Duser.locale" command line flag. That flag is usually populated by
+// AndroidRuntime using the same set of system properties, but only the system_server
+// and system apps are allowed to set them.
+//
+// NOTE: Most changes made here will need an equivalent change to
+// core/jni/AndroidRuntime.cpp
+if (!SystemProperties.get("persist.sys.language").isEmpty()) {
+    final String languageTag = Locale.getDefault().toLanguageTag();
+
+    SystemProperties.set("persist.sys.locale", languageTag);
+    SystemProperties.set("persist.sys.language", "");
+    SystemProperties.set("persist.sys.country", "");
+    SystemProperties.set("persist.sys.localevar", "");
+}
+```
+
+导入android_servers库
+
+```java
+// Initialize native services.
+System.loadLibrary("android_servers");
+```
+
+---
+
+
+
+
+```java
+
+```
+
+---
+
+
+
+```java
+
+```
+
+```java
+
+```
+
+
+
+```bash
+
+```
+
+
+```bash
+
+```
 
 
 
 ---
+
+```bash
+
+```
+
+```bash
+
+```
+
+---
+
+
 
 
 # 结束语

@@ -165,8 +165,20 @@ mActivityManagerService.setSystemProcess();
 mSystemServiceManager.startService(new OverlayManagerService(mSystemContext, installer));
 ```
 
-```java
 
+## startCoreServices-启动核心服务
+
+
+```java
+mSystemServiceManager.startService(DropBoxManagerService.class);
+
+mSystemServiceManager.startService(BatteryService.class);
+
+mSystemServiceManager.startService(UsageStatsService.class);
+mActivityManagerService.setUsageStatsManager(
+        LocalServices.getService(UsageStatsManagerInternal.class));
+
+mWebViewUpdateService = mSystemServiceManager.startService(WebViewUpdateService.class);
 ```
 
 

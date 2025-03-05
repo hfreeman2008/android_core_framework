@@ -106,19 +106,63 @@ System.loadLibrary("android_servers");
 
 ---
 
-
+# 启动各种服务
 
 
 ```java
-
+startBootstrapServices();
+startCoreServices();
+startOtherServices();
 ```
 
 ---
 
+## startBootstrapServices-启动开机的引导服务
 
 
 ```java
+SystemServerInitThreadPool.get().submit(SystemConfig::getInstance, TAG_SYSTEM_CONFIG);
 
+Installer installer = mSystemServiceManager.startService(Installer.class);
+
+mSystemServiceManager.startService(DeviceIdentifiersPolicyService.class);
+
+mActivityManagerService = mSystemServiceManager.startService(
+        ActivityManagerService.Lifecycle.class).getService();
+mActivityManagerService.setSystemServiceManager(mSystemServiceManager);
+mActivityManagerService.setInstaller(installer);
+
+mPowerManagerService = mSystemServiceManager.startService(PowerManagerService.class);
+
+mActivityManagerService.initPowerManagement();
+
+........
+mSystemServiceManager.startService(RecoverySystemService.class);
+
+mSystemServiceManager.startService(LightsService.class);
+
+mDisplayManagerService = mSystemServiceManager.startService(DisplayManagerService.class);
+
+
+if (RegionalizationEnvironment.isSupported()) {
+    Slog.i(TAG, "Regionalization Service");
+    RegionalizationService regionalizationService = new RegionalizationService();
+    ServiceManager.addService("regionalization", regionalizationService);
+}
+
+
+mPackageManagerService = PackageManagerService.main(mSystemContext, installer,
+        mFactoryTestMode != FactoryTest.FACTORY_TEST_OFF, mOnlyCore);
+mFirstBoot = mPackageManagerService.isFirstBoot();
+mPackageManager = mSystemContext.getPackageManager();
+
+
+mSystemServiceManager.startService(UserManagerService.LifeCycle.class);
+
+
+mActivityManagerService.setSystemProcess();
+
+mSystemServiceManager.startService(new OverlayManagerService(mSystemContext, installer));
 ```
 
 ```java

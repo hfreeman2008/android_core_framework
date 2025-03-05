@@ -16,12 +16,13 @@
 
 ---
 
-# SystemServer
+# SystemServer介绍
 
 frameworks\base\services\java\com\android\server\SystemServer.java
 
 SystemServer类主要是system_server的主入口
 
+![system_server_启动流程](./image/system_server_启动流程.png)
 
 ---
 

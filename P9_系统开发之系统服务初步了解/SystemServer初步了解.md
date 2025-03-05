@@ -182,8 +182,187 @@ mWebViewUpdateService = mSystemServiceManager.startService(WebViewUpdateService.
 ```
 
 
+## startOtherServices-启动其它的服务
 
-```bash
+搜索:
+
+```java
+ServiceManager.addService
+mSystemServiceManager.startService
+```
+
+就可以知道添加和启动了那些服务
+```java
+ServiceManager.addService("sec_key_att_app_id_provider",
+    new KeyAttestationApplicationIdProviderService(context));
+ServiceManager.addService("scheduling_policy", new SchedulingPolicyService());
+ServiceManager.addService("telephony.registry", telephonyRegistry);
+
+vibrator = new VibratorService(context);
+ServiceManager.addService("vibrator", vibrator);
+
+consumerIr = new ConsumerIrService(context);
+ServiceManager.addService(Context.CONSUMER_IR_SERVICE, consumerIr);
+
+ServiceManager.addService(Context.WINDOW_SERVICE, wm);
+ServiceManager.addService(Context.INPUT_SERVICE, inputManager);
+
+ServiceManager.addService(Context.ACCESSIBILITY_SERVICE,
+    new AccessibilityManagerService(context));
+
+statusBar = new StatusBarManagerService(context, wm);
+ServiceManager.addService(Context.STATUS_BAR_SERVICE, statusBar);
+
+networkManagement = NetworkManagementService.create(context);
+ServiceManager.addService(Context.NETWORKMANAGEMENT_SERVICE, networkManagement);
+
+networkScore = new NetworkScoreService(context);
+ServiceManager.addService(Context.NETWORK_SCORE_SERVICE, networkScore);
+
+networkStats = NetworkStatsService.create(context, networkManagement);
+ServiceManager.addService(Context.NETWORK_STATS_SERVICE, networkStats);
+
+networkPolicy = new NetworkPolicyManagerService(context,
+    mActivityManagerService, networkStats, networkManagement);
+ServiceManager.addService(Context.NETWORK_POLICY_SERVICE, networkPolicy);
+
+ServiceManager.addService("wigigp2p", (IBinder) wigigP2pService);
+ServiceManager.addService("wigig", (IBinder) wigigService);
+
+connectivity = new ConnectivityService(
+    context, networkManagement, networkStats, networkPolicy);
+ServiceManager.addService(Context.CONNECTIVITY_SERVICE, connectivity);
+
+serviceDiscovery = NsdService.create(context);
+ServiceManager.addService(Context.NSD_SERVICE, serviceDiscovery);
+
+ServiceManager.addService(Context.UPDATE_LOCK_SERVICE,new UpdateLockService(context));
+
+location = new LocationManagerService(context);
+ServiceManager.addService(Context.LOCATION_SERVICE, location);
+
+countryDetector = new CountryDetectorService(context);
+ServiceManager.addService(Context.COUNTRY_DETECTOR, countryDetector);
+
+serial = new SerialService(context);
+ServiceManager.addService(Context.SERIAL_SERVICE, serial);
+
+hardwarePropertiesService = new HardwarePropertiesManagerService(context);
+ServiceManager.addService(Context.HARDWARE_PROPERTIES_SERVICE,hardwarePropertiesService);
+
+ServiceManager.addService("diskstats", new DiskStatsService(context));
+
+networkTimeUpdater = new NetworkTimeUpdateService(context);
+ServiceManager.addService("network_time_update_service", networkTimeUpdater);
+
+commonTimeMgmtService = new CommonTimeManagementService(context);
+ServiceManager.addService("commontime_management", commonTimeMgmtService);
+
+ServiceManager.addService(GraphicsStatsService.GRAPHICS_STATS_SERVICE,new GraphicsStatsService(context));
+
+ServiceManager.addService(CoverageService.COVERAGE_SERVICE, new CoverageService());
+
+mediaRouter = new MediaRouterService(context);
+ServiceManager.addService(Context.MEDIA_ROUTER_SERVICE, mediaRouter);
+
+```
+
+```java
+mSystemServiceManager.startService(KeyChainSystemService.class);
+mSystemServiceManager.startService(TelecomLoaderService.class);
+mSystemServiceManager.startService(ACCOUNT_SERVICE_CLASS);
+mSystemServiceManager.startService(CONTENT_SERVICE_CLASS);
+mSystemServiceManager.startService(AlarmManagerService.class);
+mSystemServiceManager.startService(VrManagerService.class);
+mSystemServiceManager.startService(BluetoothService.class);
+mSystemServiceManager.startService(IpConnectivityMetrics.class);
+mSystemServiceManager.startService(PinnerService.class);
+mSystemServiceManager.startService(InputMethodManagerService.Lifecycle.class);
+mSystemServiceManager.startService(STORAGE_MANAGER_SERVICE_CLASS);
+mSystemServiceManager.startService(STORAGE_STATS_SERVICE_CLASS);
+mSystemServiceManager.startService(UiModeManagerService.class);
+mSystemServiceManager.startService(LOCK_SETTINGS_SERVICE_CLASS);
+mSystemServiceManager.startService(PersistentDataBlockService.class);
+mSystemServiceManager.startService(OemLockService.class);
+mSystemServiceManager.startService(DeviceIdleController.class);
+mSystemServiceManager.startService(DevicePolicyManagerService.Lifecycle.class);
+mSystemServiceManager.startService(ClipboardService.class);
+mSystemServiceManager.startService(TextServicesManagerService.Lifecycle.class);
+mSystemServiceManager.startService(WIFI_SERVICE_CLASS);
+mSystemServiceManager.startService("com.android.server.wifi.RttService");
+mSystemServiceManager.startService(WIFI_AWARE_SERVICE_CLASS);
+mSystemServiceManager.startService(WIFI_P2P_SERVICE_CLASS);
+mSystemServiceManager.startService(LOWPAN_SERVICE_CLASS);
+mSystemServiceManager.startService(ETHERNET_SERVICE_CLASS);
+mSystemServiceManager.startService(NotificationManagerService.class);
+mSystemServiceManager.startService(DeviceStorageMonitorService.class);
+mSystemServiceManager.startService(SEARCH_MANAGER_SERVICE_CLASS);
+mSystemServiceManager.startService(WALLPAPER_SERVICE_CLASS);
+mSystemServiceManager.startService(AudioService.Lifecycle.class);
+mSystemServiceManager.startService(BroadcastRadioService.class);
+mSystemServiceManager.startService(DockObserver.class);
+mSystemServiceManager.startService(THERMAL_OBSERVER_CLASS);
+mSystemServiceManager.startService(MIDI_SERVICE_CLASS);
+mSystemServiceManager.startService(USB_SERVICE_CLASS);
+mSystemServiceManager.startService(TwilightService.class);
+mSystemServiceManager.startService(NightDisplayService.class);
+mSystemServiceManager.startService(JobSchedulerService.class);
+mSystemServiceManager.startService(SoundTriggerService.class);
+mSystemServiceManager.startService(TrustManagerService.class);
+mSystemServiceManager.startService(BACKUP_MANAGER_SERVICE_CLASS);
+mSystemServiceManager.startService(APPWIDGET_SERVICE_CLASS);
+mSystemServiceManager.startService(VOICE_RECOGNITION_MANAGER_SERVICE_CLASS);
+mSystemServiceManager.startService(GestureLauncherService.class);
+mSystemServiceManager.startService(SensorNotificationService.class);
+mSystemServiceManager.startService(ContextHubSystemService.class);
+mSystemServiceManager.startService(TIME_ZONE_RULES_MANAGER_SERVICE_CLASS);
+mSystemServiceManager.startService(EmergencyAffordanceService.class);
+mSystemServiceManager.startService(DreamManagerService.class);
+mSystemServiceManager.startService(PRINT_MANAGER_SERVICE_CLASS);
+mSystemServiceManager.startService(COMPANION_DEVICE_MANAGER_SERVICE_CLASS);
+mSystemServiceManager.startService(RestrictionsManagerService.class);
+mSystemServiceManager.startService(MediaSessionService.class);
+mSystemServiceManager.startService(HdmiControlService.class);
+mSystemServiceManager.startService(TvInputManagerService.class);
+mSystemServiceManager.startService(MediaResourceMonitorService.class);
+mSystemServiceManager.startService(TvRemoteService.class);
+mSystemServiceManager.startService(FingerprintService.class);
+mSystemServiceManager.startService(ShortcutService.Lifecycle.class);
+mSystemServiceManager.startService(LauncherAppsService.class);
+mSystemServiceManager.startService(MediaProjectionManagerService.class);
+mSystemServiceManager.startService(WEAR_CONNECTIVITY_SERVICE_CLASS);
+mSystemServiceManager.startService(WEAR_DISPLAY_SERVICE_CLASS);
+mSystemServiceManager.startService(WEAR_TIME_SERVICE_CLASS);
+mSystemServiceManager.startService(WEAR_LEFTY_SERVICE_CLASS);
+mSystemServiceManager.startService(CameraServiceProxy.class);
+mmsService=mSystemServiceManager.startService(MmsServiceBroker.class);
+mSystemServiceManager.startService(AUTO_FILL_MANAGER_SERVICE_CLASS);
+mSystemServiceManager.startService(CarServiceHelperService.class);
+```
+
+---
+
+# 添加服务的二种方式
+
+## ServiceManager.addService
+
+```java
+ServiceManager.addService("wigig", (IBinder) wigigService);
+```
+
+## mSystemServiceManager.startService
+
+```java
+mSystemServiceManager.startService(MediaSessionService.class);
+```
+
+---
+
+```java
+
+```
+
+```java
 
 ```
 

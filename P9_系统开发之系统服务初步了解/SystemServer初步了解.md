@@ -548,8 +548,19 @@ WallpaperManagerService、InputMethodManagerService、LocationManagerService、C
 
 ---
 
-```java
+# 启动systemui
 
+
+```java
+SystemServer::startOtherServices
+
+t.traceBegin("StartSystemUI");
+try {
+    startSystemUi(context, windowManagerF);
+} catch (Throwable e) {
+    reportWtf("starting System UI", e);
+}
+t.traceEnd();
 ```
 
 ```java
@@ -588,9 +599,15 @@ WallpaperManagerService、InputMethodManagerService、LocationManagerService、C
 
 
 
-# 结束语
+# 参考
 
+1.Android系统启动-SystemServer上篇
 
+http://gityuan.com/2016/02/14/android-system-server/
+
+2.Android系统启动-SystemServer下篇
+
+http://gityuan.com/2016/02/20/android-system-server-2/
 
 
 ---

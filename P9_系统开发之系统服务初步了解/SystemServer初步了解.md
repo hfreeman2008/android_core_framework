@@ -358,9 +358,209 @@ mSystemServiceManager.startService(MediaSessionService.class);
 
 ---
 
+# isFirstBootOrUpgrade-判断是否是第一次启动或升级
+
+```java
+private boolean isFirstBootOrUpgrade() {
+    return mPackageManagerService.isFirstBoot() 
+    || mPackageManagerService.isUpgrade();
+}
+```
+
+---
+
+# 启动时各个阶段的工作
+
+```java
+    /*
+     * The earliest boot phase the system send to system services on boot.
+     */
+    public static final int PHASE_WAIT_FOR_DEFAULT_DISPLAY = 100;
+
+    /**
+     * After receiving this boot phase, services can obtain lock settings data.
+     */
+    public static final int PHASE_LOCK_SETTINGS_READY = 480;
+
+    /**
+     * After receiving this boot phase, services can safely call into core system services
+     * such as the PowerManager or PackageManager.
+     */
+    public static final int PHASE_SYSTEM_SERVICES_READY = 500;
+
+    /**
+     * After receiving this boot phase, services can safely call into device specific services.
+     */
+    public static final int PHASE_DEVICE_SPECIFIC_SERVICES_READY = 520;
+
+    /**
+     * After receiving this boot phase, services can broadcast Intents.
+     */
+    public static final int PHASE_ACTIVITY_MANAGER_READY = 550;
+
+    /**
+     * After receiving this boot phase, services can start/bind to third party apps.
+     * Apps will be able to make Binder calls into services at this point.
+     */
+    public static final int PHASE_THIRD_PARTY_APPS_CAN_START = 600;
+
+    /**
+     * After receiving this boot phase, services can allow user interaction with the device.
+     * This phase occurs when boot has completed and the home application has started.
+     * System services may prefer to listen to this phase rather than registering a
+     * broadcast receiver for {@link android.content.Intent#ACTION_LOCKED_BOOT_COMPLETED}
+     * to reduce overall latency.
+     */
+    public static final int PHASE_BOOT_COMPLETED = 1000;
+```
+
+
+
+##  Phase0
+
+创建四大引导服务:
+```java
+ActivityManagerService
+PowerManagerService
+LightsService
+DisplayManagerService
+```
+
+
+## Phase100
+
+进入阶段PHASE_WAIT_FOR_DEFAULT_DISPLAY=100回调服务
+
+onBootPhase(100)
+
+DisplayManagerService
+
+然后创建大量服务下面列举部分:
+```java
+PackageManagerService
+WindowManagerService
+InputManagerService
+NetworkManagerService
+DropBoxManagerService
+FingerprintService
+LauncherAppsService
+```
+
+…
+
+## Phase480
+进入阶段PHASE_LOCK_SETTINGS_READY=480回调服务
+
+onBootPhase(480)
+
+```java
+DevicePolicyManagerService
+```
+
+阶段480后马上就进入阶段500.
+
+## Phase500
+PHASE_SYSTEM_SERVICES_READY=500，进入该阶段服务能安全地调用核心系统服务.
+onBootPhase(500)
+```java
+AlarmManagerService
+JobSchedulerService
+NotificationManagerService
+BackupManagerService
+UsageStatsService
+DeviceIdleController
+TrustManagerService
+UiModeManagerService
+
+BluetoothService
+BluetoothManagerService
+EthernetService
+WifiP2pService
+WifiScanningService
+WifiService
+RttService
+```
+
+各大服务执行systemReady():
+```java
+WindowManagerService.systemReady():
+PowerManagerService.systemReady():
+PackageManagerService.systemReady():
+DisplayManagerService.systemReady():
+```
+
+接下来就绪AMS.systemReady方法.
+
+## Phase550
+PHASE_ACTIVITY_MANAGER_READY=550， AMS.mSystemReady=true, 已准备就绪,进入该阶段服务能广播Intent;但是system_server主线程并没有就绪.
+
+onBootPhase(550)
+```java
+MountService
+TelecomLoaderService
+UsbService
+WebViewUpdateService
+DockObserver
+BatteryService
+```
+
+接下来执行: (AMS启动native crash监控, 加载WebView，启动SystemUi等),如下
+```java
+mActivityManagerService.startObservingNativeCrashes();
+WebViewFactory.prepareWebViewInSystemServer();
+startSystemUi(context);
+
+networkScoreF.systemReady();
+networkManagementF.systemReady();
+networkStatsF.systemReady();
+networkPolicyF.systemReady();
+connectivityF.systemReady();
+audioServiceF.systemReady();
+Watchdog.getInstance().start();
+```
+
+
+## Phase600
+PHASE_THIRD_PARTY_APPS_CAN_START=600
+
+onBootPhase(600)
+```java
+JobSchedulerService
+NotificationManagerService
+BackupManagerService
+AppWidgetService
+GestureLauncherService
+DreamManagerService
+TrustManagerService
+VoiceInteractionManagerService
+```
+
+接下来,各种服务的systemRunning过程:
+```java
+WallpaperManagerService、InputMethodManagerService、LocationManagerService、CountryDetectorService、NetworkTimeUpdateService、CommonTimeManagementService、TextServicesManagerService、AssetAtlasService、InputManagerService、TelephonyRegistry、MediaRouterService、MmsServiceBroker
+```
+这些服务依次执行其systemRunning()方法。
+
+## Phase1000
+在经过一系列流程，再调用AMS.finishBooting()时，则进入阶段Phase1000。
+
+到此，系统服务启动阶段完成就绪，system_server进程启动完成则进入Looper.loop()状态，随时待命，等待消息队列MessageQueue中的消息到来，则马上进入执行状态。
+
+---
+
 ```java
 
 ```
+
+```java
+
+```
+
+
+```java
+
+```
+
 
 ```java
 

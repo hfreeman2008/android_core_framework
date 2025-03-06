@@ -60,15 +60,78 @@ CPU usage from 1698338ms to 798324ms ago:
 
 ---
 
+# adb shell top
+
+---
+
+# adb shell vmstat 
+
+---
+
+# adb shell cat  /proc/cpuinfo
+
+```bash
+processor    : 0
+Processor    : ARMv7 Processor rev 4 (v7l)
+model name    : ARMv7 Processor rev 4 (v7l)
+Features    : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32 
+CPU architecture: 7
+
+......
+
+Hardware    : AC8257V/WAB
+Revision    : 0000
+Serial        : 0000000000000000
+```
+
+
+
+---
+# adb shell ls -lha /sys/devices/system/cpu/
+
+```bash
+core_ctl_isolated  cpu1/              cpu3/              cpu5/              cpu7/              cpufreq/           hotplug/           kernel_max         offline            possible           present            vulnerabilities/
+cpu0/              cpu2/              cpu4/              cpu6/              cpu_boost/         cpuidle/           isolated           modalias           online             power/             uevent
+```
+
+---
+
+# 查看有多少个CPU
+
+```bash
+adb shell cat sys/devices/system/cpu/online
+0-3
+```
+
+---
+
+
+---
 
 ```bash
 
 ```
 
+```bash
+
+```
 
 ```bash
 
 ```
+
+```bash
+
+```
+
+```bash
+
+```
+
+```bash
+
+```
+
 
 
 ```bash

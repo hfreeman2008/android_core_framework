@@ -423,38 +423,419 @@ CPU info 中还有标识 CPU 状态的标记，如下图所示，CPU 状态有 0
 
 ---
 
+# [FAQ04205] [Power] 怎样察看当前系统某个核的频率
+察看当前系统某个核的频率的方法： 
+
+查看cpu0当前的频率的方法：
 
 ```bash
-
+adb shell cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
 ```
-
+如果当前cpu1也在运行的话，察看其当前频率的方法：
 ```bash
-
+adb shell cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq
 ```
 
 ---
 
-```bash
+# cpu性能优先
 
+kba-181112174319_1_game_performance_issue_debugging_introduction.pdf
+
+
+```bash
+#cpufreq performance 
+adb shell "echo performance > /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor"
+```
+
+---
+
+# Scheduler
+
+Task placement goal: save power as much as possible, minimize hurting performance 
+- Big task -> eligible to perf cpu : task demand higher than sched_upmigrate
+- Small task -> eligible to power cpu: task demand lower than sched_downmigrate 
+- Task packing: put new eligible running task in to run queue of cpu to avoid wake up cpus 
+- Load balance: keep load on each cpu is “balanced” 
+- Affinity: task is pinned to certain cpu 
+- Sched_boost: force move task to perf cpu to improve performance
+
+---
+
+# 进入游戏模式
+
+put into perf mode, 59fps 
+
+```bash
+adb shell stop perfd 
+adb shell stop thermal-engine 
+adb shell "echo Y > /sys/module/lpm_levels/parameters/sleep_disabled" 
+adb shell "echo 0 > /sys/module/msm_thermal/parameters/enabled“ 
+adb shell "echo performance >/sys/class/devfreq/X/governor“ 
+adb shell "echo performance > sys/devices/system/cpu/cpuX/cpufreq/scaling_governor"
+```
+
+
+---
+
+# Game design issue hw capability
+
+![Game_design_issue](./image/Game_design_issue.png)
+
+---
+
+# cpu工作频率（CPU设置）--应用宝中搜索
+
+com.zhanhong.cpusettings
+
+
+```bash
+adb shell pm path com.zhanhong.cpusettings
+[ro.vendor.qti.core_ctl_max_cpu]: [6]
+[ro.vendor.qti.core_ctl_min_cpu]: [4]
+```
+
+---
+
+# [FAQ17683] 如何调整CPU corenum, freq, policy
+[DESCRIPTION]
+
+设置平台CPUfreq 与以及core 
+
+[SOLUTION]
+
+cpufreq控制结点位于 /sys/devices/system/cpu/cpu0/cpufreq/
+```bash
+C:\Users\mtk71247>adb shell
+root@NOBLEX:/ # cd sys/devices/system/cpu/cpu0/cpufreq
+cd sys/devices/system/cpu/cpu0/cpufreq
+root@NOBLEX:/sys/devices/system/cpu/cpu0/cpufreq # ls
 ```
 
 ```bash
-
+ls
+cpuinfo_cur_freq： 当前cpu正在运行的工作频率
+cpuinfo_max_freq：该文件指定了处理器能够运行的最高工作频率 （单位: 千赫兹）
+cpuinfo_min_freq ：该文件指定了处理器能够运行的最低工作频率 （单位: 千赫兹）
+cpuinfo_transition_latency：该文件定义了处理器在两个不同频率之间切换时所需要的时间  （单位： 纳秒）
+scaling_available_frequencies：所有支持的主频率列表  （单位: 千赫兹）
+scaling_available_governors：该文件显示当前内核中支持的所有cpufreq governor类型
+scaling_cur_freq：被governor和cpufreq核决定的当前CPU工作频率。该频率是内核认为该CPU当前运行的主频率
+scaling_driver：该文件显示该CPU正在使用何种cpufreq driver
+scaling_governor：通过echo命令，能够改变当前处理器的governor类型
+scaling_max_freq：显示当前policy的上下限  （单位: 千赫兹）需要注意的是，当改变cpu policy时，需要首先设置scaling_max_freq, 然后才是scaling_min_freq
+scaling_setspeed：如果用户选择了“userspace” governor, 那么可以设置cpu工作主频率到某一个指定值。只需要这个值在scaling_min_freq 和 scaling_max_freq之间即可。
 ```
 
-```bash
 
+
+1、查看当前CPU支持的频率档位
+```bash
+root@NOBLEX:/sys # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies
+sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies              
+1300000 1235000 1170000 1040000 819000 598000 442000 299000
+```
+
+
+2、查看当前支持的governor（手机型号可能略有不同）  
+```bash
+root@NOBLEX:/sys # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors
+sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors                
+ondemand userspace powersave interactive performance
+
+performance表示不降频，
+ondemand表示使用内核提供的功能，可以动态调节频率，
+powersvae表示省电模式，通常是在最低频率下运行，
+userspace表示用户模式，在此模式下允许其他用户程序调节CPU频率。
+```   
+
+
+3、查看当前选择的governor
+```bash
+cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+interactive
+```
+
+
+4、查看系统支持多少核数
+```bash
+root@NOBLEX:/ # cat sys/devices/system/cpu/present
+cat sys/devices/system/cpu/present
+0-3
+```
+
+5、全开所有cpu ，在实际设置时，还需要（有root权限才可以设置）
+```bash
+adb shell "echo 0 > /proc/hps/enabled" (关闭cpu hotplug)
+adb shell "echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor" (固定最高频)
+echo 1 > /sys/devices/system/cpu/cpuX/online
+X表示(0~3，不同平台CPU core 数是不一样的)
+```
+
+
+例：6735平台
+```bash
+root@NOBLEX:/ # echo 1 >sys/devices/system/cpu/cpu1/online
+echo 1 >sys/devices/system/cpu/cpu1/online
+root@NOBLEX:/ # echo 1 >sys/devices/system/cpu/cpu2/online
+echo 1 >sys/devices/system/cpu/cpu2/online
+root@NOBLEX:/ # echo 1 >sys/devices/system/cpu/cpu3/online
+echo 1 >sys/devices/system/cpu/cpu3/online
+```
+
+
+6、设置频率(可以先cat 出来当前的频率有哪些)
+```bash
+C:\Users\mtk71247>adb shell "cat /proc/cpufreq/cpufreq_ptpod_freq_volt"
+[0] = { .cpufreq_khz = 1300000, .cpufreq_volt = 113750, .cpufreq_volt_org = 1250
+00, },
+[1] = { .cpufreq_khz = 1235000, .cpufreq_volt = 110000, .cpufreq_volt_org = 1231
+25, },
+[2] = { .cpufreq_khz = 1170000, .cpufreq_volt = 106250, .cpufreq_volt_org = 1206
+25, },
+[3] = { .cpufreq_khz = 1040000, .cpufreq_volt = 98750,  .cpufreq_volt_org = 1150
+00, },
+[4] = { .cpufreq_khz = 819000,  .cpufreq_volt = 95000,  .cpufreq_volt_org = 1100
+00, },
+[5] = { .cpufreq_khz = 598000,  .cpufreq_volt = 95000,  .cpufreq_volt_org = 1050
+00, },
+[6] = { .cpufreq_khz = 442000,  .cpufreq_volt = 95000,  .cpufreq_volt_org = 1000
+00, },
+[7] = { .cpufreq_khz = 299000,  .cpufreq_volt = 95000,  .cpufreq_volt_org = 9500
+0, },
+```
+
+
+设置后再cat 看一下当前的设置是否成功
+```bash
+C:\Users\mtk71247>adb shell "cat proc/cpufreq/cpufreq_oppidx"
+[MT_CPU_DVFS_LITTLE/0]
+cpufreq_oppidx = 0
+        OP(1300000, 113750),
+        OP(1235000, 110000),
+        OP(1170000, 106250),
+        OP(1040000, 98750),
+        OP(819000, 95000),
+        OP(598000, 95000),
+        OP(442000, 95000),
+        OP(299000, 95000),
+```
+
+
+---
+
+# 设置固定CPU最大值：
+
+```bash
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq
+
+i7s:/ # cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq
+576000
+576000
+576000
+576000
+576000
+576000
+652800
+652800
+
+echo 1708800 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq ;
+echo 1708800 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq ;
+echo 1708800 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq ;
+echo 1708800 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq ;
+echo 1708800 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq ;
+echo 1708800 > /sys/devices/system/cpu/cpu5/cpufreq/scaling_min_freq ;
+echo 2208000 > /sys/devices/system/cpu/cpu6/cpufreq/scaling_min_freq ;
+echo  2208000 > /sys/devices/system/cpu/cpu7/cpufreq/scaling_min_freq ;
+
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq
+cat /sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_cur_freq
+```
+
+高通：
+```bash
+固定最高频
+adb shell "echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
+
+adb shell "echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor"
+adb shell "echo performance > /sys/devices/system/cpu/cpufreq/policy4/scaling_governor"
+```
+
+system/core/rootdir/init.rc
+```bash
+on early-init
+write /sys/devices/system/cpu/cpufreq/policy0/scaling_governor performance
+
+.......
+on property:sys.boot_completed=1
+    write schedutil /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+```
+
+MTK：
+
+固定频率 mtk的接口是/proc/ppm/policy/ut_fix_freq_idx：
+```bash
+write /proc/ppm/policy/ut_fix_freq_idx  "0 0 0" 
+// 6797是3个cpu簇，000 标识3簇都是固定最高频率
+```
+如果只是写 performance 到 scaling_governor，那平台的动态cpu调度策略还会起作用【会动态降频】
+
+---
+
+# [FAQ04204] [Power] 怎样将手机中的频率固定在某一个level
+
+将手机中的频率固定在单核某个频率xxx的方法： 
+
+```bash
+echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+echo 0 > /sys/devices/system/cpu/cpu1/online
+echo 0 > /proc/mtk_hotplug/enable
+echo xxx > /sys/power/cpufreq_limited_freq
+```
+
+将手机中的频率固定在双核某个频率xxx的方法：
+
+```bash
+echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+echo 0 > /sys/devices/system/cpu/cpu1/online
+echo performance > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+echo 0 > /proc/mtk_hotplug/enable
+echo xxx > /sys/power/cpufreq_limited_freq
+```
+ 以上方法可以保证不管是亮屏还是灭屏，都可以固定在您设定的频率下运行。
+
+---
+
+# 查看各温度的类型(包括cpu)
+
+```bash
+cat /sys/class/thermal/thermal_zone*/type 
+```
+
+查看各sensor的温度:
+```bash
+cat /sys/class/thermal/thermal_zone*/temp
+```
+
+[DESCRIPTION]
+
+  获取thermal sensor 实时温度温度的方法
+
+[SOLUTION]
+
+1、透过ADB，及SW 接口获取 
+    user层可以通过这个路径获得CPU的温度  
+```bash
+cat /sys/class/thermal/thermal_zone*/temp
+   每个thermal_zone代表的sensor，可以 cat /sys/class/thermal/thermal_zone*/type
+
+其中* 是指的0，1，2，3，4，5........
+driver层您可以调用如下sw 接口：   
+mediatek\kernel\drivers\thermal\mtk_thermal_monitor.c
+mtk_thermal_get_temp(ID)，其中ID的定义可以通过结构体MTK_THERMAL_SENSOR_ID获取
+```
+2、工程模式下
+
+  *#*#3646633#*#*
+
+others-thermal-thermal sensors 可以获得各个sensor实时 温度
+
+https://online.mediatek.com/FAQ#/HW/FAQ05485
+
+ANS：连上adb，进入adb shell之后，可通过以下指令获取。
+
+```bash
+CPU real temp
+cat  /sys/class/thermal/thermal_zone0/temp
+Battery real temp
+cat  /sys/class/thermal/thermal_zone1/temp
+PA real temp
+cat  /sys/class/thermal/thermal_zone2/temp
+ABB real temp
+cat  /sys/class/thermal/thermal_zone3/temp
+PMIC real temp
+cat  /sys/class/thermal/thermal_zone4/temp
+WMT real temp
+cat  /sys/class/thermal/thermal_zone5/temp
 ```
 
 
 
-```bash
 
+```bash
+i7s:/sys/class/thermal/thermal_zone24 # cat type
+gpu0-usr------------GPU温度
+i7s:/sys/class/thermal/thermal_zone25 # cat type
+gpu1-usr------------GPU温度
+
+i7s:/sys/class/thermal/thermal_zone43 # cat type
+battery------------电池温度
+```
+
+---
+
+# [FAQ15144] 如何手动去设置CPU核数，关闭thermal验证performance问题
+
+[DESCRIPTION]
+
+ 因CPU或者DVFS设置不同，或Thermal过高而导致性能下降，如何通过adb命令进行设置 
+
+[SOLUTION]
+
+1.对于是否由于CPU或者DVFS不同引起的问题，可以通过下面的命令验证：
+
+- 首先取得root权限: 请参考FAQ11862 user版本如何打开root权限  
+
+- 手动设定CPU core数量：    
+```bash
+        setup：(务必先下setup部分，才能下定频定核相关命令)
+         不同平台，设置会有差别，下面针对MT6795 相关类似平台
+          adb shell "echo 0 > /proc/hps/enabled"    (关闭cpu hotplug)
+          adb shell "echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor" (固定最高频)
+          开启CPU1～CPU7（CPU0 always on）
+          adb shell "echo 1 > /sys/devices/system/cpu/cpu1/online"
+          adb shell "echo 1 > /sys/devices/system/cpu/cpu2/online"
+            ......
+          关闭CPU1～CPU7（CPU0 always on）
+          adb shell "echo 0 > /sys/devices/system/cpu/cpu1/online"
+        adb shell "echo 0 > /sys/devices/system/cpu/cpu2/online"
+            ......
+    Note: echo 1 打开，echo 0 关掉
+```
+
+- 恢复最初 cpu core设置
+```bash
+    adb shell "echo 1 > /proc/hps/enabled"
+    adb shell "echo interactive > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
+```
+
+- 手动设定大小核freq
+```bash
+    请根据oppidx档位设定：（oppidx档位请参考以下cat 出来的idx）
+    adb shell "cat/proc/cpufreq/cpufreq_ptpod_freq_volt"
+    如：（设定最高频率）
+    adb shell "echo 0 >/proc/cpufreq/cpufreq_oppidx"  (idx ：0  is CPU frequency mapping)
+```
+
+   2. 对于是否系统过热而引起的性能差异判断方式：
+
+-  为避免thermal关闭cpu，导致performance差异 ，关闭thermal测试：
+```bash
+adb shell "echo 120000 130000 >/proc/cpufreq/cpufreq_ptpod_temperature_limit"
+adb shell "/system/bin/thermal_manager/etc/.tp/.th120.mtc"  （重启后失效）
+adb shell "echo 0 > /proc/cpufreq/cpufreq_limited_power"
 ```
 
 
-```bash
+---
 
+# Low power mode(LPM)
+```bash
+adb shell "echo Y > /sys/module/lpm_levels/parameters/sleep_disabled“
+
+i7s:/sys/module/lpm_levels # cat parameters/sleep_disabled
+N
 ```
 
 

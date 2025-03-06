@@ -22,9 +22,44 @@
 
 ---
 
+# kernel cpu
+
+```bash
+kernel\msm-4.19/drivers/cpufreq
+kernel\msm-4.19\drivers\cpuidle
+```
+
+---
 
 
 
+
+---
+
+
+```bash
+
+```
+
+
+```bash
+
+```
+
+
+```bash
+
+```
+
+
+```bash
+
+```
+
+
+```bash
+
+```
 
 
 ---

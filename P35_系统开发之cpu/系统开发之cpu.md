@@ -33,7 +33,7 @@ kernel\msm-4.19\drivers\cpuidle
 
 # 功耗的计算
 
-P = f*V*V 
+P = f * V * V 
 
 (功耗与频率成正比，与电压的平方成正比)
 

@@ -327,14 +327,62 @@ Game
 以高通平台为例，在 CPU Info 中我们也可以看到锁频的情况
 
 ---
+# bugreport中的cpu文件
+
+cpuinfo
+```bash
+processor    : 0
+model name    : ARMv7 Processor rev 4 (v7l)
+BogoMIPS    : 24.00
+Features    : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32 
+CPU implementer    : 0x41
+CPU architecture: 7
+CPU variant    : 0x0
+CPU part    : 0xd03
+CPU revision    : 4
+......
+processor    : 3
+model name    : ARMv7 Processor rev 4 (v7l)
+BogoMIPS    : 24.00
+Features    : half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm aes pmull sha1 sha2 crc32 
+CPU implementer    : 0x41
+CPU architecture: 7
+CPU variant    : 0x0
+CPU part    : 0xd03
+CPU revision    : 4
+
+Hardware    : Novatek Cortex-A53
+Revision    : 0000
+Serial        : 0000000000000000
+```
+
+---
+
+# cpuFreq的策略
+
+查看当前支持的governor（手机型号可能略有不同）     
 
 ```bash
-
+adb shell cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors
+sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors                
+conservative ondemand userspace powersave performance schedutil
 ```
 
 
-```bash
 
+```bash
+performance表示不降频，以最高频率运行；
+ondemand表示使用内核提供的功能，可以动态调节频率，平时以低速方式运行，当系统负载提高时按需自动提高频率；
+conservative表示传统保守的，和ondemand类似，区别在于动态调节频率时采用渐进的方式；
+powersvae表示省电模式，通常是在最低频率下运行，即scaling_min_freq；
+userspace表示用户模式，在此模式下允许其他用户程序调节CPU频率。让根用户通过sys节点scaling_setspeed设置频率；
+schedutil  userdebug 默认
+```
+
+scaling_governor：通过echo命令，能够改变当前处理器的governor类型
+```bash
+echo userspace > sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+echo 70000 > sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
 ```
 
 

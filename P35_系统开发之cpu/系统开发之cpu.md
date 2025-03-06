@@ -13,7 +13,7 @@
 
 ---
 
-[上一篇文章 P33_系统开发之项目客制化](https://github.com/hfreeman2008/android_core_framework/blob/main/P33_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E9%A1%B9%E7%9B%AE%E5%AE%A2%E5%88%B6%E5%8C%96/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E9%A1%B9%E7%9B%AE%E5%AE%A2%E5%88%B6%E5%8C%96.md)
+[上一篇文章 P34_系统开发之Display](https://github.com/hfreeman2008/android_core_framework/blob/main/P34_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay.md)
 
 
 
@@ -88,7 +88,7 @@ CPU usage from 1698338ms to 798324ms ago:
 ---
 
 
-[上一篇文章 P33_系统开发之项目客制化](https://github.com/hfreeman2008/android_core_framework/blob/main/P33_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E9%A1%B9%E7%9B%AE%E5%AE%A2%E5%88%B6%E5%8C%96/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8B%E9%A1%B9%E7%9B%AE%E5%AE%A2%E5%88%B6%E5%8C%96.md)
+[上一篇文章 P34_系统开发之Display](https://github.com/hfreeman2008/android_core_framework/blob/main/P34_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay.md)
 
 
 

@@ -1,4 +1,4 @@
-# P34: 系统开发之cpu
+# P35: 系统开发之cpu
 
 <img src="../flower/flower_p25.png">
 

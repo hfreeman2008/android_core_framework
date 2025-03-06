@@ -193,6 +193,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## P35: System Development about cpu
+[系统开发之cpu.md](./P35_系统开发之cpu/系统开发之cpu.md)
+
+---
+
 Note: 
 
 The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.

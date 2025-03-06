@@ -202,13 +202,10 @@ Note:
 
 The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.
 
----
-
-# Plan
-memory，cpu,......
 
 
 ---
+
 # Donations
 
 **Knowledge is priceless！！**

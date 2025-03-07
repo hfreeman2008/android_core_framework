@@ -18,177 +18,177 @@
 ---
 
 ## P1：基于android 13的GMS认证
-[基于android 13的GMS认证.md](./P1_基于android_13的GMS认证/基于android_13的GMS认证.md)
+🙏 [基于android 13的GMS认证.md](./P1_基于android_13的GMS认证/基于android_13的GMS认证.md)
 
 ---
 
 ## P2: 开机速度优化
-[开机速度优化.md](./P2_开机速度优化/开机速度优化.md)
+🙏 [开机速度优化.md](./P2_开机速度优化/开机速度优化.md)
 
 ---
 
 ## P3: AndroidStudio不同渠道打包
-[AndroidStudio不同渠道打包.md](./P3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
+🙏 [AndroidStudio不同渠道打包.md](./P3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
 ---
 
 ## P4: 系统分析的屠龙刀之log日志
-[系统分析的屠龙刀之log日志.md](./P4_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
+🙏 [系统分析的屠龙刀之log日志.md](./P4_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
 
 ---
 
 ## P5: 系统分析的屠龙刀之dumpsys信息
-[系统分析的屠龙刀之dumpsys信息.md](./P5_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
+🙏 [系统分析的屠龙刀之dumpsys信息.md](./P5_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
 
 ---
 
 ## P6: 系统分析的屠龙刀之traceview
-[系统分析的屠龙刀之traceview.md](./P6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
+🙏 [系统分析的屠龙刀之traceview.md](./P6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
 ---
 
 ## P7: 系统分析的屠龙刀之Android Profile
-[系统分析的屠龙刀之Profile.md](./P7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
+🙏 [系统分析的屠龙刀之Profile.md](./P7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
 ---
 
 ## P8: 系统开发之自定义系统服务
-[系统开发之自定义系统服务.md](./P8_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
+🙏 [系统开发之自定义系统服务.md](./P8_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
 
 ---
 
 ## P9: 系统开发之系统服务初步了解
-[系统开发之系统服务初步了解.md](./P9_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
+🙏 [系统开发之系统服务初步了解.md](./P9_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
 
 ---
 
 ## P10: 系统开发之浅谈TimeZoneDetectorService
-[系统开发之浅谈TimeZoneDetectorService.md](./P10_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
+🙏 [系统开发之浅谈TimeZoneDetectorService.md](./P10_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
 
 ---
 
 ## P11: 系统开发之浅谈TimeDetectorService
-[系统开发之浅谈TimeDetectorService.md](./P11_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
+🙏 [系统开发之浅谈TimeDetectorService.md](./P11_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
 
 ---
 
 ## P12: 系统开发之浅谈WindowManagerService
-[系统开发之浅谈WindowManagerService.md](./P12_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
+🙏 [系统开发之浅谈WindowManagerService.md](./P12_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
 
 ---
 
-## P13: 系统开发之浅谈ActivityTaskManagerService
-[系统开发之浅谈ActivityTaskManagerService.md](./P13_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
+🙏## P13: 系统开发之浅谈ActivityTaskManagerService
+🙏 [系统开发之浅谈ActivityTaskManagerService.md](./P13_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
 
 ---
 
 ## P14: 系统开发之浅谈ActivityManagerService
-[系统开发之浅谈ActivityManagerService.md](./P14_系统开发之浅谈ActivityManagerService/系统开发之浅谈ActivityManagerService.md)
+🙏 [系统开发之浅谈ActivityManagerService.md](./P14_系统开发之浅谈ActivityManagerService/系统开发之浅谈ActivityManagerService.md)
 
 ---
 
 ## P15: 系统开发之浅谈PackageManagerService
-[系统开发之浅谈PackageManagerService.md](./P15_系统开发之浅谈PackageManagerService/系统开发之浅谈PackageManagerService.md)
+🙏 [系统开发之浅谈PackageManagerService.md](./P15_系统开发之浅谈PackageManagerService/系统开发之浅谈PackageManagerService.md)
 
 ---
 
 ## P16: 系统开发之浅谈PowerManagerService
-[系统开发之浅谈PowerManagerService.md](./P16_系统开发之浅谈PowerManagerService/系统开发之浅谈PowerManagerService.md)
+🙏 [系统开发之浅谈PowerManagerService.md](./P16_系统开发之浅谈PowerManagerService/系统开发之浅谈PowerManagerService.md)
 
 ---
 
 ## P17: 系统开发之浅谈BatteryService
-[系统开发之浅谈BatteryService.md](./P17_系统开发之浅谈BatteryService/系统开发之浅谈BatteryService.md)
+🙏 [系统开发之浅谈BatteryService.md](./P17_系统开发之浅谈BatteryService/系统开发之浅谈BatteryService.md)
 
 ---
 
 ## P18: 系统开发之浅谈VibratorManagerService
-[系统开发之浅谈VibratorManagerService.md](./P18_系统开发之浅谈VibratorManagerService/系统开发之浅谈VibratorManagerService.md)
+🙏 [系统开发之浅谈VibratorManagerService.md](./P18_系统开发之浅谈VibratorManagerService/系统开发之浅谈VibratorManagerService.md)
 
 ---
 
 ## P19: 系统开发之浅谈AudioService
-[系统开发之浅谈AudioService.md](./P19_系统开发之浅谈AudioService/系统开发之浅谈AudioService.md)
+🙏 [系统开发之浅谈AudioService.md](./P19_系统开发之浅谈AudioService/系统开发之浅谈AudioService.md)
 
 ---
 
 ## P20: 系统开发之浅谈NotificationManagerService
-[系统开发之浅谈NotificationManagerService.md](./P20_系统开发之浅谈NotificationManagerService/系统开发之浅谈NotificationManagerService.md)
+🙏 [系统开发之浅谈NotificationManagerService.md](./P20_系统开发之浅谈NotificationManagerService/系统开发之浅谈NotificationManagerService.md)
 
 ---
 
 ## P21: 系统开发之浅谈InputMethodManagerService
-[系统开发之浅谈InputMethodManagerService.md](./P21_系统开发之浅谈InputMethodManagerService/系统开发之浅谈InputMethodManagerService.md)
+🙏 [系统开发之浅谈InputMethodManagerService.md](./P21_系统开发之浅谈InputMethodManagerService/系统开发之浅谈InputMethodManagerService.md)
 
 ---
 
 ## P22: 系统开发之浅谈LightsService
-[系统开发之浅谈LightsService.md](./P22_系统开发之浅谈LightsService/系统开发之浅谈LightsService.md)
+🙏 [系统开发之浅谈LightsService.md](./P22_系统开发之浅谈LightsService/系统开发之浅谈LightsService.md)
 
 ---
 
 ## P23: 系统开发之如何新建一个system_bin
-[系统开发之如何新建一个system_bin.md](./P23_系统开发之如何新建一个system_bin/系统开发之如何新建一个system_bin.md)
+🙏 [系统开发之如何新建一个system_bin.md](./P23_系统开发之如何新建一个system_bin/系统开发之如何新建一个system_bin.md)
 
 ---
 
 ## P24: 系统开发之回调接口注册注销
-[系统开发之回调接口注册注销.md](./P24_系统开发之回调接口注册注销/系统开发之回调接口注册注销.md)
+🙏 [系统开发之回调接口注册注销.md](./P24_系统开发之回调接口注册注销/系统开发之回调接口注册注销.md)
 
 ---
 
 ## P25: 系统开发之dumpsys
-[系统开发之dumpsys.md](./P25_系统开发之dumpsys/系统开发之dumpsys.md)
+🙏 [系统开发之dumpsys.md](./P25_系统开发之dumpsys/系统开发之dumpsys.md)
 
 ---
 
 ## P26: 系统开发之系统属性
-[系统开发之系统属性.md](./P26_系统开发之系统属性/系统开发之系统属性.md)
+🙏 [系统开发之系统属性.md](./P26_系统开发之系统属性/系统开发之系统属性.md)
 
 ---
 
 ## P27: 系统开发之anr
-[系统开发之anr.md](./P27_系统开发之anr/系统开发之anr.md)
+🙏 [系统开发之anr.md](./P27_系统开发之anr/系统开发之anr.md)
 
 ---
 
 ## P28: 系统开发之Sensor
-[系统开发之Sensor.md](./P28_系统开发之Sensor/系统开发之Sensor.md)
+🙏 [系统开发之Sensor.md](./P28_系统开发之Sensor/系统开发之Sensor.md)
 
 ---
 
 ## P29: 系统开发之tp
-[系统开发之tp.md](./P29_系统开发之tp/系统开发之tp.md)
+🙏 [系统开发之tp.md](./P29_系统开发之tp/系统开发之tp.md)
 
 ---
 
 ## P30: 系统开发之RRO
-[系统开发之RRO.md](./P30_系统开发之RRO/系统开发之RRO.md)
+🙏 [系统开发之RRO.md](./P30_系统开发之RRO/系统开发之RRO.md)
 
 ---
 
 ## P31: 系统开发之驱动开发
-[系统开发之驱动开发.md](./P31_系统开发之驱动开发/系统开发之驱动开发.md)
+🙏 [系统开发之驱动开发.md](./P31_系统开发之驱动开发/系统开发之驱动开发.md)
 
 ---
 
 ## P32: 系统开发之IMS输入模块
-[系统开发之IMS输入模块.md](./P32_系统开发之IMS输入模块/系统开发之IMS输入模块.md)
+🙏 [系统开发之IMS输入模块.md](./P32_系统开发之IMS输入模块/系统开发之IMS输入模块.md)
 
 ---
 
 ## P33: 系统开发之项目客制化
-[系统开发之项目客制化.md](./P33_系统开发之项目客制化/系统开发之项目客制化.md)
+🙏 [系统开发之项目客制化.md](./P33_系统开发之项目客制化/系统开发之项目客制化.md)
 
 ---
 
 ## P34: 系统开发之Display
-[系统开发之Display.md](./P34_系统开发之Display/系统开发之Display.md)
+🙏 [系统开发之Display.md](./P34_系统开发之Display/系统开发之Display.md)
 
 ---
 
 ## P35: 系统开发之cpu
-[系统开发之cpu.md](./P35_系统开发之cpu/系统开发之cpu.md)
+🙏 [系统开发之cpu.md](./P35_系统开发之cpu/系统开发之cpu.md)
 
 ---
 

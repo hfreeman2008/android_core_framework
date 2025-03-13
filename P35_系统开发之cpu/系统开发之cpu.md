@@ -16,6 +16,7 @@
 [上一篇文章 P34_系统开发之Display](https://github.com/hfreeman2008/android_core_framework/blob/main/P34_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay.md)
 
 
+[下一篇文章 P36_系统开发之memory](https://github.com/hfreeman2008/android_core_framework/blob/main/P36_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bmemory/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bmemory.md)
 
 
 
@@ -848,7 +849,7 @@ N
 
 [上一篇文章 P34_系统开发之Display](https://github.com/hfreeman2008/android_core_framework/blob/main/P34_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8BDisplay.md)
 
-
+[下一篇文章 P36_系统开发之memory](https://github.com/hfreeman2008/android_core_framework/blob/main/P36_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bmemory/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bmemory.md)
 
 ---
 

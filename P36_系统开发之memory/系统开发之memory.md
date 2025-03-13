@@ -252,9 +252,53 @@ Uptime: 82575 Realtime: 82575
 
 ---
 
+# adb shell cat /proc/meminfo 
+
+适用场景： 查看系统的详尽内存信息，包含内核情况；
+
+/proc/meminfo
+
 ```bash
+adb shell cat proc/meminfo
+MemTotal:        2930980 kB
+MemFree:          248052 kB
+Buffers:            9548 kB
+Cached:           580604 kB
+SwapCached:            0 kB
+Active:          1048564 kB
+Inactive:         542104 kB
+Active(anon):    1004704 kB
+Inactive(anon):     8420 kB
+Active(file):      43860 kB
+Inactive(file):   533684 kB
+Unevictable:        3668 kB
+Mlocked:               0 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:               380 kB
+Writeback:             0 kB
+AnonPages:       1004652 kB
+Mapped:           208584 kB
+Shmem:              8572 kB
+Slab:             137940 kB
+SReclaimable:      84324 kB
+SUnreclaim:        53616 kB
+KernelStack:       36944 kB
+PageTables:        38428 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     1465488 kB
+Committed_AS:   62294744 kB
+VmallocTotal:   251658176 kB
+VmallocUsed:      136204 kB
+VmallocChunk:   251387648 kB
+CMA Free: 6084 kB 
+CMA heap info(name,alloc,in cache,fail,total free): 
+ DEFAULT_CMA_BUFFER (348kb 0kb 0kb 16036kb) OTHERS (155648kb 0kb 0kb 0kb) XC0 (122880kb 0kb 0kb 0kb) VDEC0 (49152kb 0kb 0kb 0kb) OTHERS2 (110592kb 0kb 0kb 0kb) RETURN_ENUM6 (0kb 0kb 0kb 36864kb) VDEC1 (139264kb 0kb 0kb 0kb)
 
 ```
+
 
 
 ---

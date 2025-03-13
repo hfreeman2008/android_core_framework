@@ -101,7 +101,7 @@ Uptime: 24044 Realtime: 24044
 Total PSS by process:
      79,474K: system (pid 3103)
      34,375K: zygote (pid 2684)
-     23,107K: com.jamdeo.tv.vod:p0 (pid 3874)
+     23,107K: com.tv.vod:p0 (pid 3874)
         446K: lmkd (pid 2850)
         429K: svcxfar_x (pid 3029)
         422K: xirisvc2.4 (pid 2854)
@@ -121,12 +121,12 @@ Total PSS by OOM adjustment:
      79,474K: System
          79,474K: system (pid 3103)
      59,862K: Persistent
-         14,357K: com.jamdeo.tv.service (pid 3231)
+         14,357K: com.tv.service (pid 3231)
          13,180K: com.android.systemui (pid 3238)
          12,624K: com.keylab.speech.core.vidaa (pid 3716)
     179,529K: Foreground
-        156,422K: com.jamdeo.tv.vod (pid 3319 / activities)
-         23,107K: com.jamdeo.tv.vod:p0 (pid 3874)
+        156,422K: com.tv.vod (pid 3319 / activities)
+         23,107K: com.tv.vod:p0 (pid 3874)
 
 Total PSS by category:
     177,393K: .so mmap
@@ -300,6 +300,62 @@ CMA heap info(name,alloc,in cache,fail,total free):
 
 ```
 
+
+---
+
+# adb shell procrank 
+
+适用场景： 查看进程的VSS/RSS/PSS/USS各个内存指标；
+```bash
+adb shell procrank 
+warning: could not create process interface for 26521
+  PID       Vss      Rss      Pss      Uss  cmdline
+ 1666   225480K   70128K   61346K   57980K  /system/bin/mediaserver
+ 1648   202920K   56788K   49750K   47860K  /system/bin/surfaceflinger
+ 2397  2286192K   70952K   47201K   43200K  system_server
+ 3503  1621380K   49648K   32315K   30616K  com.keylab.speech.core.vidaa
+ 2585  1545892K   40780K   22224K   19464K  com.android.systemui
+......
+ 1744    40120K    2256K    1362K    1108K  /applications/bin/MiMwTtxSrv
+26526     3504K    1596K    1314K    1272K  procrank
+ 1736    40076K    2192K    1298K    1044K  /applications/bin/MiMwCcSrv
+ 1638    13844K    2064K    1176K    1052K  /system/bin/vold
+ 2810     8632K    1908K    1095K    1012K  /system/bin/wpa_supplicant
+ 1734     5636K    1736K    1027K     960K  /system/vendor/bin/hidclient
+ 1674     8016K    1492K     745K     672K  /system/bin/keystore
+    1     1612K     928K     664K     484K  /init
+ 1717     7496K    1256K     590K     528K  /system/bin/gatekeeperd
+ 1712     3316K    1292K     505K     404K  xirisvc2.4.0
+ 1673     3728K     772K     496K     448K  /system/bin/installd
+ 1050     1488K     664K     474K     296K  /sbin/ueventd
+ 1713     3092K     592K     447K     444K  /system/bin/sh
+ 1709     3284K     600K     376K     364K  /system/bin/logcat
+ 1991     5484K    1056K     376K     252K  svcrefsig
+ 1699     7584K     668K     368K     356K  /system/bin/tee_shmem
+ 1646     3592K     624K     353K     340K  /system/bin/servicemanager
+ 1662     2496K     960K     306K     244K  /system/bin/debuggerd
+ 1723     5896K     336K     300K     300K  /sbin/adbd
+ 1644     3680K     296K     284K     284K  /sbin/healthd
+                           ------   ------  ------
+                          1127661K  1044864K  TOTAL
+
+RAM: 2930980K total, 782344K free, 10836K buffers, 500968K cached, 3616K shmem, 120232K slab
+```
+
+VSS - Virtual Set Size 虚拟耗用内存（包含共享库占用的内存）
+RSS - Resident Set Size 实际使用物理内存（包含共享库占用的内存）
+PSS - Proportional Set Size 实际使用的物理内存（比例分配共享库占用的内存）
+USS - Unique Set Size 进程独自占用的物理内存（不包含共享库占用的内存）
+
+一般来说内存占用大小有如下规律：VSS >= RSS >= PSS >= USS
+
+
+---
+
+
+```bash
+
+```
 
 
 ---

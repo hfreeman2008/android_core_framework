@@ -475,6 +475,110 @@ adb shell am dumpheap PIDxxx /data/xxx.hprof
 
 ![OOM](./image/OOM.png)
 
+---
+
+# zram
+
+---
+
+## [FAQ21507] zram 原理及其配置
+
+https://online.mediatek.com/FAQ#/SW/FAQ27916
+
+---
+
+## 手动开zram
+
+```bash
+adb root
+adb remount 
+adb shell
+echo 1024M > /sys/block/zram0/disksize
+mkswap /dev/block/zram0
+swapon /dev/block/zram0
+
+
+执行 cat /proc/meminfo 检查是否设置成功
+SwapTotal:         65532 kB
+SwapFree:          65532 kB
+```
+
+```bash
+adb shell cat  /sys/block/zram0/disksize
+962521088
+
+cat /proc/meminfo
+MemTotal:        1879924 kB
+MemFree:           20108 kB
+MemAvailable:     510544 kB
+SwapTotal:        939960 kB
+SwapFree:         939960 kB
+
+adb shell cat /proc/sys/vm/swappiness
+180
+
+grep -rni --include=*.rc "swappiness"  ./
+
+adb shell cat /proc/sys/vm/swappiness
+out/target/product/tb8768p1_64_bsp/vendor/etc/fstab.enableswap
+
+adb shell cat /vendor/etc/fstab.enableswap
+```
+
+
+---
+
+## 代码打开zram开关
+```bash
+
+http://10.20.31.31:8080/#/c/37242/1/res/Z1018/BASE/proj.cfg
+CONFIG_ZRAM=y
+CONFIG_ZSMALLOC=y
+
+http://10.20.31.31:8080/#/c/37267/
+customize / res/Z1018/BASE/proj.cfg
+########################### ProjectConfig.mk #####################################
+# 这里是对device/mediateksample/tb8766p1_64_bsp/ProjectConfig.mk进行配置
+[PROJECT_CONFIG]
+
+FACTORY_POS_UNSUPPORT = yes
++CUSTOM_CONFIG_MAX_DRAM_SIZE=0xC0000000
+
+# 这里是对./vendor/mediatek/proprietary/bootable/bootloader/preloader/custom/tb8766p1_64_bsp/tb8766p1_64_bsp.mk进行配置
+[PL_CONFIG]
++CUSTOM_CONFIG_MAX_DRAM_SIZE=0xC0000000
+
+
+http://10.20.31.31:8080/#/c/37266/
+customize / res/Z1018/BASE/proj.cfg
+#device/mediatek/system/${TPW_SYS_TARGET_PROJECT}/SystemConfig.mk
+[PROJECT_CONFIG]
+
++MSSI_CUSTOM_CONFIG_MAX_DRAM_SIZE=0xC0000000
+
+device / mediatek/common/fstab.enableswap
+-/dev/block/zram0 none swap defaults zramsize=50%
++/dev/block/zram0 none swap defaults zramsize=75%
+
+device / mediatek/vendor/common/ago/init/init.ago_default.rc
+-on post-fs-data
+-    write /proc/sys/vm/page-cluster 0
+-    swapon_all /vendor/etc/fstab.enableswap
+-    write /dev/memcg/memory.swappiness 150
+-    write /dev/memcg/apps/memory.swappiness 150
+-    write /dev/memcg/system/memory.swappiness 150
+-    write /proc/sys/vm/swappiness 150
+
++on post-fs-data
++    write /proc/sys/vm/page-cluster 0
++    swapon_all /vendor/etc/fstab.enableswap
++    write /dev/memcg/memory.swappiness 180
++    write /dev/memcg/apps/memory.swappiness 180
++    write /dev/memcg/system/memory.swappiness 180
++    write /proc/sys/vm/swappiness 180
+
+```
+
 
 ---
 

@@ -147,10 +147,110 @@ Total RAM: 1,313,620K (status critical)
 
 ---
 
+# adb shell dumpsys meminfo com.android.pkg.name
 
 ```bash
-
+adb shell dumpsys meminfo com.tv.vod
+Applications Memory Usage (in Kilobytes):
+Uptime: 82575 Realtime: 82575
+** MEMINFO in pid 3318 [com.tv.vod] **
+                   Pss  Private  Private  SwapPss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap    82962    82948        0    20277   113152   107190     5961
+  Dalvik Heap    25540    25540        0      990    37750    18875    18875
+ Dalvik Other     7956     7956        0      104                           
+        Stack       44       44        0       16                           
+       Cursor        4        0        0        0                           
+       Ashmem        0        0        0        0                           
+    Other dev      110        0      108        0                           
+     .so mmap     9283     1088     7028      648                           
+    .jar mmap      993        0      844        0                           
+    .apk mmap     7446        0     6632        0                           
+    .dex mmap    20512        8    16932       52                           
+    .oat mmap      663        0        8        0                           
+    .art mmap     1899     1528        4       20                           
+   Other mmap      137        4       64        0                           
+    GL mtrack    30380    30380        0        0                           
+      Unknown     3244     3244        0     1609                           
+        TOTAL   214889   152740    31620    23716   150902   126065    24836
+ 
+ App Summary
+                       Pss(KB)
+                        ------
+           Java Heap:    27072
+         Native Heap:    82948
+                Code:    32540
+               Stack:       44
+            Graphics:    30380
+       Private Other:    11376
+              System:    30529
+ 
+               TOTAL:   214889       TOTAL SWAP PSS:    23716
+ 
+ Objects
+               Views:     1212         ViewRootImpl:        2
+         AppContexts:        7           Activities:        2
+              Assets:       30        AssetManagers:        0
+       Local Binders:      128        Proxy Binders:       49
+       Parcel memory:       83         Parcel count:      271
+    Death Recipients:       32      OpenSSL Sockets:        1
+            WebViews:        0
+ 
+ SQL
+         MEMORY_USED:     1141
+  PAGECACHE_OVERFLOW:      166          MALLOC_SIZE:      117
+ 
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4       12             53         1/18/2  /data/user/0/com.tv.vod/databases/widgets.db
+         4       64            109     324/115/17  /data/user/0/com.tv.vod/databases/report.db
+         4       40            109        36/31/7  /data/user/0/com.tv.vod/databases/vod.db
+         4       12             53         1/18/2  /data/user/0/com.tv.vod/databases/download.db
+         4       12             53         1/18/2  /data/user/0/com.tv.vod/databases/app.db
+         4       44            101        60/23/9  /data/user/0/com.tv.vod/databases/vod_share_data.db
+ 
+ Asset Allocations
+    : 178K
 ```
+
+- Pss: 该进程独占的内存+与其他进程共享的内存（按比例分配，比如与其他3个进程共享9K内存，则这部分为3K）
+- Privete Dirty:该进程独享内存
+- Heap Size:分配的内存
+- Heap Alloc:已使用的内存
+- Heap Free:空闲内存
+
+
+---
+
+## 泄漏分析过程
+
+1、查看 Native Heap 的 Heap Alloc 与 Dalvik Heap 的 Heap Alloc
+
+1）、Heap Alloc：表示 native 的内存占用，如果持续上升，则可能有泄漏。
+
+2）、Heap Alloc：表示 Java 层的内存占用
+
+2、查看 Views、Activities、AppContexts 数量变化情况
+
+如果 Views 与 Activities、AppContexts 持续上升，则表明有内存泄漏的风险
+
+3、SQL 的 MEMORY_USED 与 PAGECACHE_OVERFLOW
+
+1）、MEMOERY_USED：表示数据库使用的内存。
+
+2）、PAGECACHE_OVERFLOW：表示溢出也使用的缓存，这个数值越小越好
+
+4、查看 DATABASES 信息
+
+1）、pgsz：表示数据库分页大小，这里全是 4KB。
+
+2）、Lookaside(b)：表示使用了多少个 Lookaside 的 slots，可理解为内存占用的大小。
+
+3）、cache：一栏中的 151/32/18 则分别表示 分页缓存命中次数/未命中次数/分页缓存个数，这里的未命中次数不应该大于命中次数。
+
+
+---
 
 ```bash
 

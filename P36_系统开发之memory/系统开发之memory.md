@@ -365,16 +365,127 @@ adb shell free -h
 
 ---
 
-```bash
 
+# adb shell showmap pid
+
+适用场景： 查看进程的虚拟地址空间的内存分配情况；
+
+
+---
+
+# adb shell vmstat 
+
+---
+
+# adb shell top
+
+---
+
+# gc日志
+
+
+
+```bash
+I zygote  : Background concurrent copying GC freed 102170(4MB) AllocSpace objects, 23(684KB) LOS objects, 42% free, 9MB/17MB, paused 531us total 294.802ms
+```
+
+---
+
+# 内存相关关键字：
+
+
+```bash
+gc, mem，lowmemory,  lowmemorykiller，LMK
 ```
 
 
 ---
 
-```bash
 
+# 卡顿丢帧原因概述 - 低内存篇
+
+https://www.androidperformance.com/2019/09/18/Android-Jank-Due-To-Low-Memory/
+
+可能的优化方案 (来自实际的经验和大佬分享的经验)
+
+下面列举的只是一些经验之谈 , 具体问题还是得具体分析 , 在 Android 平台上 , 对三方应用的管控是非常重要的 , 很多小白用户 , 一大堆常驻通知和后台服务 , 导致这些 App 的优先级非常高 , 很难被杀掉 . 
+
+导致整机的内存长时间比较低 . 所以做系统的必要的优化之后 , 就要着重考虑对三方应用的查杀和管控逻辑 , 尽量减少后台进程的个数 , 在必要的时候 , 清理掉无用的进程来释放内存个前台应用使用.
+
+
+提高 extra_free_kbytes 值
+
+提高 disk I/O 读写速率，如用 UFS3.0，用固态硬盘
+
+避免设置太大的 read_ahead_kb 值
+
+使用 cgroup 的 blkio 来限制后台进程的 io 读操作，缩短前台 io 响应时间
+
+提前做内存回收的操作，避免在用户使用应用时碰到而感受到稍微卡顿
+
+增加 LMK 效率，避免无效的 kill
+
+kswapd 周期性回收更多的 high 水位
+
+调整 swappiness 来平衡 pagecache 和 swap
+
+- 策略 : 针对低内存机器做特殊的策略 , 比如杀进程更加激进 (这会带来用户体验的降低 , 所以这个度需要兼顾性能和用户体验)
+- 策略 : 在内存不足的时候提醒用户(或者不提醒用户) , 杀掉不必要的后台进程 .
+- 策略 : 在内存严重不足且无法恢复的情况下 , 可以提示用户重启手机.
+
+
+---
+
+# bugreport中关于memory的信息
+
+![bugreport中关于memory的信息](./image/bugreport中关于memory的信息.png)
+
+---
+
+# adb shell df -ha
+```bash
+adb shell df -ha
 ```
+
+
+---
+
+# 强制让进程gc
+
+```bash
+adb shell kill -10 PIDXXX
+```
+
+---
+
+# 强制生成进程的内存镜像
+
+```bash
+adb shell am dumpheap PIDxxx /data/xxx.hprof
+```
+
+---
+# rom_可用data优化
+
+![rom_可用data优化](./image/rom_可用data优化.png)
+
+---
+
+# OOM
+
+![OOM](./image/OOM.png)
+
+
+---
+
+# 参考文档
+
+[Android 性能优化之内存泄漏检测以及内存优化（中）](https://blog.csdn.net/self_study/article/details/66969064)
+
+[Android 性能优化之内存泄漏检测以及内存优化（下）](https://blog.csdn.net/self_study/article/details/68946441)
+
+
+[Android内存分析命令](http://gityuan.com/2016/01/02/memory-analysis-command/)
 
 
 

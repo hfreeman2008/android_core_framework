@@ -192,6 +192,12 @@
 
 ---
 
+## P36: 系统开发之memory
+🙏 [系统开发之memory.md](./P36_系统开发之memory/系统开发之memory.md)
+
+---
+
+
 备注：这一系统文章参考源码以android 11和13为主，还有部分是其他的android 版本。
 
 

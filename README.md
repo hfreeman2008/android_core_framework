@@ -198,6 +198,11 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## P36: System Development about memory
+🙏 [系统开发之memory.md](./P36_系统开发之memory/系统开发之memory.md)
+
+---
+
 Note: 
 
 The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.

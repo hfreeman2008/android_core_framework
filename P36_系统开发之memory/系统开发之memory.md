@@ -353,6 +353,18 @@ USS - Unique Set Size 进程独自占用的物理内存（不包含共享库占�
 ---
 
 
+# adb shell free 
+
+```bash
+adb shell free 
+adb shell free -h
+```
+适用场景： 只查看系统的可用内存；
+
+![free](./image/free.png)
+
+---
+
 ```bash
 
 ```

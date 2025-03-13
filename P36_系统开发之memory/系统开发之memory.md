@@ -582,6 +582,17 @@ device / mediatek/vendor/common/ago/init/init.ago_default.rc
 
 ---
 
+# ddr设置成performance模式
+
+```bash
+/sys/class/devfreq # cat soc\:qcom,cpu0-cpu-ddr-lat/governor
+mem_latency
+
+adb shell "echo performance > /sys/class/devfreg/*/governor"
+```
+
+---
+
 # 参考文档
 
 [Android 性能优化之内存泄漏检测以及内存优化（中）](https://blog.csdn.net/self_study/article/details/66969064)

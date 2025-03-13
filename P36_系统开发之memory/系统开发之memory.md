@@ -22,6 +22,19 @@
 
 ---
 
+# memory脑图
+
+![memory脑图](./image/memory脑图.png)
+
+
+---
+
+
+
+
+---
+
+
 ```bash
 
 ```

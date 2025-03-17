@@ -486,11 +486,186 @@ try {
 
 ---
 
+# 查看binder对应uid的应用名
+
+如果uid为：10093
+```bash
+adb shell "ps -A | grep 93"
+u0_a93 3724 1533 1508560 186880 ep_poll 0 S com.sohu.inputmethod.sogou.oem
+u0_a93 6057 1533 1422372 129096 ep_poll 0 S com.sohu.inputmethod.sogou.oem:push_service
+```
+
+---
+
+# 查看到窗口的BinderID号
+
+如果对应的是mCurToken:
+```java
+InputMethodManagerService: showCurrentInputLocked: mCurToken=android.os.Binder@6630cb5
+```
+
+
+这个可以查看到窗口的BinderID号：
+```java
+WINDOW MANAGER TOKENS (adb shell dumpsys window tokens)
+如：
+WindowToken{266fe27 android.os.Binder@696b8e6}:
+windows=[Window{6889757 u0 InputMethod}]
+windowType=2011 hidden=false hasVisible=true
+```
+
+---
+
+# 与系统服务transact数据  系统服务通信 系统服务调用
+
+frameworks/base/core/java/com/android/server/BootReceiver.java
+
+```java
+if (Intent.ACTION_LOCKED_BOOT_COMPLETED.equals(intent.getAction())) {
+    Slog.i(TAG, "receive " + intent.getAction());
+    setDelayBootCompletedProp(false);
+    com.android.internal.os.BackgroundThread.getHandler()
+            .postDelayed(() -> {
+                setDelayBootCompletedProp(true);
+                resetThermalState();
+            }, 60 * 1000 * 2); // 2min
+    return;
+}
+    
+    
+void resetThermalState() {
+    try {
+        IBinder service = ServiceManager.getService("ds-service");
+        Slog.e(TAG, "resetThermalState call ds-service");
+        Parcel data = Parcel.obtain();
+        data.writeString("system call");
+        service.transact(1000, data, null, IBinder.FLAG_ONEWAY);
+        Slog.e(TAG, "set thermal state after boot completed");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+第二个地方调用：
+
+```java
+try {
+    IBinder service = ServiceManager.getService("ds-service");
+    Parcel data = Parcel.obtain();
+    data.writeString("system");
+    data.writeInt(scenario);
+    service.transact(3000, data, null, IBinder.FLAG_ONEWAY);
+    return;
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
 
 
 ```java
-
+try {
+    IBinder service = ServiceManager.getService("ds-service");
+    Slog.w(TAG, "hall changed " + mBatteryHallOpen);
+    Parcel data = Parcel.obtain();
+    data.writeString("system call");
+    data.writeBoolean(plugged);
+    data.writeBoolean(mBatteryHallOpen);
+    service.transact(6000, data, null, IBinder.FLAG_ONEWAY);
+} catch (Exception e) {
+    e.printStackTrace();
+}
 ```
+
+---
+
+# 获取系统服务的方式：
+
+## app 方式一：
+
+
+```java
+import com.android.internal.app.IBatteryStats;
+
+IBatteryStats mBatteryStats = IBatteryStats.Stub.asInterface(
+                    ServiceManager.getService("batterystats"));
+mBatteryStats.noteBleScanResults(mWorkSource, 100);
+```
+
+```java
+import android.os.INetworkManagementService;
+
+IBinder b = ServiceManager.getService(Context.NETWORKMANAGEMENT_SERVICE);
+INetworkManagementService service = INetworkManagementService.Stub.asInterface(b);
+
+String[] currentIfaces = service.listInterfaces();
+```
+
+
+```java
+import com.mediatek.duraspeed.manager.IDuraSpeedService;
+
+IDuraSpeedService sDuraSpeedManager = IDuraSpeedService.Stub.asInterface(
+                        ServiceManager.getService("duraspeed"));
+sDuraSpeedManager.setAppWhitelist(list);
+```
+
+
+## app 方式二：
+
+```java
+ActivityManager mAm = context.getSystemService(ActivityManager.class);
+
+ActivityManager activityManager =(ActivityManager) 
+    mContext.getSystemService(Context.ACTIVITY_SERVICE);
+```
+
+
+```java
+PowerManager pm=(PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+
+Vibrator vibrator=(Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
+
+final WindowManager wm = mContext.getSystemService(WindowManager.class);
+```
+
+
+## system server进程方式三
+
+```java
+ActivityManagerInternal mAm;
+mAm = LocalServices.getService(ActivityManagerInternal.class);
+```
+
+
+```java
+import android.content.pm.PackageManagerInternal;
+
+PackageManagerInternal mPackageManagerInternal = LocalServices.getService(
+                        PackageManagerInternal.class);
+AndroidPackage androidPackage = mPackageManagerInternal.getPackage(uid); 
+```
+
+
+```java
+RyCameraLocalService ryCameraLocalService = LocalServices.getService(
+                        RyCameraLocalService.class);
+ryCameraLocalService.startRyCameraServiceIfNeeded();
+
+
+LocalServices.getService(ActivityManagerInternal.class).isSystemReady();
+
+DevicePolicyManagerInternal dpmi = LocalServices.getService(
+                        DevicePolicyManagerInternal.class);
+
+AccountManagerInternal am=LocalServices.getService(AccountManagerInternal.class);
+```
+
+
+
+
+
+---
 
 
 ```java

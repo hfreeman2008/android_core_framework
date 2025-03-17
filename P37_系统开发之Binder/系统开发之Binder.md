@@ -26,7 +26,7 @@
 
 ---
 
-```
+
 
 ---
 
@@ -40,7 +40,7 @@
 
 ---
 
-[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p36-系统开发之memory)
+[<font face='黑体' color=#ff0000 size=40 >跳转到文章开始</font>](#p37-系统开发之binder)
 
 ---
 

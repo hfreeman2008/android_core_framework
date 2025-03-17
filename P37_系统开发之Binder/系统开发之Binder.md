@@ -842,18 +842,66 @@ public void privilegedOperation() {
 
 ---
 
-```java
+# 捕获系统或应用的 Binder IPC（进程间通信）事务堆栈
 
+
+adb shell am trace-ipc 命令
+
+am trace-ipc 命令用于‌捕获 Android 系统或应用的 Binder IPC（进程间通信）事务堆栈‌，帮助分析性能瓶颈或 IPC 调用逻辑。以下是具体用法及步骤：
+命令语法与参数‌
+
+操作    命令格式    参数说明
+
+启动跟踪‌    
+
+```bash
+adb shell am trace-ipc start [--dump-file <FILE_PATH>]    
+
+--dump-file：指定跟踪结果输出文件路径（默认 /data/local/tmp/ 目录）‌
+```
+
+停止跟踪‌    
+
+```bash
+adb shell am trace-ipc stop [--dump-file <FILE_PATH>]    
+
+停止跟踪并生成报告文件（需与启动时指定的路径一致）‌
+```
+拉取文件‌    adb pull <设备文件路径> <本地保存路径>    将设备上的跟踪文件导出到本地分析‌
+
+```bash
+adb shell am trace-ipc start --dump-file /data/local/tmp/ipc-trace.txt
+adb shell am trace-ipc stop --dump-file /data/local/tmp/ipc-trace.txt
+adb pull /data/local/tmp/ipc-trace.txt ~/Desktop/ipc-trace.txt
+使用文本编辑器或性能分析工具（如 Perfetto）查看文件内容‌。
 ```
 
 
-```java
+注意事项‌
+- 权限要求‌：需确保设备已开启开发者模式并授权 ADB 调试‌。
+- 文件路径‌：Android 设备上需有写入权限的目录（如 /data/local/tmp/）‌。
+- 时间窗口‌：跟踪时间不宜过长，避免生成过大的日志文件‌。
+- 结合其他工具‌：可与 systrace 或 atrace 结合使用，定位 IPC 延迟与渲染性能的关联‌。
 
+输出文件内容示例‌
+```java
+Binder transaction stack trace for process com.example.app (pid 12345):
+at android.os.BinderProxy.transact(Binder.java:1234)
+at com.example.app.ServiceStub.onTransact(ServiceStub.java:56)
+...
 ```
 
 
-```java
+通过分析堆栈信息，可定位频繁或耗时的 IPC 调用‌。
 
+此命令的源码，可以在查看：
+frameworks\base\services\core\java\com\android\server\am\ActivityManagerShellCommand.java
+
+```java
+public int onCommand(String cmd) {
+    ......
+case "trace-ipc":
+    return runTraceIpc(pw);
 ```
 
 
@@ -861,7 +909,7 @@ public void privilegedOperation() {
 
 # 参考文档
 
-[Android 性能优化之内存泄漏检测以及内存优化（中）](https://blog.csdn.net/self_study/article/details/66969064)
+[binder](https://github.com/xiangjiana/Android-MS/blob/master/android/binder2.md)
 
 
 

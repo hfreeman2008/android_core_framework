@@ -23,6 +23,16 @@
 ---
 
 
+# Binder架构
+
+
+![Binder架构](./image/Binder架构1.png)
+
+
+![Binder架构2](./image/Binder架构2.png)
+
+![Binder架构3](./image/Binder架构3.png)
+
 
 ---
 

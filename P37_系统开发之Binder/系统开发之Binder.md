@@ -36,6 +36,22 @@
 
 ---
 
+# Binder分层架构图
+
+
+![Binder分层架构图1](./image/Binder分层架构图1.png)
+
+![Binder分层架构图2](./image/Binder分层架构图2.png)
+
+
+---
+
+# 关键概念：
+
+
+
+---
+
 
 
 ---

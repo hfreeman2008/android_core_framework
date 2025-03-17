@@ -662,25 +662,185 @@ AccountManagerInternal am=LocalServices.getService(AccountManagerInternal.class)
 ```
 
 
+---
 
+# linkToDeath 和 unlinkToDeath
+
+frameworks\base\core\java\android\os\IBinder.java
+
+
+```java
+    /**
+     * Interface for receiving a callback when the process hosting an IBinder
+     * has gone away.
+     * 
+     * @see #linkToDeath
+     */
+    public interface DeathRecipient {
+        public void binderDied();
+
+        /**
+         * @hide
+         */
+        default void binderDied(IBinder who) {
+            binderDied();
+        }
+    }
+```
+
+Binder运行在服务端，如果由于某种服务端异常终止了的话会导致客户端的远程调用失败、所以Binder提供了两个配对的方法linkToDeath和unlinkToDeath，通过linkToDeath方法可以给Binder设置一个死亡代理，当Binder死亡的时候客户端就会收到通知，然后就可以重新发起连接从而恢复连接了。
+
+如何给Binder设置死亡代理
+
+1、声明一个DeathRecipient对象、DeathRecipient是一个接口，其内部只有一个方法bindDied，实现这个方法就可以在Binder死亡的时候收到通知了。
+
+```java
+private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
+    @Override
+    public void binderDied() {
+        if (mRemoteBookManager == null) return;
+        mRemoteBookManager.asBinder().unlinkToDeath(mDeathRecipient, 0);
+        mRemoteBookManager = null;
+        // TODO:这里重新绑定远程Service
+        
+    }
+};
+```
+
+2、在客户端绑定远程服务成功之后，给binder设置死亡代理
+
+```java
+mRemoteBookManager.asBinder().linkToDeath(mDeathRecipient, 0);
+```
 
 
 ---
 
+# Binder.clearCallingIdentity()和Binder.restoreCallingIdentity
+
+系统服务中Binder.clearCallingIdentity()和Binder.restoreCallingIdentity二个接口的意义：
+
 
 ```java
-
+void setBackgroundRestrictionLevel(String packageName, int uid, int userId,
+        @RestrictionLevel int level, int reason, int subReason) {
+    final int callingUid = Binder.getCallingUid();
+    if (callingUid != SYSTEM_UID && callingUid != ROOT_UID && callingUid != SHELL_UID) {
+        throw new SecurityException(
+                "No permission to change app restriction level");
+    }
+    final long callingId = Binder.clearCallingIdentity();
+    try {
+        XXXXXXX;
+    } finally {
+        Binder.restoreCallingIdentity(callingId);
+    }
+}
 ```
+
+首先，Binder是Android中用于进程间通信（IPC）的核心机制。当不同的进程通过Binder进行交互时，系统会记录调用方的身份（比如UID和PID），用于权限检查。比如，系统服务在处理来自客户端的请求时，可能需要知道客户端是谁，以决定是否有权限执行某个操作。
+
+接下来，clearCallingIdentity方法的作用应该是清除当前线程的调用身份，也就是将当前线程的调用方身份信息保存起来，并返回一个代表原始调用身份的长整型值。而restoreCallingIdentity则是将之前保存的调用身份恢复回来。这两个方法通常成对使用，可能是为了在某个代码块中临时改变调用身份，执行一些需要特定权限的操作，然后再恢复原来的身份，避免影响后续的权限检查。
+
+用户可能是在阅读系统服务的源码时看到这两个方法被一起使用，比如在某个系统服务的方法中，先调用clearCallingIdentity获取并清除当前身份，然后执行一些操作，最后调用restoreCallingIdentity恢复之前的身份。这种情况下，为什么要这么做呢？
+
+可能的场景是，系统服务需要暂时以自身进程的权限执行某些操作，而不是客户端的权限。例如，系统服务可能需要访问一些只有系统进程才能访问的资源，这时候临时清除调用身份，让系统服务以自己的权限运行，执行完操作后再恢复客户端的身份，确保后续的权限检查正确。
+
+另外，这两个方法成对出现的原因可能是因为它们涉及到线程本地存储（Thread Local）。每个线程的调用身份是独立存储的，所以在同一个线程中，先保存再恢复可以确保不会影响到其他线程，或者同一线程的其他部分代码。
+
+需要注意的是，如果这两个方法不成对使用，可能会导致权限泄露或错误。例如，如果在清除调用身份后没有恢复，后续在该线程中的Binder调用可能会使用错误的身份，导致安全漏洞或权限错误。
+
+可能用户还不太清楚Binder调用身份的具体管理机制，或者为什么需要临时改变调用身份。需要进一步解释这两个方法如何影响权限检查，以及成对使用的重要性。
+
+总结一下，clearCallingIdentity的作用是保存并清除当前线程的调用身份，使得后续操作可以以当前进程的权限执行；而restoreCallingIdentity则是恢复之前保存的身份，确保后续的权限检查正确。成对使用是为了在临时切换权限后恢复原状，保证系统的安全性和权限控制的正确性。
+
+在 Android 系统服务中，Binder.clearCallingIdentity() 和 Binder.restoreCallingIdentity(callingId) 的成对使用是为了‌临时修改当前线程的 Binder 调用身份‌，同时确保权限检查的安全性。以下是具体作用和意义：
+
+核心作用‌
+
+方法    行为
+
+Binder.clearCallingIdentity()‌    清除当前线程的调用方身份（UID/PID），返回一个表示原始调用身份的长整型值 callingId
+
+Binder.restoreCallingIdentity(callingId)‌    将当前线程的调用身份恢复为 callingId 对应的原始身份
+
+为什么必须成对出现？‌
+
+临时身份切换‌
+
+系统服务可能需要暂时‌以自身权限执行敏感操作‌（而非客户端的权限）。例如：
 
 
 ```java
-
+public void systemServiceMethod() {
+    long callingId = Binder.clearCallingIdentity(); // 清除客户端身份
+    try {
+        // 以系统服务自身权限执行操作（如访问系统文件）
+        doPrivilegedOperation();
+    } finally {
+        Binder.restoreCallingIdentity(callingId); // 恢复原始客户端身份
+    }
+}
 ```
 
+在 try 代码块中，系统服务以‌系统进程身份‌运行，绕过客户端权限限制。
+
+在 finally 中恢复身份，确保后续代码的权限检查基于原始客户端身份。
+
+防止权限泄漏‌
+
+若不清除身份，客户端可能通过 Binder 调用‌伪造高权限身份‌（例如冒充系统进程）。
+若清除后未恢复，后续代码可能因身份错误导致崩溃或安全漏洞。
+
+线程本地存储（TLS）‌
+Binder 身份信息保存在线程本地变量中，成对操作确保‌线程安全‌（不影响其他线程或同一线程的其他逻辑）。
+
+典型使用场景‌
+
+场景    说明
+
+跨进程访问系统资源‌    系统服务需要访问 /data/system 等受保护目录，临时切换为系统权限
+
+绕过客户端权限检查‌    执行无需客户端授权的操作（如查询系统状态）
+
+防止恶意客户端伪造身份‌    清除客户端传入的不可信身份，确保敏感操作的安全性
+底层机制‌
+
+clearCallingIdentity()‌
+将当前线程的原始调用身份（UID/PID）打包为 long 类型的 callingId，并将线程身份重置为当前进程的 UID/PID。
+
+restoreCallingIdentity()‌
+从 callingId 解析出原始 UID/PID，并重新设置到当前线程。
+代码示例（安全实践）‌
 ```java
-
+public void privilegedOperation() {
+    // 保存原始身份并清除
+    long callingId = Binder.clearCallingIdentity();
+    try {
+        // 以系统身份执行敏感操作
+        SystemFileUtils.writeToSystemFile();
+    } finally {
+        // 无论是否发生异常，必须恢复身份
+        Binder.restoreCallingIdentity(callingId);
+    }
+}
 ```
 
+注意事项‌
+
+必须使用 try-finally‌
+确保 restore 在异常情况下仍能执行，避免身份残留。
+
+避免嵌套调用‌
+多次调用 clear 时需按顺序恢复（类似栈的 FILO 行为）。
+
+仅限系统进程使用‌
+普通应用调用这些方法会被权限拦截（需 android.permission.INTERACT_ACROSS_USERS）。
+
+通过这种设计，Android 既保证了系统服务的安全执行，又维护了 Binder IPC 的权限完整性。
+
+
+---
 
 ```java
 

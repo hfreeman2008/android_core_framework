@@ -1,7 +1,5 @@
 
-## [README of Chinese][readme]
-
-[**中文 Documentation**](README.md)
+[**🌎中文 Documentation**](README.md)
 
 ---
 

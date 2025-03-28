@@ -16,6 +16,8 @@
 [上一篇文章 P36_系统开发之memory](https://github.com/hfreeman2008/android_core_framework/blob/main/P36_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bmemory/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bmemory.md)
 
 
+[下一篇文章 P38_系统开发之permission](https://github.com/hfreeman2008/android_core_framework/blob/main/P38_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bpermission/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bpermission.md)
+
 ---
 
 
@@ -921,6 +923,7 @@ case "trace-ipc":
 [上一篇文章 P36_系统开发之memory](https://github.com/hfreeman2008/android_core_framework/blob/main/P36_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bmemory/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bmemory.md)
 
 
+[下一篇文章 P38_系统开发之permission](https://github.com/hfreeman2008/android_core_framework/blob/main/P38_%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bpermission/%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E4%B9%8Bpermission.md)
 
 ---
 

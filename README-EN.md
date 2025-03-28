@@ -1,6 +1,8 @@
 
 ## [README of Chinese][readme]
 
+[**中文 Documentation**](README.md)
+
 ---
 
 # android core and key information of framework

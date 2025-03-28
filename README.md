@@ -1,240 +1,235 @@
 
-## [README of Chinese][readme-cn]
+## [README of English][readme]
 
 ---
 
 # android core and key information of framework
 
 
-These articles mainly focuses on some core and key information of the Android framework.
+此系统文章主要是针对android framework的一些核心和关键信息做一些笔记，同时也是分享一些自己的心得和技术总结。
 
-And these articles are considered personal insights and technical summaries.
 
-Of course, these can also be understood as some essential technical skills for an Android system engineer.
+当然，这也可以理解为一个android 系统工程师的一些必备技术技能。
+
 
 <img src="./flower/flower_red_003.png">
 
+
 ---
 
-## P1：GMS certification based on Android 13
+## P1：基于android 13的GMS认证
 🙏 [基于android 13的GMS认证.md](./P1_基于android_13的GMS认证/基于android_13的GMS认证.md)
 
 ---
 
-## P2: Optimization of startup speed
+## P2: 开机速度优化
 🙏 [开机速度优化.md](./P2_开机速度优化/开机速度优化.md)
 
 ---
 
-## P3: Android Studio packaged through different channels
+## P3: AndroidStudio不同渠道打包
 🙏 [AndroidStudio不同渠道打包.md](./P3_AndroidStudio不同渠道打包/AndroidStudio不同渠道打包.md)
 
 ---
 
-## P4: Key Technologies in System Analysis - Log
-🙏 [Key_Technologies_in_System_Analysis_Of_log.md](./P4_系统分析的屠龙刀之log日志/Key_Technologies_in_System_Analysis_Of_log.md)
+## P4: 系统分析的屠龙刀之log日志
+🙏 [系统分析的屠龙刀之log日志.md](./P4_系统分析的屠龙刀之log日志/系统分析的屠龙刀之log日志.md)
 
 ---
 
-## P5: Key Technologies in System Analysis - dumpsys
-🙏 [Key_Technologies_in_System_Analysis_Of_dumpsys.md](./P5_系统分析的屠龙刀之dumpsys信息/Key_Technologies_in_System_Analysis_Of_dumpsys.md)
+## P5: 系统分析的屠龙刀之dumpsys信息
+🙏 [系统分析的屠龙刀之dumpsys信息.md](./P5_系统分析的屠龙刀之dumpsys信息/系统分析的屠龙刀之dumpsys信息.md)
 
 ---
 
-## P6: Key Technologies in System Analysis - traceview
+## P6: 系统分析的屠龙刀之traceview
 🙏 [系统分析的屠龙刀之traceview.md](./P6_系统分析的屠龙刀之traceview/系统分析的屠龙刀之traceview.md)
 
 ---
 
-## P7: Key Technologies in System Analysis -Profile
+## P7: 系统分析的屠龙刀之Android Profile
 🙏 [系统分析的屠龙刀之Profile.md](./P7_系统分析的屠龙刀之Profile/系统分析的屠龙刀之Profile.md)
 
 ---
 
-## P8: System Development about Customized System Services
+## P8: 系统开发之自定义系统服务
 🙏 [系统开发之自定义系统服务.md](./P8_系统开发之自定义系统服务/系统开发之自定义系统服务.md)
 
 ---
 
-## P9: System Development about Preliminary understanding of system services
+## P9: 系统开发之系统服务初步了解
 🙏 [系统开发之系统服务初步了解.md](./P9_系统开发之系统服务初步了解/系统开发之系统服务初步了解.md)
 
 ---
 
-## P10: System Development about Talking TimeZoneDetectorService
+## P10: 系统开发之浅谈TimeZoneDetectorService
 🙏 [系统开发之浅谈TimeZoneDetectorService.md](./P10_系统开发之浅谈TimeZoneDetectorService/系统开发之浅谈TimeZoneDetectorService.md)
 
 ---
 
-## P11: System Development about Talking TimeDetectorService
+## P11: 系统开发之浅谈TimeDetectorService
 🙏 [系统开发之浅谈TimeDetectorService.md](./P11_系统开发之浅谈TimeDetectorService/系统开发之浅谈TimeDetectorService.md)
 
 ---
 
-## P12: System Development about Talking WindowManagerService
+## P12: 系统开发之浅谈WindowManagerService
 🙏 [系统开发之浅谈WindowManagerService.md](./P12_系统开发之浅谈WindowManagerService/系统开发之浅谈WindowManagerService.md)
 
 ---
 
-## P13: System Development about Talking ActivityTaskManagerService
+## P13: 系统开发之浅谈ActivityTaskManagerService
 🙏 [系统开发之浅谈ActivityTaskManagerService.md](./P13_系统开发之浅谈ActivityTaskManagerService/系统开发之浅谈ActivityTaskManagerService.md)
 
 ---
 
-
-## P14: System Development about Talking ActivityManagerService
+## P14: 系统开发之浅谈ActivityManagerService
 🙏 [系统开发之浅谈ActivityManagerService.md](./P14_系统开发之浅谈ActivityManagerService/系统开发之浅谈ActivityManagerService.md)
 
 ---
 
-
-
-## P15: System Development about Talking PackageManagerService
+## P15: 系统开发之浅谈PackageManagerService
 🙏 [系统开发之浅谈PackageManagerService.md](./P15_系统开发之浅谈PackageManagerService/系统开发之浅谈PackageManagerService.md)
 
 ---
 
-## P16: System Development about Talking PowerManagerService
+## P16: 系统开发之浅谈PowerManagerService
 🙏 [系统开发之浅谈PowerManagerService.md](./P16_系统开发之浅谈PowerManagerService/系统开发之浅谈PowerManagerService.md)
 
 ---
 
-## P17: System Development about Talking BatteryService
+## P17: 系统开发之浅谈BatteryService
 🙏 [系统开发之浅谈BatteryService.md](./P17_系统开发之浅谈BatteryService/系统开发之浅谈BatteryService.md)
 
 ---
 
-## P18: System Development about Talking VibratorManagerService
+## P18: 系统开发之浅谈VibratorManagerService
 🙏 [系统开发之浅谈VibratorManagerService.md](./P18_系统开发之浅谈VibratorManagerService/系统开发之浅谈VibratorManagerService.md)
 
 ---
 
-## P19: System Development about Talking AudioService
+## P19: 系统开发之浅谈AudioService
 🙏 [系统开发之浅谈AudioService.md](./P19_系统开发之浅谈AudioService/系统开发之浅谈AudioService.md)
 
 ---
 
-## P20: System Development about NotificationManagerService
+## P20: 系统开发之浅谈NotificationManagerService
 🙏 [系统开发之浅谈NotificationManagerService.md](./P20_系统开发之浅谈NotificationManagerService/系统开发之浅谈NotificationManagerService.md)
 
 ---
 
-## P21: System Development about InputMethodManagerService
+## P21: 系统开发之浅谈InputMethodManagerService
 🙏 [系统开发之浅谈InputMethodManagerService.md](./P21_系统开发之浅谈InputMethodManagerService/系统开发之浅谈InputMethodManagerService.md)
 
 ---
 
-## P22: System Development about LightsService
+## P22: 系统开发之浅谈LightsService
 🙏 [系统开发之浅谈LightsService.md](./P22_系统开发之浅谈LightsService/系统开发之浅谈LightsService.md)
 
 ---
 
-## P23: System Development about How to create a new system_bin
+## P23: 系统开发之如何新建一个system_bin
 🙏 [系统开发之如何新建一个system_bin.md](./P23_系统开发之如何新建一个system_bin/系统开发之如何新建一个system_bin.md)
-
 
 ---
 
-## P24: System Development about Callback interface registration
+## P24: 系统开发之回调接口注册注销
 🙏 [系统开发之回调接口注册注销.md](./P24_系统开发之回调接口注册注销/系统开发之回调接口注册注销.md)
 
 ---
 
-## P25: System Development about dumpsys
+## P25: 系统开发之dumpsys
 🙏 [系统开发之dumpsys.md](./P25_系统开发之dumpsys/系统开发之dumpsys.md)
 
 ---
 
-## P26: System Development about system properties
+## P26: 系统开发之系统属性
 🙏 [系统开发之系统属性.md](./P26_系统开发之系统属性/系统开发之系统属性.md)
 
 ---
 
-## P27: System Development about anr
+## P27: 系统开发之anr
 🙏 [系统开发之anr.md](./P27_系统开发之anr/系统开发之anr.md)
 
 ---
 
-## P28: System Development about Sensor
+## P28: 系统开发之Sensor
 🙏 [系统开发之Sensor.md](./P28_系统开发之Sensor/系统开发之Sensor.md)
 
 ---
 
-
-
-## P29: System Development about tp
+## P29: 系统开发之tp
 🙏 [系统开发之tp.md](./P29_系统开发之tp/系统开发之tp.md)
 
 ---
 
-## P30: System Development about RRO
+## P30: 系统开发之RRO
 🙏 [系统开发之RRO.md](./P30_系统开发之RRO/系统开发之RRO.md)
 
 ---
 
-## P31: System Development about kenel develop
+## P31: 系统开发之驱动开发
 🙏 [系统开发之驱动开发.md](./P31_系统开发之驱动开发/系统开发之驱动开发.md)
 
 ---
 
-## P32: System Development about IMS
+## P32: 系统开发之IMS输入模块
 🙏 [系统开发之IMS输入模块.md](./P32_系统开发之IMS输入模块/系统开发之IMS输入模块.md)
-
 
 ---
 
-## P33: System Development about Project customization
+## P33: 系统开发之项目客制化
 🙏 [系统开发之项目客制化.md](./P33_系统开发之项目客制化/系统开发之项目客制化.md)
 
 ---
 
-## P34: System Development about Display
+## P34: 系统开发之Display
 🙏 [系统开发之Display.md](./P34_系统开发之Display/系统开发之Display.md)
 
 ---
 
-## P35: System Development about cpu
+## P35: 系统开发之cpu
 🙏 [系统开发之cpu.md](./P35_系统开发之cpu/系统开发之cpu.md)
 
 ---
 
-## P36: System Development about memory
+## P36: 系统开发之memory
 🙏 [系统开发之memory.md](./P36_系统开发之memory/系统开发之memory.md)
 
 ---
 
-## P37: System Development about Binder
+## P37: 系统开发之Binder
 🙏 [系统开发之Binder.md](./P37_系统开发之Binder/系统开发之Binder.md)
 
 ---
 
-Note: 
 
-The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.
+备注：这一系统文章参考源码以android 11和13为主，还有部分是其他的android 版本。
 
 
 
 ---
-
 # Donations
 
-**Knowledge is priceless！！**
+**所谓法不轻传，道不贱卖；**
 
-If this project helps you a lot and you want to support the project's development and maintenance of this project, feel free to scan the following QR code for donation. Your donation is highly appreciated. Thank you!
+**千两黄金不卖道；**
+
+如果你看完这个系列的文章，觉得对你有用，或者能助你在android开发上走的更远，那么你可以扫下方二维码随意打赏我，就当是请我喝杯咖啡或是啤酒，我将不胜感激 :-)
+
 
 <div align=center>
 <img src=".\Images\donate.jpg" width=200 height=300>
 <div align=left>
 
----
 
+---
 # Contact
 
-- [csdn blog](https://blog.csdn.net/hfreeman2008)
+- [csdn博客](https://blog.csdn.net/hfreeman2008)
 
-- [github blog](https://github.com/hfreeman2008)
+- [github博客](https://github.com/hfreeman2008)
 
-**Welcome everyone to add me as a friend**
+**欢迎大家加我做朋友**
 <div align=center>
 <img src=".\Images\weixin_hxm_001.png">
 <div align=left>
@@ -243,32 +238,29 @@ If this project helps you a lot and you want to support the project's developmen
 
 # About me
 
-I graduated from Shenzhen University in 2011. I have been engaged in Android development until now。
+2011年深圳大学毕业后，一直从事android开发，大部分时间是手机开发，还做过车载，pos机，执法记录仪等产品。
 
-Most of the time is for mobile phone development, but also for vehicle-mounted, pos machine, law enforcement recorder and other products.
-
-My development experience is focus on the app, framework(Java,c,c++ layers). And familiar with sh scripts, Android compilation, and configuration.
+主要的开发经验在app,framework java，c,c++层，对于sh脚本，android 编译，配置也比较熟悉。
 
 
-In college(2008)：
-
+大学时的我(2011)：
 <div align=center>
 <img src=".\Images\2008年大学.png" width=500 height=600>
 <div align=left>
 
-
-After working for more than ten years(2024):
-
+工作十年+后的我(2024)：
 <div align=center>
 <img src=".\Images\2024_hexiaoming.png" width=500 height=600>
 <div align=left>
 
-Android development is a pig killing knife, so it's important to consider it carefully when entering the industry.
+
+
+
+android开发是个杀猪刀，入行要考虑清楚。
 
 
 
 ---
-
 
 
 [readme]: https://github.com/hfreeman2008/android_core_framework/blob/main/README.md

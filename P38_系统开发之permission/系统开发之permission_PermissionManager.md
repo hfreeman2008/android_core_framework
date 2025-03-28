@@ -263,33 +263,261 @@ if (!PermissionManager.getInstance().checkPermission(Manifest.permission.ACCESS_
 
 ---
 
-```java
+# /data/system/packages.xml
 
+权限存储：
+PermissionManagerService 不负责权限信息的存储，而是由 PackageManagerService 负责。权限信息会存储在 /data/system/package.xml 文件中，设备重启时会读取该文件以恢复权限信息。
+
+
+![权限存储](./image/权限存储.png)
+
+
+
+---
+
+# /system/etc/permissions/
+
+系统启动阶段‌：PMS 从 /system/etc/permissions 目录加载预定义权限，并合并应用声明的自定义权限‌
+
+
+## 应用添加到权限白名单
+
+报权限相关的无法开机问题：
+
+```java
+E AndroidRuntime: *** FATAL EXCEPTION IN SYSTEM PROCESS: main
+E AndroidRuntime: java.lang.IllegalStateException: Signature|privileged permissions not in privapp-permissions allowlist: {
+com.topwise.myappstore (/system/priv-app/AppMarket): android.permission.RECOVERY, com.topwise.myappstore (/system/priv-app/AppMarket): android.permission.REAL_GET_TASKS, com.topwise.myappstore (/system/priv-app/AppMarket): android.permission.UPDATE_APP_OPS_STATS, com.topwise.myappstore (/system/priv-app/AppMarket): android.permission.INSTALL_PACKAGES, com.topwise.myappstore (/system/priv-app/AppMarket): android.permission.INTERACT_ACROSS_USERS, com.topwise.myappstore (/system/priv-app/AppMarket): android.permission.MANAGE_USERS, com.topwise.myappstore (/system/priv-app/AppMarket): android.permission.MOUNT_UNMOUNT_FILESYSTEMS, com.topwise.myappstore (/system/priv-app/AppMarket): android.permission.CLEAR_APP_CACHE}
+E AndroidRuntime:     at com.android.server.pm.permission.PermissionManagerServiceImpl.onSystemReady(PermissionManagerServiceImpl.java:4545)
+E AndroidRuntime:     at com.android.server.pm.permission.PermissionManagerService$PermissionManagerServiceInternalImpl.onSystemReady(PermissionManagerService.java:756)
+E AndroidRuntime:     at com.android.server.pm.PackageManagerService.systemReady(PackageManagerService.java:4134)
+E AndroidRuntime:     at com.android.server.SystemServer.startOtherServices(SystemServer.java:2885)
+E AndroidRuntime:     at com.android.server.SystemServer.run(SystemServer.java:962)
+E AndroidRuntime:     at com.android.server.SystemServer.main(SystemServer.java:665)
+E AndroidRuntime:     at java.lang.reflect.Method.invoke(Native Method)
+E AndroidRuntime:     at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:569)
+E AndroidRuntime:     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1002)
 ```
 
+添加权限：
 
-```java
+在手机中，手动在此文件中添加：
 
+/system/etc/permissions/privapp-permissions-platform.xml
+
+
+(1)应用权限添加到白名单中
+
+base/data/etc/platform.xml
+
+(2)应用权限添加在源码中添加：
+
+frameworks/base/data/etc/privapp-permissions-platform.xml
+
+
+```xml
+<privapp-permissions package="com.android.documentsui">
+<permission name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+<permission name="android.permission.WRITE_MEDIA_STORAGE"/>
+<permission name="android.permission.INTERACT_ACROSS_USERS"/>
+</privapp-permissions>
 ```
 
+## /system/etc/permissions/privapp-permissions-platform.xml
 
-```java
 
+
+https://blog.csdn.net/u012514113/article/details/125470210
+
+### 第一种方案 ： 
+修改 framework/base/data/etc/privapp-permissions-platform.xml 把自己的权限加入其中
+
+### 第二种方案： 
+还是通过Android.mk 文件实现，稍微修改一下路径就可以了：
+
+Android.mk
+
+
+```makefile
+LOCAL_PATH:= $(call my-dir)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := TopDiagnosis
+LOCAL_MODULE_TAGS := optional 
+LOCAL_SRC_FILES := TopDiagnosis.apk
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
+LOCAL_CERTIFICATE := platform
+LOCAL_PRIVILEGED_MODULE := true
++######编译priv-app 权限到apk中###########
++LOCAL_MODULE_PATH := $(TARGET_OUT)/priv-app
++LOCAL_REQUIRED_MODULES := com.topwise.topdiagnosis.xml
+
+include $(BUILD_PREBUILT)
+
++######预编译priv-app 权限，输出路径为system/etc/permissions###########
++# Permissions pre-grant
++include $(CLEAR_VARS)
++LOCAL_MODULE := com.topwise.topdiagnosis.xml
++LOCAL_MODULE_CLASS := ETC
++LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/permissions
++LOCAL_SRC_FILES := $(LOCAL_MODULE)
++include $(BUILD_PREBUILT)
+
++include $(call all-makefiles-under,$(LOCAL_PATH))
 ```
 
+com.topwise.topdiagnosis.xml
 
-```java
-
-```
-
-
-```java
-
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="com.topwise.topdiagnosis">
+        <permission name="android.permission.MODIFY_PHONE_STATE" />
+        <permission name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+    </privapp-permissions>
+</permissions>
 ```
 
 ---
 
-# 参考文档
+# 版本适配‌
+
+Android 10+（API 29）‌：PermissionManager 正式引入。
+
+Android 13+（API 33）‌：新增 POST_NOTIFICATIONS 等权限的精细管理接口。
+
+
+---
+
+# DefaultPermissionGrantPolicy
+
+## grantDefaultPermissions--初始化
+
+PermissionManagerService::systemReady
+
+```java
+private void systemReady() {
+......
+    // If we upgraded grant all default permissions before kicking off.
+    for (int userId : grantPermissionsUserIds) {
+        mDefaultPermissionGrantPolicy.grantDefaultPermissions(userId);
+    }
+
+```
+
+```java
+public void grantDefaultPermissions(int userId) {
+    DelayingPackageManagerCache pm = new DelayingPackageManagerCache();
+
+    grantPermissionsToSysComponentsAndPrivApps(pm, userId);
+    //给默认应用赋权限
+    grantDefaultSystemHandlerPermissions(pm, userId);
+    grantDefaultPermissionExceptions(pm, userId);
+}
+```
+
+## 给应用默认赋权限  给应用默认权限
+grantDefaultSystemHandlerPermissions
+
+```java
+//Start by for virtualbluetoothservice
+try{
+    PackageInfo virtualBtInfo = pm.getSystemPackageInfo("com.topwise.bluetooh.virtualbluetoohprint");
+    if (virtualBtInfo != null && doesPackageSupportRuntimePermissions(virtualBtInfo)){
+        Log.i("dd","virtualBtInfo:" + virtualBtInfo.packageName + " to grant permission");
+        grantRuntimePermissions(pm, virtualBtInfo,
+            BLUETOOTH_PERMISSIONS,
+            true, // systemFixed
+            userId);
+    }
+} catch (Exception ee) {
+}
+//End by  for virtualbluetoothservice
+
+//Start by  for appstore
+try{
+    PackageInfo appStoreInfo = pm.getSystemPackageInfo("com.topwise.myappstore");
+    if (appStoreInfo != null && doesPackageSupportRuntimePermissions(appStoreInfo)){
+        grantPermissionsToSystemPackage(pm, "com.topwise.myappstore",
+            userId, ALWAYS_LOCATION_PERMISSIONS, STORAGE_PERMISSIONS);
+    }
+} catch (Exception ee) {
+}
+//End by  for appstore
+```
+
+
+## 添加应用需要运行时权限
+
+```java
+// AppStore
+PackageInfo appStore = pm.getSystemPackageInfo("com.topwise.myappstore");
+if (appStore != null && doesPackageSupportRuntimePermissions(appStore)){
+    grantPermissionsToSystemPackage(pm,appStore.packageName,
+            userId, ALWAYS_LOCATION_PERMISSIONS, STORAGE_PERMISSIONS);
+}
+
+// Custom app
+PackageInfo customApp = pm.getSystemPackageInfo("com.smarteasy.refillo");
+if (customApp != null && doesPackageSupportRuntimePermissions(customApp)){
+    grantPermissionsToSystemPackage(pm,customApp.packageName,
+            userId, ALWAYS_LOCATION_PERMISSIONS, STORAGE_PERMISSIONS,CAMERA_PERMISSIONS,PHONE_PERMISSIONS);
+}
+```
+
+
+```java
++    private static final Set<String> XCHAT_PERMISSIONS = new ArraySet<>();
++    static {
++        XCHAT_PERMISSIONS.add("android.permission.INTERNET");
++        XCHAT_PERMISSIONS.add("android.permission.ACCESS_WIFI_STATE");
++        XCHAT_PERMISSIONS.add("android.permission.CHANGE_WIFI_STATE");
++        XCHAT_PERMISSIONS.add("android.permission.GET_TASKS");
++        XCHAT_PERMISSIONS.add("android.permission.VIBRATE");
++        XCHAT_PERMISSIONS.add("android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS");
++    }
+
+  +          //xchat
+  +          PackageParser.Package xchatPckg = getPackageLPr( "com.xthinks.xchat");
+  +          if (xchatPckg != null
+  +                  && doesPackageSupportRuntimePermissions(xchatPckg)) {
+  +              Log.w(TAG, "grantRuntimePermissionsLPw for xchat");
+  +              grantRuntimePermissionsLPw(xchatPckg, STORAGE_PERMISSIONS, true, userId);
+  +              grantRuntimePermissionsLPw(xchatPckg, XCHAT_PERMISSIONS, true, userId);
+  +          }
+```
+
+---
+
+# Manifest.permission类
+
+frameworks\base\api\current.txt
+
+```java
+  public static final class Manifest.permission {
+    ctor public Manifest.permission();
+    field public static final String ACCEPT_HANDOVER = "android.permission.ACCEPT_HANDOVER";
+    field public static final String ACCESS_BACKGROUND_LOCATION = "android.permission.ACCESS_BACKGROUND_LOCATION";
+    field public static final String ACCESS_CHECKIN_PROPERTIES = "android.permission.ACCESS_CHECKIN_PROPERTIES";
+    field public static final String ACCESS_COARSE_LOCATION = "android.permission.ACCESS_COARSE_LOCATION";
+    field public static final String ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
+    field public static final String ACCESS_LOCATION_EXTRA_COMMANDS = "android.permission.ACCESS_LOCATION_EXTRA_COMMANDS";
+    field public static final String ACCESS_MEDIA_LOCATION = "android.permission.ACCESS_MEDIA_LOCATION";
+    field public static final String ACCESS_NETWORK_STATE = "android.permission.ACCESS_NETWORK_STATE";
+    field public static final String ACCESS_NOTIFICATION_POLICY = "android.permission.ACCESS_NOTIFICATION_POLICY";
+    field public static final String ACCESS_WIFI_STATE = "android.permission.ACCESS_WIFI_STATE";
+    field public static final String ACCOUNT_MANAGER = "android.permission.ACCOUNT_MANAGER";
+    field public static final String ACTIVITY_RECOGNITION = "android.permission.ACTIVITY_RECOGNITION";
+    field public static final String ADD_VOICEMAIL = "com.android.voicemail.permission.ADD_VOICEMAIL";
+    field public static final String ANSWER_PHONE_CALLS = "android.permission.ANSWER_PHONE_CALLS";
+    field public static final String BATTERY_STATS = "android.permission.BATTERY_STATS";
+    field public static final String BIND_ACCESSIBILITY_SERVICE = "android.permission.BIND_ACCESSIBILITY_SERVICE";
+    field public static final String BIND_APPWIDGET = "android.permission.BIND_APPWIDGET";
+    field public static final String BIND_AUTOFILL_SERVICE = "android.permission.BIND_AUTOFILL_SERVICE";
+    field public static final String BIND_CALL_REDIRECTION_SERVICE = "android.permission.BIND_CALL_REDIRECTION_SERVICE";
+```
+
 
 
 

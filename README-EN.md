@@ -208,6 +208,13 @@ Of course, these can also be understood as some essential technical skills for a
 
 ---
 
+## P38: System Development about permission
+🙏 [系统开发之permission.md](./P38_系统开发之permission/系统开发之permission.md)
+
+---
+
+
+
 Note: 
 
 The reference code for articles is mainly Android 11 and 13, and there are also some other versions of Android.

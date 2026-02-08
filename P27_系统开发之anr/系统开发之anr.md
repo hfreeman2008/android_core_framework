@@ -22,7 +22,7 @@
 
 # ANR
 
-ANR(application not response)，应用无响应。
+ANR(Application Not Responding)，应用无响应。
 
 整个ANR机制是横跨几个层：
 - App层：

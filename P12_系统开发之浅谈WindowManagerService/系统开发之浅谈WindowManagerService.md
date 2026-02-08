@@ -25,7 +25,7 @@
 
 # WindowManagerService 类的作用：
 
-wms是窗口的管理者，负责窗口的启动，添加，删除和更新，窗口动画，窗口的大小和层级，还有壁纸，水印，输入系统的中转站，Surface管理等各个方面的一个综合管理体。
+wms是窗口的管理者，负责窗口的启动，添加，删除和更新，窗口动画，窗口的大小和层级，还有壁纸，水印，输入系统的中转站，Surface管理等各个方面的综合管理。
 
 ![WindowManagerService类的作用](WindowManagerService类的作用.png)
 
@@ -289,7 +289,7 @@ public int addWindow(
 
 图三 WindowManagerService类图
 
-图三，我们可以看到WindowManagerService就是窗口的管理者，负责窗口的启动，添加，删除和更新，窗口动画，窗口的大小和层级，还有壁纸，水印，输入系统的中转站，Surface管理等各个方面的一个综合管理体。
+图三，我们可以看到WindowManagerService就是窗口的管理者，负责窗口的启动，添加，删除和更新，窗口动画，窗口的大小和层级，还有壁纸，水印，输入系统的中转站，Surface管理等各个方面的综合管理。
 
 ---
 
